@@ -1,0 +1,39 @@
+<% form_for @map, :url => review_maps_path, :html => { :multipart => true } do |f| %>
+    <!-- <div class="boxed">
+      <p>
+        <label>Map title</label>
+        <%#= f.text_field :title, :style => "width:363px;" %>
+        <span class="description">This will help others find your map.</span>
+      </p>
+    </div> --> <!-- end: .boxed --> 
+    <% f.fields_for(:dataset) do |dataset_fields| %>
+      <div class="boxed" style="padding-left: 0; padding-right: 0;">
+        <p style="padding-left: 18px; padding-right: 18px;">
+          <label>Upload a spreadsheet<br/>(.xls, .xlsx)</label>
+          <%= dataset_fields.file_field :upload %>
+          <span class="description">Please make sure your file has column names specified in the first row</span>
+        </p>
+        <p id="form_or">or</p>
+        <p style="padding-left: 18px; padding-right: 18px;">
+          <label>...Copy &amp; Paste your data</label>
+            <%= dataset_fields.text_area(:data, :id => 'paste', :style => 'width: 363px; height: 150px;') %>
+          <span class="description">Paste your tabular data (<em>e.g.</em> csv) in the field above to begin making your map.  We are expecting for column names to be on the first row. The tabular data can be comma, semi-colon, or tab delimited.</span>
+        </p>
+      </div> <!-- end: .boxed -->
+
+      <div class="boxed" style="padding-left: 0; padding-right: 0;">
+      <p style="padding-left: 18px; padding-right: 18px;">
+        <label>How are your columns separated?</label>
+        <%= select_tag "map[dataset_attributes][separator]", options_for_select(Dataset::COLUMN_SEPARATORS) %>
+        <span class="description">
+          If you're submitting tabular data, you should specify if your data is delimited with commas, semi-colons, or tabs.
+        </span>
+      </p>
+      </div>
+    <% end -%>
+    
+    <ul class="buttons clearfix">
+      <li class="right_col"><%= f.submit 'Review Map', :onclick => "fixTextareaNewlines()", :class => "button_pink" %></li>
+    </ul> <!-- end: .buttons -->
+
+<% end %>

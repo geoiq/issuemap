@@ -1,0 +1,114 @@
+@import colors
+@import sizes
+
+body
+  :margin 0px
+  :font-family 'Helvetica Neue'
+  :font-weight normal
+  :font-size 12px
+  :background= !white_color
+  :color= !default_text_color
+  
+.clearfix 
+  :clear both
+  
+div#flash_notice
+  padding: 10px
+  font-size: 14px
+  background: #FFFBCF
+  margin-bottom: 15px
+  border: 1px solid #FFE418 
+
+div#flash_error
+  padding: 10px
+  font-size: 14px
+  background: #ad0000
+  margin-bottom: 15px
+  border: 1px solid #D30000
+  :color #fff
+
+h1
+  :font-size 18px
+
+#header
+  :background #356AA0
+  :color= !white_color
+  .wrapper
+    :margin 0px auto
+    :width= !content_width
+    :padding 4px 10px
+    .title
+      :float left
+      h1
+        :margin-top 14px
+        :font-weight bold
+        :font-size 24px
+        :color= !white_color
+        a
+          :color= !white_color
+          :text-decoration none 
+    .meta
+      :float right
+      :text-align right
+      :padding-right 10px
+      a
+        :color= !white_color
+
+#content
+  :background= !white_color
+  :clear both
+  :padding-top 12px
+  :padding-bottom 14px
+  .wrapper
+    :width= !content_width
+    :margin 0px auto
+  h1
+    :font-size 28px
+
+#footer
+  :font-size 10px
+  :color #777
+  :padding-top 10px
+  :margin 20px 10px 20px 0px
+  :text-align center
+  img
+    :vertical-align bottom
+    :margin-right 10px
+  a
+    :color= !footer_link_color
+    
+#map_wrapper
+  :width= !content_width
+  :height 500px
+  
+a
+  &.intro_action
+    :padding 10px
+    :-webkit-border-radius 6px
+    :-moz-border-radius 6px
+    :text-decoration none
+    :font-size 14px
+    :font-weight bold
+    :background #3F4C6B
+    :color= !white_color
+    
+form
+  textarea[name='paste']
+    :width= !content_width
+    :height 100px
+    
+table
+  tr
+    &.even
+      :background #eee
+  td
+    :padding 8px 20px
+  
+table
+  &.verify_data
+    :display inline-block
+    :float left
+    :width 150px
+    td
+      :border 1px solid #ddd
+      :margin 2px

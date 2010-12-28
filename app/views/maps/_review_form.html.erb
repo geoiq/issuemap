@@ -1,0 +1,76 @@
+<div class="boxed">
+  <h2 class="with_link clearfix"><em>Map Title</em></h2>
+  <p><%= f.text_field :title %></p>
+</div> 
+
+<div class="boxed" style="display:none">
+  <h2 class="with_link clearfix"><em>Map Provider</em></h2>
+  <p>Please choose a map provider to use for your map.</p>
+  <p class='field'>Provider <%= f.select :map_provider, options_for_select(Map::MAP_PROVIDERS) %></p>
+</div>
+
+<div class="boxed" style="padding-bottom: 20px;">
+  <h2 class="with_link clearfix"><em>Data Column</em></h2>
+  <p>Please select <strong>one <i>numeric</i> field</strong> to act as the data you want to display by checking the box.</p>
+
+  <% table_count = 0 %>
+  <% @map.dataset.hashed_data.each_pair do |key, values| %>
+    <table cellpadding='0' cellspacing='0' border='0' class='verify_data'>
+      <tr>
+        <th>
+          <%= check_box_tag("map[dataset_attributes][data_column_hash][#{key}][include]", 1, (@default_numerical_data_column == key), :id => "data_column", :rel => key.gsub("_"," ").capitalize, :onchange => "ensureOnlyOneColumnChecked(this);determineMapTitle();") %>
+          <%= truncate(key.upcase, :length => 14) %>
+        </th>
+      </tr>
+      <tr>
+        <th class="alt">
+          <%= select_tag "map[dataset_attributes][data_column_hash][#{key}][type]", options_for_select([['Select one...', nil]] + Dataset::GRAPH_DATA_TYPES,
+          @map.dataset.data_columns[key]) %>
+        </th>
+      </tr>
+      <% value_count = 0 %>
+      <% values.each do |value| %>
+        <tr class="<%= cycle('even','odd') %>">
+          <% if value_count == 5 && values.size > 5 %>
+          <td>...</td>
+          <% else %>
+          <td><%= truncate(value.to_s, :length => 20) %></td>
+          <% end %>
+          <% break if value_count == 5 %>
+        </tr>
+        <% value_count += 1 %>
+      <% end %>
+    </table>
+    <% table_count += 1 %>
+    <%= clearfix if table_count == 4 %>
+  <% end %>
+  <%= clearfix %>
+</div>
+
+<div class='boxed'>
+  <h2 class="with_link clearfix"><em>Location Columns</em></h2>
+  <p>Please select the column that you want to use for mapping location.</p>
+
+  <% if @map.dataset.default_location_columns.empty? %>
+    <p class='no_location_note'>
+      <i>Sorry, we could not automatically determine any location based columns. Could you please select from the list, which columns would be used for mapping location?</i>
+    </p>
+    <p class="field dotted">
+      Show <%= select_tag 'map[dataset_attributes][location_column_keys][]', options_for_select([['Select one...', nil]] + @map.dataset.hashed_value.keys), :id => "location_columns", :onchange => "determineMapTitle();" %> 
+      as 
+      <%= select_tag 'map[dataset_attributes][location_column_types][]', options_for_select([['Select one...', nil]] + Dataset::LOCATION_DATA_TYPES) %>
+    </p>
+  <% else %>
+    <% # ONLY SHOWING ONE LOCATION COLUMN AT THIS TIME DUE TO JOINING ISSUES ON GEOIQ %>
+    <% [@map.dataset.location_columns.to_a[0]].each_with_index do |key_and_value, index| %>
+      <% key, value = key_and_value -%>
+      <p class="field">
+        Show <%= select_tag 'map[dataset_attributes][location_column_keys][]', options_for_select([['Select one...', nil]] + @map.dataset.hashed_value.keys, key), :id => "location_columns", :onchange => "determineMapTitle();" %>
+        as
+        <%= select_tag 'map[dataset_attributes][location_column_types][]', options_for_select([['Select one...', nil]] + Dataset::LOCATION_DATA_TYPES, value) %>
+      </p>
+    <% end %>
+  <% end %>
+  <%= @map.dataset.errors.on(:location_columns) %>
+</div>
+

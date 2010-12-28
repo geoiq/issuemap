@@ -1,0 +1,97 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "#{GEOIQ_ENDPOINT}/javascripts/f1.api.js" %>
+<% end %>
+<p>
+  <h1><%= @map.title %></h1>
+  <div class='boxed'>
+    <div class='left'>
+      <p class='meta'>
+        Created <%= time_ago_in_words @map.created_at %> ago | 
+        <!-- <%#= link_to 'Edit', edit_map_path(@map.linkable_id) %> |  -->
+        <%= link_to 'Permalink', map_path(@map.linkable_id) %> |
+        <%= link_to 'Image', map_path(@map.linkable_id, :format => "png") %>
+        </p>
+    </div>
+    <div class='right'>
+<div class="addthis_toolbox addthis_default_style">
+<a href="http://www.addthis.com/bookmark.php?v=250&amp;username=issuemap" class="addthis_button_compact">Share</a>
+<span class="addthis_separator">|</span>
+    <a class="addthis_button_twitter"></a>
+    <a class="addthis_button_facebook"></a>
+    <a class="addthis_button_email"></a>
+</div>
+<script type="text/javascript">var addthis_config = {"data_track_clickback":true};</script>
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#username=issuemap"></script>
+    </div>
+    <div class='clearfix'></div>
+  </div>
+</p>
+
+<div id="map_wrapper">
+  <div class="loading">
+    Loading...
+  </div>
+</div>
+
+<p>
+  <div class='boxed'>
+    <div class='left'>
+      <h3>Embed this Map</h3>
+      <p>Copy and paste the HTML snippet below!</p>
+    </div>
+    <div class='right'>
+      <p id="copy_to_clipboard" style="display:none; width: 200px; text-align: center;">
+        <%= link_to 'Copy to Clipboard', '#', :class => 'button_pink' %>
+      </p>
+    </div>
+    <div class='clearfix'></div>
+    <textarea id='embed_text'><div id="map_<%= @map.linkable_id[0..6] %>"></div><%= javascript_include_tag "#{GEOIQ_ENDPOINT}/javascripts/f1.api.js" %><script type="text/javascript" charset="utf-8">F1.host = <%= geocommons_proxy_url.inspect %>;var host = <%= geocommons_proxy_url('').inspect %>;var map_<%= @map.linkable_id[0..6] %> = new F1.Maker.Map({dom_id: 'map_<%= @map.linkable_id[0..6] %>', map_id: <%= @map.maker_id %>, uiLayers:false, core_host: host, onload: function(map) { map.showControl("legend", true, "open"); },finder_host: host, maker_host: host});</script></textarea><br/>
+    <span id="clipboard_status"></span>
+  </div>
+</p>
+<script type="text/javascript" charset="utf-8">
+  var map = null;
+  $(document).ready(function() {
+    F1.host = <%= geocommons_proxy_url.inspect %>;
+    map = new F1.Maker.Map({
+      dom_id: 'map_wrapper',
+      map_id: <%= @map.maker_id %>,
+      uiStyles: false,
+      uiLayers: false,
+      uiHeader: false,
+      uiLegend: true,
+      SWFMode: 'show',
+      hideGCLogo: true,
+      core_host: <%= geocommons_proxy_url('').inspect %>,
+      finder_host: <%= geocommons_proxy_url('').inspect %>,
+      maker_host: <%= geocommons_proxy_url('').inspect %>,
+      onload: function() { map.showControl("legend", true, "open"); }
+    });
+  });
+ 
+</script>
+
+<%# Copy to clipboard %>
+<% javascript_tag do %>
+  flashAvailable = navigator.mimeTypes["application/x-shockwave-flash"];
+  if(flashAvailable) {
+    $("<script>").attr("src", "/javascripts/ZeroClipboard.js").appendTo("head");
+    $("#copy_to_clipboard").show();
+  }
+  var clip = new ZeroClipboard.Client();
+  clip.setHandCursor(true);
+
+  clip.addEventListener('load', function (client) {
+    // console.log('flash movie loaded');
+  });
+
+  clip.addEventListener('mouseOver', function (client) {
+    clip.setText($('#embed_text').val());
+  });
+
+  clip.addEventListener('complete', function (client, text) {
+    $("#copy_to_clipboard a").text("Copied!");
+  });
+
+  clip.glue('copy_to_clipboard');
+<% end %>

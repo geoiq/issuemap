@@ -1,0 +1,17 @@
+*.tmproj
+.bundle
+.DS_Store
+.rvmrc
+config/database.yml
+db/*.sqlite3
+log/*.log
+tmp/sass-cache/*
+tmp/sessions/*
+tmp/sockets/*
+!tmp/uploads
+tmp/uploads/*
+public/stylesheets/application.css
+Gemfile.lock
+public/system
+tmp/restart.txt
+*~

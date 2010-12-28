@@ -1,0 +1,13 @@
+Add Environment variables for S3 Authentication:
+  - S3_KEY
+  - S3_SECRET
+  - S3_BUCKET
+
+1. Copy contents of database.example to database.yml
+
+2. Run rake db:setup
+
+3. Run bundler
+
+  - sudo gem install bundler
+  - bundle install

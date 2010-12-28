@@ -1,0 +1,32 @@
+<html>
+<head>
+  <script src="http://geoiq.issuemapper.geoiq.com/javascripts/f1.api.js" type="text/javascript"></script>
+  <script type="text/javascript">
+   F1.host = "http://localhost:3000/proxy";
+  </script>
+  <script src="/javascripts/jquery-1.4.2.min.js" type="text/javascript"></script>
+</head>
+<body>
+<h1>Proxy Test</h1>
+<div id="map_wrapper" style="width:500px">
+  
+</div>
+<script type="text/javascript">
+  var proxy_host = "http://localhost:3000/proxy";
+  F1.host = proxy_host;
+
+  my_map = new F1.Maker.Map({
+    map_id: "269",
+    dom_id: 'map_wrapper',
+    uiStyles: false,
+    uiLayers: true,
+    uiHeader: false,
+    SWFMode: "edit",
+    hideGCLogo: true,
+    core_host:  proxy_host + '/', 
+    finder_host: proxy_host + '/', 
+    maker_host: proxy_host + '/'
+  });
+</script>
+</body>
+</html>

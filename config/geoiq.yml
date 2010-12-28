@@ -1,0 +1,3 @@
+geoiq_server_endpoint: http://geoiq.issuemapperqa.geoiq.com
+geoiq_user: admin
+geoiq_password: notpassword5
