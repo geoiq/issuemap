@@ -1,6 +1,4 @@
-source :rubygems
-source :rubyforge
-source :gemcutter
+source "http://rubygems.org"
 
 group :rails do
   gem 'rails', '~> 2.3.8', :require => nil
