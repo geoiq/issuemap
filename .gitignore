@@ -9,7 +9,6 @@ vendor/ruby
 
 public/stylesheets/application.css
 
-Gemfile.lock
 .rvmrc
 *.tmproj
 *~
