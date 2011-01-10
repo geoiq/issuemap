@@ -3,13 +3,13 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Dataset do
 
   it { should belong_to(:map) }
-  it { should have_attached_file(:upload) }  
-  
+  it { should have_attached_file(:upload) }
+
   it "should parse a csv based paste" do
     dataset = Dataset.new(:data => "")
-    file = File.open(File.join(RAILS_ROOT,"lib","example.csv"))
+    file = File.open(File.join(RAILS_ROOT, "lib", "examples", "example.csv"))
     file.each_line {|line| dataset.data += line }
-    
+
     dataset.hashed_data.should_not be_nil
     dataset.hashed_data.keys.size.should > 3
   end
