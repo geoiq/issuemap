@@ -83,7 +83,7 @@ DEPENDENCIES
   nokogiri
   paperclip
   pg
-  rails (~> 2.3.8)
+  rails (= 2.3.10)
   rest-client
   roo
   rspec (= 1.3.1)
