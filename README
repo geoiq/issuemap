@@ -9,5 +9,6 @@ Add Environment variables for S3 Authentication:
 
 3. Run bundler
 
-  - sudo gem install bundler
-  - bundle install
+  - gem install bundler
+  - bundle install --path vendor
+  - bundle package

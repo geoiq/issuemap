@@ -9,6 +9,5 @@ vendor/ruby
 
 public/stylesheets/application.css
 
-.rvmrc
 *.tmproj
 *~
