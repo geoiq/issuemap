@@ -63,7 +63,7 @@ class Dataset < ActiveRecord::Base
   end
 
   def data_points
-    @data_points ||= hashed_data.values.flatten.count
+    @data_points ||= hashed_data.values.flatten.length
   end
 
   def default_location_columns
