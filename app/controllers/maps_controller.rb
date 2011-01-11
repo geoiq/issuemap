@@ -13,28 +13,16 @@ class MapsController < ApplicationController
     end
   rescue
       flash.now[:error] = "Your map could not be saved! Please try again"
-      render :review    
-  end
-
-  def edit
-    # Temporarily redirecting
-    # redirect_to new_map_path
-    render :action => "show"
-  end
-
-  def index
-    redirect_to new_map_path
-    # Temporarily redirecting
-    # @maps = Map.all
+      render :review
   end
 
   def new
-  end  
+  end
 
   def show
     render :template => "site/index" if params[:id].blank?
     @show_progress = false
-    
+
     respond_to do |format|
       format.html {}
       # format.png { send_file(@map.to_png(params.merge(:text => map_url(@map, :only_path => false))), :filename => "#{@map.title}.png", :type => "image/png", :disposition => "inline") }
@@ -76,7 +64,7 @@ class MapsController < ApplicationController
     @map = Map.new(params[:map])
     @map.build_dataset if @map.dataset.nil?
   end
-  
+
   def check_location_type
     if params[:map][:dataset_attributes][:location_column_types].first.blank?
       flash.now[:error] = "We need to know the type of the location column you've chosen."
