@@ -7,9 +7,11 @@ class ApplicationController < ActionController::Base
   # filter_parameter_logging :password
   
   before_filter :show_progress
+
+  private
+
   # Small helper to show or hide progress
   def show_progress(progress_visible = true)
     @show_progress = progress_visible
   end
-  
 end
