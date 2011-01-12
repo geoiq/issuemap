@@ -1,9 +1,6 @@
 source "http://rubygems.org"
 
-group :rails do
-  gem "rails", "2.3.10", :require => nil
-  gem "memcache-client", ">= 1.7.4", :require => nil
-end
+gem "rails", "2.3.10"
 
 gem "nokogiri"
 gem "rubyzip"

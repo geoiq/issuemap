@@ -36,7 +36,6 @@ GEM
       crack (= 0.1.8)
     json_pure (1.4.6)
     linecache (0.43)
-    memcache-client (1.8.5)
     mime-types (1.16)
     multipart-post (1.0.1)
     nokogiri (1.4.4)
@@ -91,7 +90,6 @@ DEPENDENCIES
   haml
   httparty
   json_pure (~> 1.4.3)
-  memcache-client (>= 1.7.4)
   multipart-post
   nokogiri
   paperclip
