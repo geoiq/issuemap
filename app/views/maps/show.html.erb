@@ -1,5 +1,5 @@
 <% content_for :head do %>
-  <%= javascript_include_tag "#{GEOIQ_ENDPOINT}/javascripts/f1.api.js" %>
+  <%= javascript_include_tag "#{GeoIQ.base_uri}/javascripts/f1.api.js" %>
 <% end %>
 <p>
   <h1><%= @map.title %></h1>
@@ -45,7 +45,7 @@
       </p>
     </div>
     <div class='clearfix'></div>
-    <textarea id='embed_text'><div id="map_<%= @map.linkable_id[0..6] %>"></div><%= javascript_include_tag "#{GEOIQ_ENDPOINT}/javascripts/f1.api.js" %><script type="text/javascript" charset="utf-8">F1.host = <%= geocommons_proxy_url.inspect %>;var host = <%= geocommons_proxy_url('').inspect %>;var map_<%= @map.linkable_id[0..6] %> = new F1.Maker.Map({dom_id: 'map_<%= @map.linkable_id[0..6] %>', map_id: <%= @map.maker_id %>, uiLayers:false, core_host: host, onload: function(map) { map.showControl("legend", true, "open"); },finder_host: host, maker_host: host});</script></textarea><br/>
+    <textarea id='embed_text'><div id="map_<%= @map.linkable_id[0..6] %>"></div><%= javascript_include_tag "#{GeoIQ.base_uri}/javascripts/f1.api.js" %><script type="text/javascript" charset="utf-8">F1.host = <%= geocommons_proxy_url.inspect %>;var host = <%= geocommons_proxy_url('').inspect %>;var map_<%= @map.linkable_id[0..6] %> = new F1.Maker.Map({dom_id: 'map_<%= @map.linkable_id[0..6] %>', map_id: <%= @map.maker_id %>, uiLayers:false, core_host: host, onload: function(map) { map.showControl("legend", true, "open"); },finder_host: host, maker_host: host});</script></textarea><br/>
     <span id="clipboard_status"></span>
   </div>
 </p>

@@ -6,7 +6,6 @@ require 'geo_iq/map'
 
 module GeoIQ
   include HTTParty
-  base_uri GEOIQ_ENDPOINT
   # base_uri 'http://localhost:9292/'
   default_timeout 30
 

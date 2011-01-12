@@ -15,7 +15,7 @@ class Dataset < ActiveRecord::Base
     ['Time or Date', 'datetime']
   ]
   LOCATION_COLUMNS  = %w{ county state st zip zipcode zip_code district congressional_district fip fips }
-  LOCATION_DATA_TYPES = YAML.load_file(File.join(RAILS_ROOT, 'config', 'boundaries.yml'))[GEOIQ_ENDPOINT] || YAML.load_file(File.join(RAILS_ROOT, 'config', 'boundaries.yml'))["default"]
+  LOCATION_DATA_TYPES = AppConfig[:boundaries]
   # [
   #     ['State - Full Name (e.g. Arkansas)', '14/state'],
   #     ['State - Abbreviation (e.g. AK)', '14/st'],
@@ -55,9 +55,7 @@ class Dataset < ActiveRecord::Base
   attr_reader :data_column_keys, :data_column_types, :location_column_keys, :location_column_types
 
   if Rails.env.production?
-    has_attached_file :upload,
-    :storage => :s3,
-    :s3_credentials => 'config/amazon_s3.yml'
+    has_attached_file :upload, :storage => :s3, :s3_credentials => AppConfig[:s3]
   else
     has_attached_file :upload
   end

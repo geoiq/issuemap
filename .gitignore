@@ -5,6 +5,7 @@ log/*.log
 tmp/**/*
 tmp/restart.txt
 config/database.yml
+config/config.yml
 vendor/ruby
 
 public/stylesheets/application.css

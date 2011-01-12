@@ -41,39 +41,11 @@ set :appserver, :passenger
 set :deploy_via, :remote_cache
 set :user, "root"
 
-namespace :geoiq do 
-  desc "Sets the configuration for the GeoIQ server and user"
-  task :config do
-      geoiq_config = {
-        "geoiq_server_endpoint" =>  geoiq_server,
-        "geoiq_user" =>  geoiq_user,
-        "geoiq_password" => geoiq_password
-        }
-
-    put(geoiq_config.to_yaml, "#{release_path}/config/geoiq.yml")
-    
-  end
-
-end
-namespace :deploy do
-  desc "Sets the configuration for the S3 bucket and user"
-  task :s3_config do
-      s3_config = {
-        "production" => {
-          "access_key_id" => s3_access_key_id,
-          "secret_access_key" => s3_secret_access_key,
-          "bucket" => s3_bucket
-        }
-      }
-    put(s3_config.to_yaml, "#{release_path}/config/amazon_s3.yml")
-    
-  end  
-end
-
 desc "Re-establish symlinks"
 task :symlink do
   run <<-CMD
-    ln -nfs #{shared_path}/database.yml #{release_path}/config/database.yml
+    ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml &&
+    ln -nfs #{shared_path}/config/config.yml   #{release_path}/config/config.yml
   CMD
 end
 
