@@ -16,10 +16,13 @@ gem "ruby-ole"
 gem "roo"
 gem "spreadsheet"
 gem "haml"
-gem "ruby-debug", "~> 0.10.3", :require => nil
 gem "paperclip"
 gem "sqlite3-ruby"
 gem "json_pure", "~> 1.4.3"
+
+group :development do
+  gem "ruby-debug", "~> 0.10.3", :require => nil
+end
 
 group :test do
   gem "rspec", "1.3.1"
