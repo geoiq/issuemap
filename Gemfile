@@ -25,12 +25,14 @@ group :development do
 end
 
 group :test do
-  gem "rspec", "1.3.1"
-  gem "rspec-rails", "1.3.3"
+  gem "redgreen"
+  gem "fakeweb"
+  gem "mocha"
+  gem "timecop"
   gem "shoulda"
   gem "factory_girl"
-  gem 'autotest'
-  gem 'autotest-rails'
-  gem 'autotest-fsevent'
-  gem 'autotest-growl'
+  gem "autotest"
+  gem "autotest-rails"
+  gem "autotest-fsevent"
+  gem "autotest-growl"
 end
