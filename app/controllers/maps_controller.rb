@@ -20,7 +20,6 @@ class MapsController < ApplicationController
   end
 
   def show
-    render :template => "site/index" if params[:id].blank?
     @show_progress = false
 
     respond_to do |format|
