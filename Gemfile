@@ -15,10 +15,11 @@ gem "fastercsv"
 gem "ruby-ole"
 gem "roo"
 gem "spreadsheet"
-gem "haml"
 gem "paperclip"
 gem "sqlite3-ruby"
 gem "json_pure", "~> 1.4.3"
+gem "haml"
+gem "compass"
 
 group :development do
   gem "ruby-debug", "~> 0.10.3", :require => nil
