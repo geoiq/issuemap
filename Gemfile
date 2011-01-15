@@ -20,6 +20,7 @@ gem "sqlite3-ruby"
 gem "json_pure", "~> 1.4.3"
 gem "haml"
 gem "compass"
+gem "fancy-buttons"
 
 group :development do
   gem "ruby-debug", "~> 0.10.3", :require => nil
