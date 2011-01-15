@@ -1,0 +1,55 @@
+@import compass/utilities
+@import compass/css3
+@import compass/reset
+
+@import fancy-buttons
+$fb-gradient-style: matte
+
+@import mixins
+
+!background_color: rgb(11, 134, 191)
+!base_color: rgb(22, 96, 149)
+!action_color: rgb(194, 50, 122)
+
+html
+  min-height: 100%
+
+body
+  font-family: "Lucida Grande","Helvetica Neue", Arial, Tahoma, "Sans Serif"
+  font-size: 14px
+  line-height: 21px
+  color: #555
+  background-repeat: no-repeat
+  background-color: !background_color
+  +linear-gradient(color-stops(!base_color, !background_color 500px))
+
+a
+  +unstyled-hover-link(!base_color)
+
+img
+  :-ms-interpolation-mode bicubic
+
+strong
+  font-weight: bold
+
+
+h1
+  font-size: 42px
+  line-height: 1
+  font-weight: bold
+  color: !action_color
+
+h2
+  font-size: 21px
+  line-height: 1
+  font-weight: bold
+  color: #333
+
+h2, p
+  margin-top: 21px
+
+
+
+@import layout
+@import pages
+@import home

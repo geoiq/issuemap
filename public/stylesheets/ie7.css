@@ -1,4 +1,0 @@
-/* Tweaks for clear fixing via .group */
-*:first-child+html .clearfix {
-    min-height: 1px;
-}

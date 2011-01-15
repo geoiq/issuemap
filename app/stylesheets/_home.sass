@@ -1,0 +1,24 @@
+#pages.home #main
+  .description
+    +replace-text-with-dimensions("homepage_description.png")
+    float: left
+  .intro
+    margin: 10px 0 0 425px
+    h2
+      margin: 0 0 0 0
+      color: #333
+      font-weight: bold
+      font-size: 26px
+      line-height: 32px
+    p
+      margin-top: 21px
+    a.call-to-action
+      +fancy-button-matte(!action_color)
+      width: 270px
+      margin-top: 21px
+      padding: 8px 0
+      font-size: 21px
+      line-height: 25px
+      text-align: center
+      .hint
+        font-size: 12px

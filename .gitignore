@@ -6,6 +6,7 @@ tmp/**/*
 tmp/restart.txt
 config/database.yml
 config/config.yml
+public/stylesheets/*.css
 vendor/ruby
 
 public/stylesheets/application.css

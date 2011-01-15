@@ -1,0 +1,40 @@
+!!! 5
+%html{ :dir => "ltr", :lang => "en-US" }
+  /
+    Welcome to IssueMap - where you can map the issues. IssueMap is provided
+    as a free service and is built by the FCC utilizing the FortiusOne GeoIQ
+    platform.
+
+    Also checkout GeoCommons.com - a community site for sharing data and maps.
+  %head
+    %meta{ :charset => "utf-8" }
+    = title_tag :prefix => "IssueMap : "
+    = description_tag "IssueMap lets you map the issues."
+    = keywords_tag "map, geo, issues, data, geocommons"
+    = copyright_tag "Copyright #{year_range(2010)}, FortiusOne, Inc"
+    = yield :head
+
+    = stylesheet_link_tag "screen", :media => "screen, projection"
+    = stylesheet_link_tag "print", :media => "print"
+    = yield :stylesheets
+    /[if lt IE 7]
+      = stylesheet_link_tag "ie6.css", :media => "screen, projection"
+
+    = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"
+    = javascript_include_tag "application"
+    /[if lt IE 9]
+      = javascript_include_tag "html5"
+    = yield :javascripts
+    = render :partial => "layouts/analytics"
+  - body do
+    = render :partial => "layouts/ie6nomore"
+
+    #header
+      %h1= link_to "IssueMap", root_path
+    #content
+      #main
+        = yield
+      #footer
+        = render :partial => "layouts/footer"
+
+    = render :partial => "layouts/uservoice"

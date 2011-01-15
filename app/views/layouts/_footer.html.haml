@@ -1,0 +1,13 @@
+.copyright
+  Built by
+  = link_to "FCC", "http://fcc.gov"
+  and
+  = "%s." % link_to("FortiusOne", "http://fortiusone.com")
+  Copyright &copy;
+  = year_range(2010)
+
+%ul.navigation
+  %li.first= link_to "Privacy",          page_path("privacy")
+  %li= link_to "Terms of Service", page_path("tos")
+  %li= link_to "FAQ",              page_path("faq")
+  %li= link_to "How to Use",       page_path("usage")

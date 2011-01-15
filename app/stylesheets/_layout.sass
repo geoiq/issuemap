@@ -1,0 +1,39 @@
+#header
+  margin: 0 auto
+  width: 780px
+  h1 a
+    margin: 24px 4px 16px
+    display: block
+    +replace-text-with-dimensions("header_logo.png")
+
+#content
+  margin: 0 auto 24px
+  width: 740px
+  padding: 20px
+  background-color: #fff
+  +border-radius(8px)
+  +box-shadow(rgba(0, 0, 0, 0.5), 0, 1px, 2px)
+
+#main
+  +clearfix
+
+#footer
+  margin-top: 20px
+  padding-top: 10px
+  border-top: 1px solid #e9e9e9
+  color: #888888
+  font-size: 10px
+  line-height: 1
+  a
+    border-bottom: 1px dotted #bbb
+    +unstyled-link(#888)
+  .copyright
+    float: left
+  ul.navigation
+    text-align: right
+    li
+      display: inline
+      padding: 0 6px
+      border-left: 1px solid #aaa
+    li.first
+      border-left: none
