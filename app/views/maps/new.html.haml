@@ -1,0 +1,52 @@
+-#- content_for :javascripts do
+
+%h2 Create a Map
+
+%p.description Get Started by uploading or pasting your data, selecting the entries you want to map, providing a title, and shazam you have an instant map.
+
+- form_for @map do |f|
+
+  - f.fields_for(:dataset) do |df|
+    %section.import
+      .upload
+        = df.label :upload, "&nbsp;"
+        = link_to "Upload File", "#", :class => "file"
+        .hint Excel Spreadsheet or CSV
+      .paste
+        = df.label :data, "Copy &amp; Paste Data"
+        = df.text_area :data
+        .hint Columns names must be in the first row.
+      .or OR
+
+  - f.fields_for(:dataset) do |df|
+    %section.location
+      = df.label :data_location_name, "Select Location"
+      .detail Please select the column that you want to use for mapping location.
+      .input
+        Show
+        %select
+        as
+        -# = df.select :location_column_type, options_for_select(Dataset::GRAPH_DATA_TYPES), :include_blank => "Please select a location type..."
+        = select_tag "map[dataset_attributes][location_column_type]", options_for_select([["Please select a location type...", nil]] + Dataset::LOCATION_DATA_TYPES)
+
+    %section.data
+      = df.label :data_column_name, "Select Data"
+      .detail Please select the numeric data field that you want to display.
+      .input
+        Show
+        %select
+        as
+        -# = df.select :data_column_type, options_for_select(Dataset::GRAPH_DATA_TYPES), :include_blank => "Please select a data type..."
+        = select_tag "map[dataset_attributes][data_column_type]", options_for_select([["Please select a data type...", nil]] + Dataset::GRAPH_DATA_TYPES)
+
+  %section.title
+    = f.label :title, "Map Title"
+    = f.text_field :title
+
+  .actions
+    = f.submit "Create Map", :disabled => "disabled"
+
+
+%hr
+%h3 Old (working, but unstyled) form
+= render :partial => "form"

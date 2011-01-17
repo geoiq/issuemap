@@ -1,0 +1,38 @@
+$input-border-size: 1px
+$input-border-color: darken($pending_form-color, 30%)
+$input-padding: 7px
+
+form
+  input, textarea
+    border: $input-border-size solid $input-border-color
+    +border-radius(2px)
+    &:focus
+      border-color: lighten($input-border-color, 10%)
+      +box-shadow(transparentize($input-border-color, 0.5), 0, 0, 12px)
+  input, select
+    font-size: 14px
+  input
+    padding: $input-padding
+  label
+    font-size: 16px
+    line-height: 21px
+    font-weight: bold
+  .detail
+    margin: 0 0 14px
+  .hint
+    font-size: 12px
+    line-height: 21px
+  .input
+    font-size: 12px
+  .actions
+    +clearfix
+  button
+    float: right
+  button
+    +fancy-button-matte($action-color)
+    // +fancy-button-allow-disable(#999)
+
+// Map form specifics
+input#map_title
+  margin-top: 5px
+  width: 740px - ($maps-section-padding * 2) - ($input-padding * 2) - ($input-border-size * 2)

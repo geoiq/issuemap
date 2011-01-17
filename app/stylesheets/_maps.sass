@@ -1,0 +1,64 @@
+$maps-section-upload-width: 300px
+$maps-section-padding: 20px
+$maps-section-split-border: 3px
+$maps-section-or-size: 34px
+
+#maps.new
+  h2
+    float: left
+    margin-right: 21px
+  p.description
+    font-size: 12px
+    line-height: 21px
+    margin-top: 0
+  form
+    margin-top: 21px
+    .actions
+      margin-top: 10px
+    section
+      background-color: $pending-form-color
+      margin-top: 10px
+      padding: $maps-section-padding
+      +border-radius(8px)
+    section.completed
+      background-color: $completed-form-color
+    section.import
+      position: relative
+      padding: 0px
+      +clearfix
+      .upload, .paste
+        padding: $maps-section-padding ($maps-section-padding * 2)
+      .upload
+        float: left
+        width: ($maps-section-upload-width) - ($maps-section-padding * 4)
+        a.file
+          display: block
+          +dimensions(auto, 30px)
+          +fancy-button($base-color)
+          line-height: 32px
+          text-align: center
+        .hint
+          text-align: center
+      .paste
+        margin-left: $maps-section-upload-width
+        border-left: $maps-section-split-border solid white
+        textarea#map_dataset_attributes_data
+          display: block
+          margin: 0
+          padding: 0
+          font-size: 6px
+          +dimensions(100%, 40px)
+      .or
+        background-color: white
+        color: $base-color
+        text-align: center
+        font-size: 13px
+        line-height: $maps-section-or-size
+        position: absolute
+        top: 50%
+        margin-top: -$maps-section-or-size / 2
+        left: ($maps-section-upload-width) + ($maps-section-split-border / 2) - ($maps-section-or-size / 2)
+        +dimensions($maps-section-or-size, $maps-section-or-size)
+        +border-radius($maps-section-or-size / 2)
+
+
