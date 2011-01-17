@@ -3,10 +3,10 @@
   height: $height
 
 // A link that looks and acts like the text it is contained within
-// Overriding hover_link.sass because IE sucks and doesn't support 'inherit'
-=unstyled-link(!color = inherit)
-  :color= !color
+// Overriding hover-link.sass because IE sucks and doesn't support 'inherit'
+=unstyled-link($color = inherit)
+  :color= $color
   :text-decoration none
-=unstyled-hover-link(!color = inherit)
-  +unstyled-link(!color)
+=unstyled-hover-link($color = inherit)
+  +unstyled-link($color)
   +hover-link

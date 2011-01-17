@@ -32,6 +32,7 @@
     #header
       %h1= link_to "IssueMap", root_path
     #content
+      = render_flash_messages(:error, :notice, :success)
       #main
         = yield
       #footer

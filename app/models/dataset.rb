@@ -16,34 +16,6 @@ class Dataset < ActiveRecord::Base
   ]
   LOCATION_COLUMNS  = %w{ county state st zip zipcode zip_code district congressional_district fip fips }
   LOCATION_DATA_TYPES = AppConfig[:boundaries]
-  # [
-  #     ['State - Full Name (e.g. Arkansas)', '14/state'],
-  #     ['State - Abbreviation (e.g. AK)', '14/st'],
-  #     ['State - FIPS', '14/fips'],
-  #     ['Country - Full Name (e.g. France)', '16/NAME'],
-  #     ['Country - 3 Letter GMI Code', '16/GMI_CNTRY'],
-  #     ['Country - 2 Letter ISO Code (e.g. FR)', '16/ISO_2_CODE'],
-  #     ['Country - 3 Letter ISO Code (e.g. FRA)', '16/ISO_3_CODE'],
-  #     ['County - County and State (no spaces) (e.g. Springfield,MO)', '17/countysta'],
-  #     ['County - State and County (no spaces)', '17/statecount'],
-  #     ['County - Name Only (e.g. Arlington)', '17/b'],
-  #     ['County - FIPS', '17/f'],
-  #     ['Congressional District', '21/cd_1'],
-  #     ['Zip - Numeric (e.g. 22201)', '17/ZIP']
-  #   ]
-    # ['State - Full Name', '522/state'],
-    # ['State - Abbreviation', '522/st'],
-    # ['State - FIPS', '522/fips'],
-    # ['Country - Full Name', '527/NAME'],
-    # ['Country - 3 Letter GMI Code', '527/GMI_CNTRY'],
-    # ['Country - 2 Letter ISO Code', '527/ISO_2_CODE'],
-    # ['Country - 3 Letter ISO Code', '527/ISO_3_CODE'],
-    # ['County - County and State (no spaces)', '645/countysta'],
-    # ['County - State and County (no spaces)', '645/statecount'],
-    # ['County - Name Only', '645/b'],
-    # ['County - FIPS', '645/f'],
-    # ['Congressional District', '648/cd_1'],
-    # ['Zip - Numeric', '645/ZIP']  
   COLUMN_SEPARATORS = [["Comma",","], ["Semicolon", ";"], ["Tab", "\t"]]
   MAX_DATA_POINTS   = 60000
 
@@ -84,14 +56,14 @@ class Dataset < ActiveRecord::Base
     end
     default_data_columns
   end
-  
+
   def column_types
     types = {}
     location_columns.each do |column|
       types << { "#{column[0]}" => determine_join_code(column)}
     end
   end
-  
+
   def hashed_data(reparse = false)
     return hashed_value unless (reparse || hashed_value.nil?)
     parse_data!(self.separator)
@@ -139,15 +111,15 @@ class Dataset < ActiveRecord::Base
     # Stripped data with only location and single numeric column
     location_column_title = location_columns.map{|key, value| key}
     data_column_title     = data_columns.map{|key, value| key}
-    
+
     trimmed_data = FasterCSV.generate do |csv|
       csv << [location_column_title, data_column_title]
       hashed_value["#{location_column_title}"].length.times do |x|
         csv << [hashed_value["#{location_column_title}"][x], hashed_value["#{data_column_title}"][x]]
       end
     end
-    
-    if remote_dataset = GeoIQ.create_dataset(:data => trimmed_data, :title => map.title, 
+
+    if remote_dataset = GeoIQ.create_dataset(:data => trimmed_data, :title => map.title,
       :attributes => column_attributes, :join_param => join_param, :join_value => join_value)
       self.finder_id = remote_dataset.id
       remote_dataset
