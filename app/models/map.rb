@@ -2,21 +2,18 @@ class Map < ActiveRecord::Base
   include Attempt
   include MapStyles
   before_create :create_in_geoiq
-  before_create :create_linkable_id
-  before_update :update_geoiq
+  before_create :create_token
 
-  has_one :dataset, :dependent => :destroy
-  validates_presence_of :dataset, :title
-  accepts_nested_attributes_for :dataset
+  validates_presence_of :title, :token, :original_csv_data
+  validates_presence_of :location_column_name, :location_column_type
+  validates_presence_of :data_column_name, :data_column_type
 
-  MAP_PROVIDERS = ["OpenStreetMap (Road)", "Yahoo Road", "Google Hybrid", "Google Terrain"]
-
-  def remote_map
-    @remote_map ||= GeoIQ::Map.find(geoiq_id)
+  def map_provider
+    "OpenStreetMap (Road)" # "Yahoo Road", "Google Hybrid", "Google Terrain"
   end
 
   # Creates a PNG image of the map in GeoIQ
-  # 
+  #
   # Options:
   # * size - s,m,l - for image size (optional, default: "l")
   # * extent - "west,south,east,north" bounding extents (optional, default: map bounds)
@@ -24,16 +21,16 @@ class Map < ActiveRecord::Base
     query_options = options.merge!({:size=> options[:size] || "l", :format => "png"})
     logger.debug("Map to_png: #{query_options.inspect}")
     begin
-      resp = GeoIQ.send("get", "/maps/#{self.maker_id}", :query => query_options)
+      resp = GeoIQ.send("get", "/maps/#{self.geoiq_map_xid}", :query => query_options)
     rescue GeoIQ::Exception => e
       raise e.headers.inspect
     end
     logger.debug "Body: #{resp.body}"
     resp.body
-  end 
-  
+  end
+
   protected
-  
+
   def create_in_geoiq
     dataset.map = self
     begin
@@ -41,7 +38,7 @@ class Map < ActiveRecord::Base
         ds = attempt { GeoIQ.get_dataset(remote_dataset.id) }
         RAILS_DEFAULT_LOGGER.debug "Creating a map!! #{ds.inspect} --  #{ds['extent']}"
         if remote_map = attempt { GeoIQ.create_map(:title => title, :basemap => self.map_provider, :tags => "issuemap", :extent => ds["extent"].join(",")) }
-          self.maker_id = remote_map.id
+          self.geoiq_map_xid = remote_map.id.to_s
           # assumes 1 selected data column: {:attribute_name => {"include"=>"1", "type"=>"integer"}}
           selected_attribute = self.dataset.data_columns.to_a.flatten.first
           styles = @@map_styles.choice
@@ -66,17 +63,9 @@ class Map < ActiveRecord::Base
       return false
     end
   end
-  
-  def create_linkable_id
-    token = Digest::MD5.hexdigest(Time.now.to_s + self.title)[0..5]
-    self.linkable_id = token
+
+  def create_token
+    self.token = Digest::MD5.hexdigest(Time.now.to_s + self.title)[0..5]
   end
-  
-  def update_geoiq
-    remote_map.update(:title => title, 
-      :extent => [-180,-90,180,90], 
-      :basemap => self.map_provider)
-  end
-  
-   
+
 end

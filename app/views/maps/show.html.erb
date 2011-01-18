@@ -1,4 +1,4 @@
-<% content_for :head do %>
+<% content_for :javascripts do %>
   <%= javascript_include_tag "#{GeoIQ.base_uri}/javascripts/f1.api.js" %>
 <% end %>
 <p>
@@ -6,10 +6,9 @@
   <div class='boxed'>
     <div class='left'>
       <p class='meta'>
-        Created <%= time_ago_in_words @map.created_at %> ago | 
-        <!-- <%#= link_to 'Edit', edit_map_path(@map.linkable_id) %> |  -->
-        <%= link_to 'Permalink', map_path(@map.linkable_id) %> |
-        <%= link_to 'Image', map_path(@map.linkable_id, :format => "png") %>
+        Created <%= time_ago_in_words @map.created_at %> ago |
+        <%= link_to 'Permalink', map_path(@map.token) %> |
+        <%= link_to 'Image', map_path(@map.token, :format => "png") %>
         </p>
     </div>
     <div class='right'>
@@ -45,7 +44,7 @@
       </p>
     </div>
     <div class='clearfix'></div>
-    <textarea id='embed_text'><div id="map_<%= @map.linkable_id[0..6] %>"></div><%= javascript_include_tag "#{GeoIQ.base_uri}/javascripts/f1.api.js" %><script type="text/javascript" charset="utf-8">F1.host = <%= geocommons_proxy_url.inspect %>;var host = <%= geocommons_proxy_url('').inspect %>;var map_<%= @map.linkable_id[0..6] %> = new F1.Maker.Map({dom_id: 'map_<%= @map.linkable_id[0..6] %>', map_id: <%= @map.maker_id %>, uiLayers:false, core_host: host, onload: function(map) { map.showControl("legend", true, "open"); },finder_host: host, maker_host: host});</script></textarea><br/>
+    <textarea id='embed_text'><div id="map_<%= @map.token %>"></div><%= javascript_include_tag "#{GeoIQ.base_uri}/javascripts/f1.api.js" %><script type="text/javascript" charset="utf-8">F1.host = <%= geocommons_proxy_url.inspect %>;var host = <%= geocommons_proxy_url('').inspect %>;var map_<%= @map.token %> = new F1.Maker.Map({dom_id: 'map_<%= @map.token %>', map_id: <%= @map.geoiq_map_xid %>, uiLayers:false, core_host: host, onload: function(map) { map.showControl("legend", true, "open"); },finder_host: host, maker_host: host});</script></textarea><br/>
     <span id="clipboard_status"></span>
   </div>
 </p>
@@ -55,7 +54,7 @@
     F1.host = <%= geocommons_proxy_url.inspect %>;
     map = new F1.Maker.Map({
       dom_id: 'map_wrapper',
-      map_id: <%= @map.maker_id %>,
+      map_id: <%= @map.geoiq_map_xid %>,
       uiStyles: false,
       uiLayers: false,
       uiHeader: false,
@@ -68,7 +67,7 @@
       onload: function() { map.showControl("legend", true, "open"); }
     });
   });
- 
+
 </script>
 
 <%# Copy to clipboard %>

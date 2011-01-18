@@ -9,35 +9,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100830203916) do
-
-  create_table "datasets", :force => true do |t|
-    t.integer  "finder_id"
-    t.text     "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "map_id"
-    t.string   "upload_file_name"
-    t.string   "upload_content_type"
-    t.integer  "upload_file_size"
-    t.datetime "upload_updated_at"
-    t.string   "data_columns"
-    t.string   "location_columns"
-    t.string   "separator",           :default => ","
-  end
-
-  add_index "datasets", ["map_id"], :name => "index_datasets_on_map_id"
+ActiveRecord::Schema.define(:version => 20110118160349) do
 
   create_table "maps", :force => true do |t|
-    t.integer  "maker_id"
+    t.string   "geoiq_map_xid"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "title"
-    t.text     "description"
-    t.integer  "dataset_id"
-    t.integer  "geoiq_id"
-    t.string   "linkable_id"
-    t.string   "map_provider"
+    t.string   "token"
+    t.string   "geoiq_dataset_xid"
+    t.text     "original_csv_data"
+    t.string   "location_column_name"
+    t.string   "location_column_type"
+    t.string   "data_column_name"
+    t.string   "data_column_type"
   end
+
+  add_index "maps", ["token"], :name => "index_maps_on_token"
 
 end

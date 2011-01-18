@@ -22,26 +22,23 @@
 
 - form_for @map do |f|
   %section.post-process{ :style => "display: none;" }
-    - f.fields_for(:dataset) do |df|
-      %fieldset.location
-        = df.label :data_location_name, "Select Location"
-        .detail Please select the column that you want to use for mapping location.
-        .input
-          Show
-          %select
-          as
-          -# = df.select :location_column_type, options_for_select(Dataset::GRAPH_DATA_TYPES), :include_blank => "Please select a location type..."
-          = select_tag "map[dataset_attributes][location_column_type]", options_for_select([["Please select a location type...", nil]] + Dataset::LOCATION_DATA_TYPES)
+    %fieldset.location
+      = f.label :location_column_name, "Select Location"
+      .detail Please select the column that you want to use for mapping location.
+      .input
+        Show
+        = f.select :location_column_name, options_for_select([])
+        as
+        = f.select :location_column_type, location_type_options
 
-      %fieldset.data
-        = df.label :data_column_name, "Select Data"
-        .detail Please select the numeric data field that you want to display.
-        .input
-          Show
-          %select
-          as
-          -# = df.select :data_column_type, options_for_select(Dataset::GRAPH_DATA_TYPES), :include_blank => "Please select a data type..."
-          = select_tag "map[dataset_attributes][data_column_type]", options_for_select([["Please select a data type...", nil]] + Dataset::GRAPH_DATA_TYPES)
+    %fieldset.data
+      = f.label :data_column_name, "Select Data"
+      .detail Please select the numeric data field that you want to display.
+      .input
+        Show
+        = f.select :data_column_name, options_for_select([])
+        as
+        = f.select :data_column_type, data_type_options
 
     %fieldset.title
       = f.label :title, "Map Title"
