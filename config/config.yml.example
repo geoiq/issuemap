@@ -2,14 +2,8 @@ development:
   geoiq_endpoint: http://geoiq.issuemapperqa.geoiq.com
   geoiq_user: admin
   geoiq_password: xxxxxxxxx
-  s3_access_key_id: "xxxxxxxxxxxxxxxxxxxx"
-  s3_secret_access_key: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-  s3_bucket: "issuemapdev"
 
 test:
   geoiq_endpoint: http://geoiq.issuemapperqa.geoiq.com
   geoiq_user: admin
   geoiq_password: xxxxxxxxx
-  s3_access_key_id: "xxxxxxxxxxxxxxxxxxxx"
-  s3_secret_access_key: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-  s3_bucket: "issuemaptest

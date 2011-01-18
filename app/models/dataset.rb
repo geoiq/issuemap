@@ -1,6 +1,5 @@
 require 'pp'
 require 'faster_csv' #TODO: remove this, but Gemfile is the bonko and doesn't include it -ajturner
-require 'paperclip' #again?
 class Dataset < ActiveRecord::Base
   include Attempt
 
@@ -25,12 +24,6 @@ class Dataset < ActiveRecord::Base
 
   attr_accessor :hashed_value, :previous_upload, :location_column_type
   attr_reader :data_column_keys, :data_column_types, :location_column_keys, :location_column_types
-
-  if Rails.env.production?
-    has_attached_file :upload, :storage => :s3, :s3_credentials => AppConfig[:s3]
-  else
-    has_attached_file :upload
-  end
 
   def data_points
     @data_points ||= hashed_data.values.flatten.length

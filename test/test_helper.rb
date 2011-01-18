@@ -11,11 +11,6 @@ FakeWeb.allow_net_connect = false
 Mocha::Configuration.warn_when(:stubbing_non_existent_method)
 Mocha::Configuration.warn_when(:stubbing_non_public_method)
 
-require "paperclip/matchers"
-class Test::Unit::TestCase
-  extend Paperclip::Shoulda::Matchers
-end
-
 class Test::Unit::TestCase
   def fixture_file(filename, content_type = "application/octet-stream")
     ActionController::TestUploadedFile.new(Rails.root.join("test", "fixtures", "files", filename).to_s, content_type)
