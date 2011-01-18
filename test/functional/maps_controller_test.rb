@@ -12,4 +12,13 @@ class MapsControllerTest < ActionController::TestCase
     should render_template :new
     should respond_with :success
   end
+
+  on_post :preprocess, lambda {{ :upload => fixture_file("commas.csv", "text/csv") }}  do
+    should_not set_the_flash
+    should respond_with :success
+    # Even though the response content is json, we need to specify text/html,
+    # because we're submitting the data back in a hidden iframe.  This allows us
+    # to handle ajaxified file uploads, but also get data back.
+    should respond_with_content_type("text/html")
+  end
 end

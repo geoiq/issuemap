@@ -3,6 +3,11 @@ class MapsController < ApplicationController
   before_filter :build_map, :only => [:create, :new, :review]
   before_filter :check_location_type, :only => [:create, :update]
 
+  def preprocess
+    import = DatasetPreprocessor.new(params[:upload] || params[:paste])
+    render :text => import.to_json
+  end
+
   def create
     if @map.save!
       # flash[:notice] = "'#{@map.title}' was successfully created!"
