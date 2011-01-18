@@ -1,5 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :maps, :collection => { :review => :any }
+  map.resources :maps, :new => { :preprocess => :post }, :collection => { :review => :any }
 
   map.geocommons_proxy "/proxy/*path.:format", :controller => "proxy", :action => "proxy", :format => :format
 
