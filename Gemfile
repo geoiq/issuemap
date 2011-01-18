@@ -20,7 +20,7 @@ gem "sqlite3-ruby"
 gem "json_pure", "~> 1.4.3"
 gem "haml"
 gem "compass"
-gem "fancy-buttons"
+gem "fancy-buttons", :git => 'https://github.com/imathis/fancy-buttons.git' # Until v1.0.5 is released
 
 group :development do
   gem "ruby-debug", "~> 0.10.3", :require => nil
