@@ -15,3 +15,13 @@ require "paperclip/matchers"
 class Test::Unit::TestCase
   extend Paperclip::Shoulda::Matchers
 end
+
+class Test::Unit::TestCase
+  def fixture_file(filename, content_type = "application/octet-stream")
+    ActionController::TestUploadedFile.new(Rails.root.join("test", "fixtures", "files", filename).to_s, content_type)
+  end
+
+  def fixture_file_contents(filename)
+    Rails.root.join("test", "fixtures", "files", filename).read
+  end
+end
