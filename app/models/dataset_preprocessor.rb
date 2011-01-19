@@ -9,9 +9,13 @@ class DatasetPreprocessor
     end
   end
 
-  delegate :headers, :to_csv, :values_at, :to => :@table
-  alias_method :column_names, :headers
+  delegate :to_csv, :values_at, :to => :@table
   alias_method :csv, :to_csv
+
+  def column_names
+    @table.headers.reject(&:blank?)
+  end
+  memoize :column_names
 
   def values_for(column_name)
     values_at(column_name).flatten
@@ -80,8 +84,14 @@ class DatasetPreprocessor
   end
 
   def guess_delimiter(data_or_file)
-    tabified = data_or_file.lines.all? { |line| line.include?("\t") }
-    tabified ? "\t" : ","
+    line_count = 0
+    tab_line_count = 0
+    data_or_file.lines.each do |line|
+      line_count += 1
+      tab_line_count += 1 if line.include?("\t")
+    end
+    tab_ratio = tab_line_count.to_f / line_count.to_f
+    (tab_ratio > 0.8) ? "\t" : ","
   end
 
   def samples(column_name)
@@ -90,7 +100,7 @@ class DatasetPreprocessor
 
   def possible_data_columns
     column_names.select do |name|
-      values_for(name).all? { |value| Float(value) rescue false }
+      values_for(name).all? { |value| Float(value.to_s.tr(",", "")) rescue false }
     end
   end
   memoize :possible_data_columns

@@ -7,7 +7,7 @@ class DatasetPreprocessorTest < ActiveSupport::TestCase
     end
 
     should "return an array of column names for valid comma delimited data with two line headers" do
-      assert_equal ["State Name", "State Abbreviation", "Count"], comma_double_header_import.column_names
+      assert_equal ["State Name", "State Abbreviation", "Count"], comma_multiline_header_import.column_names
     end
 
     should "return an array of column names for valid comma delimited file" do
@@ -88,7 +88,7 @@ class DatasetPreprocessorTest < ActiveSupport::TestCase
         "State Abbreviation" => { :guessed_type => nil, :samples => ["AL", "AK", "AS"] },
         "Count"              => { :guessed_type => nil, :samples => ["1", "2", "3"] },
       }
-      assert_equal expected, comma_double_header_import.column_details
+      assert_equal expected, comma_multiline_header_import.column_details
     end
 
     should "return an empty hash for blank data" do
@@ -122,8 +122,8 @@ class DatasetPreprocessorTest < ActiveSupport::TestCase
     DatasetPreprocessor.new(COMMA_DELIMITED)
   end
 
-  def comma_double_header_import
-    DatasetPreprocessor.new(COMMA_DOUBLE_HEADER_DELIMITED)
+  def comma_multiline_header_import
+    DatasetPreprocessor.new(COMMA_DELIMITED_WITH_MULTILINE_HEADERS)
   end
 
   def comma_file_import
@@ -158,12 +158,12 @@ AMERICAN SAMOA,AS,3
 ARIZONA,AZ,4
 EOF
 
-  COMMA_DOUBLE_HEADER_DELIMITED = <<-EOF
-"State\nName","State\nAbbreviation","Count"
-ALABAMA,AL,1
-ALASKA,AK,2
-AMERICAN SAMOA,AS,3
-ARIZONA,AZ,4
+  COMMA_DELIMITED_WITH_MULTILINE_HEADERS = <<-EOF
+"State\nName","State\nAbbreviation","Count", ,"\n\n"
+ALABAMA,AL,1,,
+ALASKA,AK,2,,
+AMERICAN SAMOA,AS,3,,
+ARIZONA,AZ,4,,
 EOF
 
   TAB_DELIMITED = <<-EOF
