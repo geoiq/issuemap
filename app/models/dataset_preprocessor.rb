@@ -67,8 +67,16 @@ class DatasetPreprocessor
   end
 
   def digest_delimited(data_or_file, delimiter = ",")
-    csv = FasterCSV.new(data_or_file, :col_sep => delimiter, :headers => true, :skip_blanks => true)
+    csv = FasterCSV.new(data_or_file, :col_sep => delimiter, :skip_blanks => true,
+                        :headers => true, :header_converters => [one_line_headers])
     @table = csv.read
+  end
+
+  # FasterCSV::Table does't seem to behave when a header has carriage returns in
+  # it. This cleans header values to avoid what could be considered a bug in
+  # FasterCSV.
+  def one_line_headers
+    lambda { |h| h.tr("\r\n", " ") if h }
   end
 
   def guess_delimiter(data_or_file)
