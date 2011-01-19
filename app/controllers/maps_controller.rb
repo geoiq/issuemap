@@ -3,11 +3,11 @@ class MapsController < ApplicationController
 
   def preprocess
     import = DatasetPreprocessor.new(params[:upload] || params[:paste])
+    import.check_validity!
     render :text => import.to_json
   rescue StandardError => e
-    logger.error e
-    logger.error e.backtrace.join("\n")
-    render :text => { :error => e.message }.to_json, :status => :internal_server_error
+    logger.error(error_message_and_backtrace(e))
+    render :text => { :error => error_message(e) }.to_json, :status => :internal_server_error
   end
 
   def create
