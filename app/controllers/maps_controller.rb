@@ -2,7 +2,7 @@ class MapsController < ApplicationController
   before_filter :find_map, :only => [:show, :update]
 
   def preprocess
-    import = DatasetPreprocessor.new(params[:upload] || params[:paste])
+    import = DatasetPreprocessor.new(params[:data])
     import.check_validity!
     render :text => import.to_json
   rescue StandardError => e

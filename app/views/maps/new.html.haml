@@ -11,12 +11,12 @@
       = label_tag "preprocess-upload", "&nbsp;"
       - link_to "#", :class => "file" do
         Upload File
-        = file_field_tag :upload, :id => "preprocess-upload"
+        = file_field_tag :data, :id => "preprocess-upload"
     .hint Excel Spreadsheet or CSV
   .paste
     - form_tag preprocess_new_map_path, :class => "preprocess-form" do
       = label_tag "preprocess-paste", "Copy &amp; Paste Data"
-      = text_area_tag :paste, "", :id => "preprocess-paste"
+      = text_area_tag :data, "", :id => "preprocess-paste"
     .hint Columns names must be in the first row.
   .or OR
 
