@@ -27,7 +27,7 @@
       .detail Please select the column that you want to use for mapping location.
       .input
         Show
-        = f.select :location_column_name, options_for_select([])
+        = f.select :location_column_name, options_for_select([]), {}, :class => "column-names"
         as
         = f.select :location_column_type, location_type_options
 
@@ -36,18 +36,14 @@
       .detail Please select the numeric data field that you want to display.
       .input
         Show
-        = f.select :data_column_name, options_for_select([])
+        = f.select :data_column_name, options_for_select([]), {}, :class => "column-names"
         as
         = f.select :data_column_type, data_type_options
 
     %fieldset.title
       = f.label :title, "Map Title"
-      = f.text_field :title
+      = f.text_field :title, :class => (@map.new_record? ? "suggested" : nil)
 
   .actions
     = f.submit "Create Map", :disabled => "disabled"
 
-
-%hr
-%h3 Old (working, but unstyled) form
-= render :partial => "form"
