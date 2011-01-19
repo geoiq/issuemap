@@ -21,4 +21,16 @@ class MapsControllerTest < ActionController::TestCase
     # to handle ajaxified file uploads, but also get data back.
     should respond_with_content_type("text/html")
   end
+
+  on_post :preprocess, lambda {{ :paste => fixture_file("commas.csv", "text/csv").read }}  do
+    should_not set_the_flash
+    should respond_with :success
+    should respond_with_content_type("text/html")
+  end
+
+  on_post :preprocess do
+    should respond_with :error
+    should respond_with_content_type("text/html")
+  end
 end
+

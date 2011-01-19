@@ -17,13 +17,14 @@ $.fn.preprocessData = function() {
           o.dataType = 'json';
         },
         complete: function(request, textStatus) {
-          var json = request.responseText;
-          if (textStatus == "success") {
-            console.log("SUCCESS!");
-            console.log(json);
-          } else {
+          var data = $.parseJSON(request.responseText);
+          if (data.error) {
             console.log("ERROR!");
-            console.log(json);
+            console.log(data.error);
+          } else {
+            console.log("SUCCESS!");
+            console.log(data.column_names);
+            console.log(data);
           }
           if (callback) callback();
         }
