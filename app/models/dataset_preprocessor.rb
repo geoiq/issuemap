@@ -3,7 +3,7 @@ class DatasetPreprocessor
 
   def initialize(data)
     if data.respond_to?(:original_filename)
-      digest_spreadsheet(data)
+      digest_file(data)
     else
       digest_delimited(data, guess_delimiter(data))
     end
@@ -45,17 +45,25 @@ class DatasetPreprocessor
 
   private
 
-  def digest_spreadsheet(uploaded_file)
-    case File.extname(uploaded_file.original_filename)
+  def digest_file(uploaded_file)
+    case File.extname(uploaded_file.original_filename.downcase)
     when ".xls"
-      # TODO
+      digest_spreadsheet(Excel, uploaded_file)
     when ".xlsx"
-      # TODO
+      digest_spreadsheet(Excelx, uploaded_file)
+    when '.ods'
+      digest_spreadsheet(Openoffice, uploaded_file)
     else # .csv, .txt, etc
       delimiter = guess_delimiter(uploaded_file)
       uploaded_file.rewind
       digest_delimited(uploaded_file, delimiter)
     end
+  end
+
+  def digest_spreadsheet(spreadsheet_class, uploaded_file)
+    tempfile = Tempfile.new("spreadsheet")
+    spreadsheet_class.new(uploaded_file.path, false, :ignore).to_csv(tempfile.path)
+    digest_delimited(tempfile, ",")
   end
 
   def digest_delimited(data_or_file, delimiter = ",")

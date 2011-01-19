@@ -10,6 +10,18 @@ class DatasetPreprocessorTest < ActiveSupport::TestCase
       assert_equal ["State Name", "State Abbreviation", "Count"], comma_file_import.column_names
     end
 
+    should "return an array of column names for valid excel file" do
+      assert_equal ["State Name", "State Abbreviation", "Count"], excel_file_import.column_names
+    end
+
+    should "return an array of column names for valid excelx file" do
+      assert_equal ["State Name", "State Abbreviation", "Count"], excelx_file_import.column_names
+    end
+
+    should "return an array of column names for valid openoffice file" do
+      assert_equal ["State Name", "State Abbreviation", "Count"], openoffice_file_import.column_names
+    end
+
     should "return an array of column names for valid tab delimited data" do
       assert_equal ["State Name", "State Abbreviation", "Count"], tab_import.column_names
     end
@@ -94,19 +106,31 @@ class DatasetPreprocessorTest < ActiveSupport::TestCase
   private
 
   def comma_import
-    @comma_import ||= DatasetPreprocessor.new(COMMA_DELIMITED)
+    DatasetPreprocessor.new(COMMA_DELIMITED)
   end
 
   def comma_file_import
-    @comma_file_import ||= DatasetPreprocessor.new(fixture_file("commas.csv", "text/csv"))
+    DatasetPreprocessor.new(fixture_file("commas.csv", "text/csv"))
+  end
+
+  def excel_file_import
+    DatasetPreprocessor.new(fixture_file("excel.xls", "application/octet-stream"))
+  end
+
+  def excelx_file_import
+    DatasetPreprocessor.new(fixture_file("excelx.xlsx", "application/octet-stream"))
+  end
+
+  def openoffice_file_import
+    DatasetPreprocessor.new(fixture_file("openoffice.ods", "application/octet-stream"))
   end
 
   def tab_import
-    @tabbed_import ||= DatasetPreprocessor.new(TAB_DELIMITED)
+    DatasetPreprocessor.new(TAB_DELIMITED)
   end
 
   def blank_import
-    @blank_import ||= DatasetPreprocessor.new("")
+    DatasetPreprocessor.new("")
   end
 
   COMMA_DELIMITED = <<-EOF
