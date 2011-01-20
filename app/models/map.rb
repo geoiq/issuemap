@@ -1,10 +1,10 @@
 class Map < ActiveRecord::Base
   include Attempt
   include MapStyles
-  before_create :create_in_geoiq
-  before_create :create_token
+  # before_create :create_in_geoiq
+  before_create :set_token
 
-  validates_presence_of :title, :token, :original_csv_data
+  validates_presence_of :title, :original_csv_data
   validates_presence_of :location_column_name, :location_column_type
   validates_presence_of :data_column_name, :data_column_type
 
@@ -64,8 +64,14 @@ class Map < ActiveRecord::Base
     end
   end
 
-  def create_token
-    self.token = Digest::MD5.hexdigest(Time.now.to_s + self.title)[0..5]
+  def generate_token(size = 12)
+    begin
+      token = ActiveSupport::SecureRandom.hex(size).first(size)
+    end while self.class.find_by_token(token)
+    token
   end
 
+  def set_token
+    self.token = generate_token(6)
+  end
 end
