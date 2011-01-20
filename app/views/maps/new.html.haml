@@ -21,6 +21,7 @@
   .or OR
 
 - form_for @map do |f|
+  = f.hidden_field :original_csv_data
   %section.post-process{ :style => "display: none;" }
     %fieldset.location
       = f.label :location_column_name, "Select Location"

@@ -27,6 +27,7 @@ var MapFormUpload = {
     importSection.markCompleted(true);
     postSection.slideDown();
     $("select.column-names").setOptions(data.column_names);
+    $("#map_original_csv_data").val(data.csv).change();
     $("#map_location_column_name").val(data.guessed_location_column).change();
     $("#map_data_column_name").val(data.guessed_data_column).change();
     $("#map_location_column_type").val(null).change();
@@ -41,6 +42,7 @@ var MapFormUpload = {
     importSection.markCompleted(false);
     postSection.slideUp();
     $("select.column-names").setOptions([]);
+    $("#map_original_csv_data").val(null);
     $("#map_location_column_name").val(null);
     $("#map_data_column_name").val(null);
     $("#map_location_column_type").val(null);
