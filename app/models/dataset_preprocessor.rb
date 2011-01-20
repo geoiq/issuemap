@@ -53,6 +53,9 @@ class DatasetPreprocessor
     if column_names.length < 2
       raise ArgumentError, "Data must include at least two columns"
     end
+    if @table.size < 2
+      raise ArgumentError, "Data must include at least one header and one data row"
+    end
   end
 
   private

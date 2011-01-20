@@ -84,9 +84,7 @@ $.fn.preprocessData = function(options) {
     });
 
     pasteArea.valueChangeObserver(500, function() {
-      if (pasteArea.val().indexOf("\n") >= 0) { // multiple lines pasted
-        submitForm();
-      }
+      submitForm();
     });
   });
 };
