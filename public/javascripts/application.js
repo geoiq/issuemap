@@ -6,15 +6,7 @@ $(document).ready(function() {
 
 var MapFormUpload = {
   init: function() {
-    var dataColumn = $("#map_data_column_name");
-    var locationColumn = $("#map_location_column_name");
-    $("#map_title").suggestable();
-    var suggestTitle = function () {
-      var title = [dataColumn.val() || "Data", locationColumn.val() || "Location"].join(" by ");
-      $("#map_title").suggestValue(title);
-    };
-    dataColumn.change(suggestTitle);
-    locationColumn.change(suggestTitle);
+    this.automateTitleGuessing();
     return this;
   },
   success: function(data) {
@@ -47,6 +39,17 @@ var MapFormUpload = {
     $("#map_data_column_name").val(null);
     $("#map_location_column_type").val(null);
     $("#map_data_column_type").val(null);
+  },
+  automateTitleGuessing: function() {
+    var dataColumn = $("#map_data_column_name");
+    var locationColumn = $("#map_location_column_name");
+    $("#map_title").suggestable();
+    var suggestTitle = function () {
+      var title = [dataColumn.val() || "Data", locationColumn.val() || "Location"].join(" by ");
+      $("#map_title").suggestValue(title);
+    };
+    dataColumn.change(suggestTitle);
+    locationColumn.change(suggestTitle);
   }
 };
 
@@ -170,20 +173,6 @@ if (typeof console === "undefined") {
 
 // ----------------------
 
-function capitalize(incomingString) {
-	var letter = incomingString.substr(0,1);
-	var str = incomingString.toLowerCase();
-	return letter.toUpperCase() + str.substr(1);
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.substring(1).toLowerCase();
 }
-
-// pasting multiple lines into chrome textarea will only submit the
-// first line. All browsers require at least one newline at the end of
-// input.
-function fixTextareaNewlines() {
-  $('textarea').each(function() {
-    var newVal = $(this).val().replace("\n", "\r\n"); // chrome
-    newVal += "\r\n"; // all browsers
-    $(this).val(newVal);
-  });
-}
-
