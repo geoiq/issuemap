@@ -27,10 +27,12 @@ form
     font-size: 12px
   .actions
     +clearfix
+    button
+      float: right
   button
-    float: right
-  button
-    +fancy-button-allow-disable(#999)
-    +fancy-button-matte($action-color)
+    +fancy-button($action-color)
+    &.disabled, &[disabled]
+      +disable-fancy-button(#999)
+      +box-shadow(none)
   .suggested
     color: #999
