@@ -2,32 +2,34 @@ require 'test_helper'
 
 class DatasetPreprocessorTest < ActiveSupport::TestCase
   context "#column_names" do
+    EXPECTED_COLUMN_NAMES = ["State Name", "State Abbreviation", "Count"]
+
     should "return an array of column names for valid comma delimited data" do
-      assert_equal ["State Name", "State Abbreviation", "Count"], comma_import.column_names
+      assert_equal EXPECTED_COLUMN_NAMES, comma_import.column_names
     end
 
     should "return an array of column names for valid comma delimited data with two line headers" do
-      assert_equal ["State Name", "State Abbreviation", "Count"], comma_multiline_header_import.column_names
+      assert_equal EXPECTED_COLUMN_NAMES, comma_multiline_header_import.column_names
     end
 
     should "return an array of column names for valid comma delimited file" do
-      assert_equal ["State Name", "State Abbreviation", "Count"], comma_file_import.column_names
+      assert_equal EXPECTED_COLUMN_NAMES, comma_file_import.column_names
     end
 
     should "return an array of column names for valid excel file" do
-      assert_equal ["State Name", "State Abbreviation", "Count"], excel_file_import.column_names
+      assert_equal EXPECTED_COLUMN_NAMES, excel_file_import.column_names
     end
 
     should "return an array of column names for valid excelx file" do
-      assert_equal ["State Name", "State Abbreviation", "Count"], excelx_file_import.column_names
+      assert_equal EXPECTED_COLUMN_NAMES, excelx_file_import.column_names
     end
 
     should "return an array of column names for valid openoffice file" do
-      assert_equal ["State Name", "State Abbreviation", "Count"], openoffice_file_import.column_names
+      assert_equal EXPECTED_COLUMN_NAMES, openoffice_file_import.column_names
     end
 
     should "return an array of column names for valid tab delimited data" do
-      assert_equal ["State Name", "State Abbreviation", "Count"], tab_import.column_names
+      assert_equal EXPECTED_COLUMN_NAMES, tab_import.column_names
     end
 
     should "return an empty array of column names for blank data" do
@@ -73,22 +75,18 @@ class DatasetPreprocessorTest < ActiveSupport::TestCase
   end
 
   context "#column_details" do
+    EXPECTED_COLUMN_DETAILS = {
+      "State Name"         => { :guessed_type => nil, :samples => ["ALABAMA", "ALASKA", "AMERICAN SAMOA"] },
+      "State Abbreviation" => { :guessed_type => nil, :samples => ["AL", "AK", "AS"] },
+      "Count"              => { :guessed_type => nil, :samples => ["1", "2", "3"] },
+    }
+
     should "return a populated hash for valid comma delimited data" do
-      expected = {
-        "State Name"         => { :guessed_type => nil, :samples => ["ALABAMA", "ALASKA", "AMERICAN SAMOA"] },
-        "State Abbreviation" => { :guessed_type => nil, :samples => ["AL", "AK", "AS"] },
-        "Count"              => { :guessed_type => nil, :samples => ["1", "2", "3"] },
-      }
-      assert_equal expected, comma_import.column_details
+      assert_equal EXPECTED_COLUMN_DETAILS, comma_import.column_details
     end
 
     should "return a populated hash for valid comma delimited data with two line headers" do
-      expected = {
-        "State Name"         => { :guessed_type => nil, :samples => ["ALABAMA", "ALASKA", "AMERICAN SAMOA"] },
-        "State Abbreviation" => { :guessed_type => nil, :samples => ["AL", "AK", "AS"] },
-        "Count"              => { :guessed_type => nil, :samples => ["1", "2", "3"] },
-      }
-      assert_equal expected, comma_multiline_header_import.column_details
+      assert_equal EXPECTED_COLUMN_DETAILS, comma_multiline_header_import.column_details
     end
 
     should "return an empty hash for blank data" do

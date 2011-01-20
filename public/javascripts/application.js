@@ -1,6 +1,6 @@
 $(document).ready(function() {
   $(".preprocess-form").preprocessData(MapFormUpload.init());
-  $("fieldset.location, fieldset.data, fieldset.title").sniffForCompleted();
+  $("fieldset.location, fieldset.data, fieldset.title").sniffForCompletion();
   $("fieldset.location, fieldset.data").sniffForSubmittable(".actions button[type=submit]");
 });
 
@@ -89,7 +89,7 @@ $.fn.preprocessData = function(options) {
   });
 };
 
-$.fn.sniffForCompleted = function() {
+$.fn.sniffForCompletion = function() {
   return this.each(function() {
     var fieldset = $(this);
     var inputs = fieldset.find(":input");
@@ -118,19 +118,9 @@ $.fn.markCompleted = function(on) {
   else    this.removeClass("completed"); 
 };
 
-$.fn.setOptions = function(names) {
-  return this.each(function() {
-    var select = $(this);
-    select.empty();
-    _.each(names, function(name) {
-      select.append($("<option />").val(name).text(name));
-    });
-  });
-};
-
 $.fn.suggestable = function() {
   this.focus(function() { $(this).removeClass("suggested"); })
-      .blur(function() { $(this).change(); });
+      .blur(function() { $(this).change(); }); // triggers possible "completion" upon acceptance of suggested value
 };
 
 $.fn.suggestValue = function(text) {
@@ -141,6 +131,16 @@ $.fn.suggestValue = function(text) {
       input.addClass("suggested");
     }
     input.attr("data-suggested", text);
+  });
+};
+
+$.fn.setOptions = function(names) {
+  return this.each(function() {
+    var select = $(this);
+    select.empty();
+    _.each(names, function(name) {
+      select.append($("<option />").val(name).text(name));
+    });
   });
 };
 
