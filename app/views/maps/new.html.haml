@@ -32,6 +32,7 @@
         = f.select :location_column_name, options_for_select([]), {}, :class => "column-names"
         as
         = f.select :location_column_type, location_type_options
+      .hint sample, sample, sample
 
     %fieldset.data
       = f.label :data_column_name, "Select Data"
@@ -41,6 +42,7 @@
         = f.select :data_column_name, options_for_select([]), {}, :class => "column-names"
         as
         = f.select :data_column_type, data_type_options
+      .hint sample, sample, sample
 
     %fieldset.title
       = f.label :title, "Map Title"

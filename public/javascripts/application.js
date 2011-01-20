@@ -7,6 +7,7 @@ $(document).ready(function() {
 var MapFormUpload = {
   init: function() {
     this.automateTitleGuessing();
+    this.displayColumnSamples();
     return this;
   },
   success: function(data) {
@@ -18,7 +19,7 @@ var MapFormUpload = {
     var postSection = $(".post-process");
     importSection.markCompleted(true);
     postSection.slideDown();
-    $("select.column-names").setOptions(data.column_names);
+    $("select.column-names").setColumnOptions(data.column_names, data.column_details);
     $("#map_original_csv_data").val(data.csv).change();
     $("#map_location_column_name").val(data.guessed_location_column).change();
     $("#map_data_column_name").val(data.guessed_data_column).change();
@@ -50,6 +51,13 @@ var MapFormUpload = {
     };
     dataColumn.change(suggestTitle);
     locationColumn.change(suggestTitle);
+  },
+  displayColumnSamples: function() {
+    $("select.column-names").change(function () {
+                                      console.log("CHANGED");
+      var samples = $(this).find(":selected").attr("data-samples") + ", ...";
+      $(this).parents("fieldset").find(".hint").text(samples);
+    });
   }
 };
 
@@ -137,12 +145,17 @@ $.fn.suggestValue = function(text) {
   });
 };
 
-$.fn.setOptions = function(names) {
+$.fn.setColumnOptions = function(names, details) {
   return this.each(function() {
     var select = $(this);
     select.empty();
     _.each(names, function(name) {
-      select.append($("<option />").val(name).text(name));
+      var samples = details[name].samples.join(", ");
+      select.append(
+        $("<option />")
+          .val(name).text(name)
+          .attr("data-samples", samples)
+          .attr("data-guessed_type", details[name].guessed_type));
     });
   });
 };

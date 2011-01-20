@@ -76,9 +76,9 @@ class DatasetPreprocessorTest < ActiveSupport::TestCase
 
   context "#column_details" do
     EXPECTED_COLUMN_DETAILS = {
-      "State Name"         => { :guessed_type => nil, :samples => ["ALABAMA", "ALASKA", "AMERICAN SAMOA"] },
-      "State Abbreviation" => { :guessed_type => nil, :samples => ["AL", "AK", "AS"] },
-      "Count"              => { :guessed_type => nil, :samples => ["1", "2", "3"] },
+      "State Name"         => { :guessed_type => nil, :samples => ["ALABAMA", "ALASKA", "AMERICAN SAMOA", "ARIZONA"] },
+      "State Abbreviation" => { :guessed_type => nil, :samples => ["AL", "AK", "AS", "AZ"] },
+      "Count"              => { :guessed_type => nil, :samples => ["1", "2", "3", "4"] },
     }
 
     should "return a populated hash for valid comma delimited data" do

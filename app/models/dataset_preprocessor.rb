@@ -24,7 +24,7 @@ class DatasetPreprocessor
   def column_details
     {}.tap do |types|
       column_names.each do |column_name|
-        types[column_name] = { :guessed_type => nil, :samples => samples(column_name) }
+        types[column_name] = { :guessed_type => nil, :samples => samples(column_name, 7) }
       end
     end
   end
@@ -105,8 +105,8 @@ class DatasetPreprocessor
     (tab_ratio > 0.8) ? "\t" : ","
   end
 
-  def samples(column_name)
-    values_for(column_name)[0...3]
+  def samples(column_name, count)
+    values_for(column_name)[0...count]
   end
 
   def possible_data_columns
