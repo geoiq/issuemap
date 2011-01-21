@@ -41,6 +41,8 @@ GEM
       crack (= 0.1.8)
     json_pure (1.4.6)
     linecache (0.43)
+    maruku (0.6.0)
+      syntax (>= 1.0.0)
     mime-types (1.16)
     mocha (0.9.10)
       rake
@@ -72,6 +74,7 @@ GEM
     spreadsheet (0.6.5.0)
       ruby-ole
     sqlite3-ruby (1.3.2)
+    syntax (1.0.0)
     sys-uname (0.8.5)
     timecop (0.3.5)
 
@@ -93,6 +96,7 @@ DEPENDENCIES
   haml
   httparty
   json_pure (~> 1.4.3)
+  maruku
   mocha
   multipart-post
   nokogiri
