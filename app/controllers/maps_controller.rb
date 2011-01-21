@@ -31,12 +31,11 @@ class MapsController < ApplicationController
   def show
     respond_to do |format|
       format.html {}
-      # format.png { send_file(@map.to_png(params.merge(:text => map_url(@map, :only_path => false))), :filename => "#{@map.title}.png", :type => "image/png", :disposition => "inline") }
-      format.png {    render :text => @map.to_png(params.merge(:text => url_for(:controller => "maps", :action => "show", :id => @map.token, :only_path => false))), :layout => false, :status => :ok }
+      format.png do
+        png = @map.to_png(:text => map_url(@map.token))
+        send_data(png, :type => "image/png", :filename => "#{@map.to_param}.png", :disposition => "inline")
+      end
     end
-  rescue
-    flash[:error] = "There was a problem loading your map. Please try again."
-    render :new
   end
 
   protected
@@ -48,6 +47,8 @@ class MapsController < ApplicationController
   end
 
   def ensure_correct_slug
-    redirect_to(@map, :status => :moved_permanently) unless params[:id] == @map.to_param
+    if params[:format].blank? || params[:format].to_s == "html"
+      redirect_to(@map, :status => :moved_permanently) unless params[:id] == @map.to_param
+    end
   end
 end
