@@ -1,7 +1,7 @@
 $(document).ready(function() {
   $(".preprocess-form").preprocessData(MapFormUpload.init());
-  $("fieldset.location, fieldset.data, fieldset.title").sniffForCompletion();
-  $("fieldset.location, fieldset.data").sniffForSubmittable(".actions button[type=submit]");
+  $("fieldset.required").sniffForCompletion();
+  $("fieldset.required").sniffForSubmittable(".actions button[type=submit]");
 });
 
 $(window).unload(function() {
