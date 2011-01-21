@@ -27,12 +27,13 @@ group :development do
 end
 
 group :test do
-  gem "redgreen"
-  gem "fakeweb"
-  gem "mocha"
-  gem "timecop"
   gem "shoulda"
   gem "factory_girl"
+  gem "timecop"
+  gem "fakeweb"
+  gem "mocha"
+  gem "no_peeping_toms"
+  gem "redgreen"
   gem "autotest"
   gem "autotest-rails"
   gem "autotest-fsevent"

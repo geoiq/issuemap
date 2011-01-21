@@ -47,6 +47,8 @@ GEM
     mocha (0.9.10)
       rake
     multipart-post (1.0.1)
+    no_peeping_toms (1.1.0)
+      activerecord (>= 1.1)
     nokogiri (1.4.4)
     oauth (0.4.4)
     pg (0.10.0)
@@ -99,6 +101,7 @@ DEPENDENCIES
   maruku
   mocha
   multipart-post
+  no_peeping_toms
   nokogiri
   pg
   rails (= 2.3.10)
