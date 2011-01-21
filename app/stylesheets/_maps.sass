@@ -87,6 +87,44 @@ input#map_title
     cursor: pointer
     +opacity(0)
 
-#maps.show
-  #map_wrapper
-    height: 500px
+$map-header-color: rgb(64, 136, 180)
+#maps.show .map
+  .header
+    background-color: $map-header-color
+    padding: 8px 16px
+    line-height: 32px
+    +border-top-radius(6px)
+    +clearfix
+    .aux
+      float: right
+      line-height: 32px
+      .addthis_toolbox
+        float: right
+        margin: 8px 0 8px 8px
+      .created
+        color: lighten($map-header-color, 40%)
+        font-size: 12px
+        float: right
+    h2
+      font-size: 18px
+      line-height: 32px
+      +text-shadow(#333, 2px, 2px, 2px)
+      a
+        color: #fff
+        +unstyled-link(white)
+
+  $map-height: 500px
+  .map-wrapper
+    position: relative
+    height: $map-height
+    .controls
+      position: absolute
+      top: 0
+      right: 0
+    .loading
+      font-size: 24px
+      line-height: $map-height
+      text-align: center
+
+  textarea.embed-code
+    +dimensions(100%, 60px)

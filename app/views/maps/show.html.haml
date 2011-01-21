@@ -1,0 +1,18 @@
+- title @map.title
+
+- div_for @map do
+  .header
+    .aux
+      = render :partial => "add_this"
+      .created
+        Created:
+        = @map.created_at.strftime("%b %d, %Y")
+    %h2= link_to @map.title, map_url(@map)
+  .map-wrapper
+    .controls
+    = render :partial => "embed", :locals => { :map => @map, :style_class => "loading", :loading_message => "Loading..." }
+
+  - embed_code = render :partial => "embed", :locals => { :map => @map }
+  - embed_code = embed_code.lines.map(&:strip).join
+  %textarea.embed-code
+    = embed_code

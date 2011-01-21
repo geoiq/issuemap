@@ -31,6 +31,10 @@ class Map < ActiveRecord::Base
     [token, slug].compact.join("-")
   end
 
+  def dom_token
+    ["map", (token || "new")].join("_")
+  end
+
   protected
 
   def generate_token(size = 12)

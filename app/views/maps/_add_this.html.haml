@@ -1,0 +1,11 @@
+.addthis_toolbox.addthis_default_style
+  -# = link_to "Share", "http://www.addthis.com/bookmark.php?v=250&amp;username=issuemap", :class => "addthis_button_compact"
+  -# %span.addthis_separator= "|"
+  %a.addthis_button_twitter
+  %a.addthis_button_facebook
+  %a.addthis_button_email
+
+- javascript_tag do
+  :plain
+    var addthis_config = { "data_track_clickback": true };
+= javascript_include_tag "http://s7.addthis.com/js/250/addthis_widget.js#username=issuemap"

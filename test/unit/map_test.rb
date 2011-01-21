@@ -56,4 +56,11 @@ class MapTest < ActiveSupport::TestCase
     should_return "00beef-abc-def",    "00beef", "Abc Def"
     should_return "00beef",            "00beef", nil
   end
+
+  context "#dom_token" do
+    should "return the equivalent of a #dom_id, but with the token instead of the id" do
+      assert_equal "map_00beef", Map.new(:token => "00beef").dom_token
+      assert_equal "map_new",    Map.new(:token => nil).dom_token
+    end
+  end
 end
