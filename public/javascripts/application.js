@@ -184,17 +184,18 @@ $.fn.pleaseWaitOnSubmit = function() {
 };
 
 $.fn.copyable = function() {
-  console.log("copyable 1");
+  this.attr("readonly", "readonly");
+  this.click(function() { this.select(); });
+  this.focus(function() { this.select(); });
+
   if (this.size() == 0) return this;
-  console.log("copyable 2");
   if (!$.copyable.available()) return this;
-  console.log("copyable 3");
   return this.each(function() {
     var text = $(this);
     var buttonSelector = $(this).attr("rel");
     var button = $(buttonSelector);
     button.show();
-
+    
     var clip = new ZeroClipboard.Client();
 
     clip.setHandCursor(true);
