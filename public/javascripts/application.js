@@ -5,7 +5,9 @@ $(document).ready(function() {
 });
 
 $(window).unload(function() {
-  $.unblockUI();
+  if (typeof $.unblockUI != "undefined" && $.unblockUI !== null) {
+    $.unblockUI();
+  }
 });
 
 var MapFormUpload = {
@@ -200,6 +202,6 @@ $.fn.valueChangeObserver = function(interval, callback) {
 };
 
 // protection against accidental left-over console.log statements
-if (typeof console === "undefined") {
+if (typeof console === "undefined" || console === null) {
   console = { log: function() { } };
 }
