@@ -31,14 +31,17 @@ class MapsController < ApplicationController
   def show
     respond_to do |format|
       format.html {}
-      format.png do
-        png = @map.to_png(:text => map_url(@map.token))
-        send_data(png, :type => "image/png", :filename => "#{@map.to_param}.png", :disposition => "inline")
-      end
+      format.csv { send_map_data(@map.to_csv, :csv, "csv") }
+      format.kml { send_map_data(@map.to_kml, :kml, "kml") }
+      format.png { send_map_data(@map.to_png(:text => map_url(@map.token)), :png, "png") }
     end
   end
 
   protected
+
+  def send_map_data(bytes, type, format)
+    send_data(bytes, :type => type, :filename => "#{@map.to_param}.#{format}", :disposition => "inline")
+  end
 
   def find_map
     token = params[:id].split("-").first if params[:id]

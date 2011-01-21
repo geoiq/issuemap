@@ -22,3 +22,7 @@
   = link_to "Permalink", map_path(@map)
   or
   = link_to "Image", map_path(@map.token, :format => "png")
+  or
+  = link_to "CSV", map_path(@map.token, :format => "csv")
+  or
+  = link_to "KML", map_path(@map.token, :format => "kml")

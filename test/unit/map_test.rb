@@ -75,4 +75,26 @@ class MapTest < ActiveSupport::TestCase
       assert_equal "PNG-BINARY", Map.new(:token => "00beef", :geoiq_map_xid => 123).to_png
     end
   end
+
+  context "#to_csv" do
+    setup do
+      response = mock("response", :body => "CSV-OUTPUT")
+      GeoIQ.expects(:get).with("/datasets/321.csv").returns(response)
+    end
+
+    should "return the csv bytes" do
+      assert_equal "CSV-OUTPUT", Map.new(:token => "00beef", :geoiq_dataset_xid => 321).to_csv
+    end
+  end
+
+  context "#to_kml" do
+    setup do
+      response = mock("response", :body => "KML-OUTPUT")
+      GeoIQ.expects(:get).with("/datasets/321.kml").returns(response)
+    end
+
+    should "return the kml bytes" do
+      assert_equal "KML-OUTPUT", Map.new(:token => "00beef", :geoiq_dataset_xid => 321).to_kml
+    end
+  end
 end

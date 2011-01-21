@@ -23,7 +23,19 @@ class Map < ActiveRecord::Base
     GeoIQ.get("/maps/#{self.geoiq_map_xid}", :query => query).body
   end
 
+  def to_csv
+    to_dataset_format("csv")
+  end
+
+  def to_kml
+    to_dataset_format("kml")
+  end
+
   protected
+
+  def to_dataset_format(format)
+    GeoIQ.get("/datasets/#{self.geoiq_dataset_xid}.#{format}").body
+  end
 
   def generate_token(size = 12)
     begin

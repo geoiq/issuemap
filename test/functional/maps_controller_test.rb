@@ -48,26 +48,43 @@ class MapsControllerTest < ActionController::TestCase
 
     context "" do
       setup do
-        Map.any_instance.expects(:to_png).with(:text => map_url(@map.token)).returns("png")
+        Map.any_instance.expects(:to_png).with(:text => map_url(@map.token)).returns("png-bytes")
       end
 
       on_get :show, lambda {{ :id => @map.to_param, :format => "png" }} do
         should respond_with :success
         should respond_with_content_type "image/png"
         should "respond with a png" do
-          assert_equal "png", @response.body
+          assert_equal "png-bytes", @response.body
         end
       end
     end
 
     context "" do
       setup do
-        Map.any_instance.expects(:to_png).with(:text => map_url(@map.token)).returns("")
+        Map.any_instance.expects(:to_csv).returns("csv-data")
       end
 
-      on_get :show, lambda {{ :id => @map.to_param, :format => "png" }} do
+      on_get :show, lambda {{ :id => @map.to_param, :format => "csv" }} do
         should respond_with :success
-        should respond_with_content_type "image/png"
+        should respond_with_content_type "text/csv"
+        should "respond with a csv" do
+          assert_equal "csv-data", @response.body
+        end
+      end
+    end
+
+    context "" do
+      setup do
+        Map.any_instance.expects(:to_kml).returns("kml-data")
+      end
+
+      on_get :show, lambda {{ :id => @map.to_param, :format => "kml" }} do
+        should respond_with :success
+        should respond_with_content_type "application/vnd.google-earth.kml+xml"
+        should "respond with a kml" do
+          assert_equal "kml-data", @response.body
+        end
       end
     end
   end
