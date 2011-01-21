@@ -5,21 +5,19 @@ class Map < ActiveRecord::Base
 
   before_create :set_token
 
-  # Creates a PNG image of the map in GeoIQ
+  # Returns a PNG version of the map from GeoIQ
   #
-  # Options:
-  # * size - s,m,l - for image size (optional, default: "l")
-  # * extent - "west,south,east,north" bounding extents (optional, default: map bounds)
-  def to_png(options)
-    query_options = options.merge!({:size=> options[:size] || "l", :format => "png"})
-    logger.debug("Map to_png: #{query_options.inspect}")
-    begin
-      resp = GeoIQ.send("get", "/maps/#{self.geoiq_map_xid}", :query => query_options)
-    rescue GeoIQ::Exception => e
-      raise e.headers.inspect
-    end
-    logger.debug "Body: #{resp.body}"
-    resp.body
+  # options - A Hash used to refind the query (default: {})
+  #           :text   - A String to overlay on the image (optional;
+  #                     default: `token`)
+  #           :size   - A String representing an images size (optional;
+  #                     values: s, m, or l; default: l)
+  #           :extend - A String representing the bounding extents (optional;
+  #                     default: map bounds)
+  def to_png(options = {})
+    options = options.reverse_merge(:size => "l", :text => token).merge(:format => "png")
+    response = GeoIQ.get("/maps/#{self.geoiq_map_xid}", :query => options)
+    response.body
   end
 
   def provider

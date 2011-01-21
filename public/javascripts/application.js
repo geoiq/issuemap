@@ -2,6 +2,7 @@ $(document).ready(function() {
   $(".preprocess-form").preprocessData(MapFormUpload.init());
   $("fieldset.required").sniffForCompletion();
   $("fieldset.required").sniffForSubmittable(".actions button[type=submit]");
+  $("textarea.copyable").copyable();
 });
 
 $(window).unload(function() {
@@ -180,6 +181,44 @@ $.fn.pleaseWaitOnSubmit = function() {
       }
      }); 
   });
+};
+
+$.fn.copyable = function() {
+  console.log("copyable 1");
+  if (this.size() == 0) return this;
+  console.log("copyable 2");
+  if (!$.copyable.available()) return this;
+  console.log("copyable 3");
+  return this.each(function() {
+    var text = $(this);
+    var buttonSelector = $(this).attr("rel");
+    var button = $(buttonSelector);
+    button.show();
+
+    var clip = new ZeroClipboard.Client();
+
+    clip.setHandCursor(true);
+    clip.addEventListener('mouseOver', function() { clip.setText(text.val()); });
+
+    clip.addEventListener('complete', function (client, text) {
+      if (!button.attr("data-original-text")) {
+        button.attr("data-original-text", button.text());
+      }
+      button.text("Copied!");
+      setTimeout(function() { button.text(button.attr("data-original-text")); }, 2000);
+    });
+
+    clip.glue(button.attr("id"));
+  });
+};
+$.copyable = {};
+$.copyable.available = function() {
+  var flashAvailable = navigator.mimeTypes["application/x-shockwave-flash"];
+  if (flashAvailable && !$.copyable.loaded) {
+    $("<script>").attr("src", "/javascripts/ZeroClipboard.js").appendTo("head");
+    $.copyable.loaded = true;
+  }
+  return flashAvailable;
 };
 
 // Monitors a field for value changes every interval and fires the callback

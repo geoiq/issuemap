@@ -14,5 +14,11 @@
 
   - embed_code = render :partial => "embed", :locals => { :map => @map }
   - embed_code = embed_code.lines.map(&:strip).join
-  %textarea.embed-code
+  %textarea#embed-code.copyable{ :rel => "#embed-code-copy" }
     = embed_code
+
+  %button#embed-code-copy Copy to clipboard
+  or
+  = link_to "Permalink", map_path(@map)
+  or
+  = link_to "Image", map_path(@map.token, :format => "png")

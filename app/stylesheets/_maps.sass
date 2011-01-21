@@ -126,5 +126,8 @@ $map-header-color: rgb(64, 136, 180)
       line-height: $map-height
       text-align: center
 
-  textarea.embed-code
+  textarea#embed-code
     +dimensions(100%, 60px)
+  #embed-code-copy
+    +fancy-button($base-color)
+    width: 220px
