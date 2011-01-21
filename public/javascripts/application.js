@@ -4,10 +4,15 @@ $(document).ready(function() {
   $("fieldset.location, fieldset.data").sniffForSubmittable(".actions button[type=submit]");
 });
 
+$(window).unload(function() {
+  $.unblockUI();
+});
+
 var MapFormUpload = {
   init: function() {
     this.automateTitleGuessing();
     this.displayColumnSamples();
+    $("form#new_map").pleaseWaitOnSubmit();
     return this;
   },
   success: function(data) {
@@ -154,6 +159,24 @@ $.fn.setColumnOptions = function(names, details) {
           .attr("data-samples", samples)
           .attr("data-guessed_type", details[name].guessed_type));
     });
+  });
+};
+
+$.fn.pleaseWaitOnSubmit = function() {
+  this.submit(function () { 
+    $.blockUI({ 
+      css: { 
+        border: "none", 
+        padding: "0.5em", 
+        backgroundColor: "#000", 
+        "-webkit-border-radius": "0.5em", 
+        "-moz-border-radius": "0.5em", 
+        opacity: 0.75, 
+        color: "#fff",
+        "font-size": "2em",
+        "line-height": "1.5"
+      }
+     }); 
   });
 };
 
