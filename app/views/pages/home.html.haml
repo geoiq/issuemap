@@ -8,6 +8,4 @@
 
   %p IssueMap makes it easy to turn your data into a map that you can customize &amp; share online.
 
-  - link_to new_map_path, :class => "call-to-action" do
-    .label Create a map &raquo;
-    .hint Create a new map from XLS or CSV.
+  = render :partial => "shared/new_map_call_to_action"

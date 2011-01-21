@@ -31,6 +31,7 @@
     = render :partial => "layouts/ie6nomore"
 
     #header
+      .aux= render :partial => "shared/new_map_call_to_action"
       %h1= link_to "IssueMap", root_path
     #content
       = render_flash_messages(:error, :notice, :success)
