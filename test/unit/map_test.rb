@@ -44,7 +44,7 @@ class MapTest < ActiveSupport::TestCase
 
   context "#to_param" do
     def self.should_return(expected, token, title)
-      should "render as #{expected.inspect} for id => #{id} and name => #{name.inspect}" do
+      should "render as #{expected.inspect} for token => #{token} and title => #{title.inspect}" do
         map = Map.new(:title => title, :token => token)
         assert_equal expected, map.to_param
       end
