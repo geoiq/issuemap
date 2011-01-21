@@ -34,5 +34,17 @@ class MapsControllerTest < ActionController::TestCase
     should respond_with :error
     should respond_with_content_type("text/html")
   end
+
+  context "Given a map" do
+    setup { @map = Factory(:map) }
+
+    on_get :show, lambda {{ :id => @map.to_param }} do
+      should respond_with :success
+    end
+
+    on_get :show, lambda {{ :id => "#{@map.token}-some-outdated-or-wrong-slug" }} do
+      should redirect_to("correct map path") { @map }
+    end
+  end
 end
 

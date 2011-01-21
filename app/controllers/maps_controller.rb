@@ -1,5 +1,6 @@
 class MapsController < ApplicationController
   before_filter :find_map, :only => [:show, :update]
+  before_filter :ensure_correct_slug, :only   => :show
 
   def preprocess
     import = DatasetPreprocessor.new(params[:data])
@@ -13,12 +14,12 @@ class MapsController < ApplicationController
   def create
     @map = Map.new(params[:map])
     if @map.save
-      redirect_to map_path(@map.token)
+      redirect_to @map
     else
-      flash.now[:error] = "Your map could not be saved! Please try again"
       render :new
     end
-  rescue
+  rescue StandardError => e
+    logger.error(error_message_and_backtrace(e))
     flash.now[:error] = "Your map could not be saved! Please try again"
     render :new
   end
@@ -41,15 +42,12 @@ class MapsController < ApplicationController
   protected
 
   def find_map
-    return if params[:id].blank?
-    @map = Map.find_by_token(params[:id])
-    @map = Map.find(params[:id]) if @map.nil?
+    token = params[:id].split("-").first if params[:id]
+    @map = Map.find_by_token(token)
+    raise ActiveRecord::RecordNotFound, "No Maps matches that token" unless @map
   end
 
-  def render_dataset_error
-    session[:map] = params[:map]
-
-    flash[:error] = "There was a problem creating the dataset for this map.  Please try again."
-    redirect_to :back
+  def ensure_correct_slug
+    redirect_to(@map, :status => :moved_permanently) unless params[:id] == @map.to_param
   end
 end

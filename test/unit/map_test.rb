@@ -41,4 +41,19 @@ class MapTest < ActiveSupport::TestCase
     map.update_attribute(:title, "New Title")
     assert_equal token, map.reload.token
   end
+
+  context "#to_param" do
+    def self.should_return(expected, token, title)
+      should "render as #{expected.inspect} for id => #{id} and name => #{name.inspect}" do
+        map = Map.new(:title => title, :token => token)
+        assert_equal expected, map.to_param
+      end
+    end
+
+    should_return "00beef-name",       "00beef", "name"
+    should_return "00beef-a-b-c",      "00beef", "  a b  c \t "
+    should_return "00beef-a-s-b-c",    "00beef", "a's 'b' c"
+    should_return "00beef-abc-def",    "00beef", "Abc Def"
+    should_return "00beef",            "00beef", nil
+  end
 end

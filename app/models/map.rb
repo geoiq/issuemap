@@ -26,6 +26,11 @@ class Map < ActiveRecord::Base
     "OpenStreetMap (Road)" # "Yahoo Road", "Google Hybrid", "Google Terrain"
   end
 
+  def to_param
+    slug = title.gsub(/\W/, " ").strip.gsub(/\s+/, "-").downcase if title
+    [token, slug].compact.join("-")
+  end
+
   protected
 
   def generate_token(size = 12)
