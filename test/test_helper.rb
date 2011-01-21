@@ -10,6 +10,7 @@ end
 FakeWeb.allow_net_connect = false
 Mocha::Configuration.warn_when(:stubbing_non_existent_method)
 Mocha::Configuration.warn_when(:stubbing_non_public_method)
+ActiveRecord::Observer.disable_observers
 
 class Test::Unit::TestCase
   def fixture_file(filename, content_type = "application/octet-stream")

@@ -22,8 +22,8 @@ class MapTest < ActiveSupport::TestCase
   should validate_presence_of :data_column_name
   should validate_presence_of :data_column_type
 
-  should "hard code #map_provider" do
-    assert_equal "OpenStreetMap (Road)", Map.new.map_provider
+  should "hard code #provider" do
+    assert_equal "OpenStreetMap (Road)", Map.new.provider
   end
 
   should "assign a 6 character token whle creating a new record" do
