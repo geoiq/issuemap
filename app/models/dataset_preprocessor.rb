@@ -47,6 +47,17 @@ class DatasetPreprocessor
     }
   end
 
+  # Return CSV that only includes the specified columns, with column names that
+  # conform to the naming conventions required by GeoIQ.
+  def to_geoiq_csv(*column_names)
+    FasterCSV.generate do |csv|
+      csv << column_names.map { |n| self.class.safe_column_name(n) }
+      values_at(*column_names).each do |values|
+        csv << values
+      end
+    end
+  end
+
   # This isn't the best way to handle validations, but this is a quick win until
   # we upgrade to Rails 3 and ActiveModel::Validations
   def check_validity!
@@ -56,6 +67,17 @@ class DatasetPreprocessor
     if @table.size < 2
       raise ArgumentError, "Data must include at least one header and one data row"
     end
+  end
+
+  def self.safe_column_name(name)
+    name.
+      gsub("%", " percent ").
+      gsub("$", " dollars ").
+      gsub("<", " less than ").
+      gsub(">", " greater than ").
+      strip.
+      gsub(/\s+/, "_").
+      gsub(/\W/, "").downcase if name
   end
 
   private

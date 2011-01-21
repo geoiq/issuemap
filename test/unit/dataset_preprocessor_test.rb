@@ -53,6 +53,17 @@ class DatasetPreprocessorTest < ActiveSupport::TestCase
     end
   end
 
+  context "#to_geoiq_csv" do
+    should "return a csv file with fewer columns for valid comma delimited data" do
+      expected_csv = "state_abbreviation,count\nAL,1\nAK,2\nAS,3\nAZ,4\n"
+      assert_equal expected_csv, comma_import.to_geoiq_csv("State Abbreviation", "Count")
+    end
+
+    should "return an empty csv for blank data" do
+      assert_equal "\n", blank_import.to_geoiq_csv
+    end
+  end
+
   context "#values_for" do
     should "return an array of column values for valid comma delimited data" do
       assert_equal ["AL", "AK", "AS", "AZ"], comma_import.values_for("State Abbreviation")
@@ -111,6 +122,17 @@ class DatasetPreprocessorTest < ActiveSupport::TestCase
 
     should "return nil for blank data" do
       assert_nil blank_import.guessed_data_column
+    end
+  end
+
+  context ".safe_column_name" do
+    should "convert spaces to underscore, strip all non alphanumerics, and downcase" do
+      assert_equal "a_b", DatasetPreprocessor.safe_column_name("A B!")
+      assert_equal "a_b", DatasetPreprocessor.safe_column_name("!@^&*()a!@^&* b!@")
+      assert_equal "a_b", DatasetPreprocessor.safe_column_name(" a\tb ")
+      assert_equal "percent_percent", DatasetPreprocessor.safe_column_name(" %% ")
+      assert_equal "dollars", DatasetPreprocessor.safe_column_name(" $ ")
+      assert_equal "less_than_greater_than", DatasetPreprocessor.safe_column_name(" < > ")
     end
   end
 
