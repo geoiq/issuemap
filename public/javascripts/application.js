@@ -11,8 +11,6 @@ var MapFormUpload = {
     return this;
   },
   success: function(data) {
-    console.log("SUCCESS!");
-    console.log(data.column_names);
     console.log(data);
 
     var importSection = $(".import");
@@ -28,7 +26,7 @@ var MapFormUpload = {
   },
   error: function(data) {
     console.log("ERROR!");
-    console.log(data.error);
+    console.log(data);
 
     var importSection = $(".import");
     var postSection = $(".post-process");
@@ -54,7 +52,6 @@ var MapFormUpload = {
   },
   displayColumnSamples: function() {
     $("select.column-names").change(function () {
-                                      console.log("CHANGED");
       var samples = $(this).find(":selected").attr("data-samples") + ", ...";
       $(this).parents("fieldset").find(".hint").text(samples);
     });
@@ -182,10 +179,4 @@ $.fn.valueChangeObserver = function(interval, callback) {
 // protection against accidental left-over console.log statements
 if (typeof console === "undefined") {
   console = { log: function() { } };
-}
-
-// ----------------------
-
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.substring(1).toLowerCase();
 }
