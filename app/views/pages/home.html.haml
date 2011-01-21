@@ -1,11 +1,15 @@
 - title "Home"
-%ol.description
-  %li Upload or paste your raw map data...
-  %li ...Customize map display, publish online, and share!
+.description
+  %ol.steps
+    %li Upload or paste your raw map data...
+    %li ...Customize map display, publish online, and share!
 
-.intro
-  %h2 Got Data?<br />Let us map it for you.
+  .intro
+    %h2 Got Data?<br />Let us map it for you.
 
-  %p IssueMap makes it easy to turn your data into a map that you can customize &amp; share online.
+    %p IssueMap makes it easy to turn your data into a map that you can customize &amp; share online.
 
-  = render :partial => "shared/new_map_call_to_action"
+    = render :partial => "shared/new_map_call_to_action"
+
+.gallery
+  = image_tag "gallery_placeholder.png"

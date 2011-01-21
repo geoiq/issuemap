@@ -1,14 +1,18 @@
 #pages.home #main
   .description
-    +replace-text-with-dimensions("homepage_description.png")
-    float: left
-  .intro
-    margin: 10px 0 0 425px
-    h2
-      margin: 0 0 0 0
-      color: #333
-      font-weight: bold
-      font-size: 26px
-      line-height: 32px
-    p
-      margin-top: 21px
+    +clearfix
+    .steps
+      +replace-text-with-dimensions("homepage_description.png")
+      float: left
+    .intro
+      margin: 10px 0 0 425px
+      h2
+        margin: 0 0 0 0
+        color: #333
+        font-weight: bold
+        font-size: 26px
+        line-height: 32px
+      p
+        margin-top: 21px
+  .gallery
+    margin-top: 21px
