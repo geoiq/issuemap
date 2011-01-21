@@ -48,9 +48,21 @@ class MapsControllerTest < ActionController::TestCase
 
     context "" do
       setup do
-        response = mock("response", :body => "")
-        query = { :size => "l", :text => map_url(@map.token), :format => "png" }
-        GeoIQ.expects(:get).with("/maps/#{@map.geoiq_map_xid}", :query => query).returns(response)
+        Map.any_instance.expects(:to_png).with(:text => map_url(@map.token)).returns("png")
+      end
+
+      on_get :show, lambda {{ :id => @map.to_param, :format => "png" }} do
+        should respond_with :success
+        should respond_with_content_type "image/png"
+        should "respond with a png" do
+          assert_equal "png", @response.body
+        end
+      end
+    end
+
+    context "" do
+      setup do
+        Map.any_instance.expects(:to_png).with(:text => map_url(@map.token)).returns("")
       end
 
       on_get :show, lambda {{ :id => @map.to_param, :format => "png" }} do

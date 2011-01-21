@@ -5,21 +5,6 @@ class Map < ActiveRecord::Base
 
   before_create :set_token
 
-  # Returns a PNG version of the map from GeoIQ
-  #
-  # options - A Hash used to refind the query (default: {})
-  #           :text   - A String to overlay on the image (optional;
-  #                     default: `token`)
-  #           :size   - A String representing an images size (optional;
-  #                     values: s, m, or l; default: l)
-  #           :extend - A String representing the bounding extents (optional;
-  #                     default: map bounds)
-  def to_png(options = {})
-    options = options.reverse_merge(:size => "l", :text => token).merge(:format => "png")
-    response = GeoIQ.get("/maps/#{self.geoiq_map_xid}", :query => options)
-    response.body
-  end
-
   def provider
     "OpenStreetMap (Road)" # "Yahoo Road", "Google Hybrid", "Google Terrain"
   end
@@ -31,6 +16,11 @@ class Map < ActiveRecord::Base
 
   def dom_token
     ["map", (token || "new")].join("_")
+  end
+
+  def to_png(text_overlay = token)
+    query = { :size => "l", :format => "png", :text => text_overlay }
+    GeoIQ.get("/maps/#{self.geoiq_map_xid}", :query => query).body
   end
 
   protected

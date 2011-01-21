@@ -63,4 +63,16 @@ class MapTest < ActiveSupport::TestCase
       assert_equal "map_new",    Map.new(:token => nil).dom_token
     end
   end
+
+  context "#to_png" do
+    setup do
+      response = mock("response", :body => "PNG-BINARY")
+      query = { :size => "l", :text => "00beef", :format => "png" }
+      GeoIQ.expects(:get).with("/maps/123", :query => query).returns(response)
+    end
+
+    should "return the png bytes" do
+      assert_equal "PNG-BINARY", Map.new(:token => "00beef", :geoiq_map_xid => 123).to_png
+    end
+  end
 end
