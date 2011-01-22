@@ -68,7 +68,7 @@ var MapFormUpload = {
 };
 
 $.fn.stepAlongFieldsets = function() {
-  return this.stepAlong("fieldset[data-step]", ":not(.completed):first", "completed");
+  return this.pointer("fieldset[data-step]", ":not(.completed):first", "completed");
 };
 
 // Automatically and immediately upload either a selected file or the
@@ -113,7 +113,7 @@ $.fn.preprocessData = function(options) {
 $.fn.sniffForCompletion = function() {
   return this.each(function() {
     var fieldset = $(this);
-    var inputs = fieldset.find(":input");
+    var inputs = fieldset.find(":input.required");
     inputs.change(function() { 
       var allFilled = _.all(inputs, function(input) { return $(input).val() && !$(input).hasClass("suggested"); });
       fieldset.markCompleted(allFilled);
@@ -122,7 +122,7 @@ $.fn.sniffForCompletion = function() {
 };
 
 $.fn.sniffForSubmittable = function(submit) {
-  var inputs = this.find(":input");
+  var inputs = this.find(":input.required");
   inputs.change(function() { 
     var allFilled = _.all(inputs, function(input) { return $(input).val(); });
     if (allFilled) {
@@ -228,36 +228,37 @@ $.copyable.available = function() {
   return FlashDetect.installed;
 };
 
-$.fn.stepAlong = function(selector, qualifier, eventType) {
+$.fn.pointer = function(selector, qualifier, eventType) {
+  var stepDuration = 500;
   var pointerMethods = {
     positionFor: function(element) {
-      var pointerWidth  = this.outerWidth();
-      var pointerHeight = this.outerHeight();
-      var elementWidth  = element.outerWidth();
-      var elementHeight = element.outerHeight();
+      var pointerWidth    = this.outerWidth();
+      var pointerHeight   = this.outerHeight();
+      var pointerOverlay  = parseInt(this.attr("data-overlay"));
+      var elementWidth    = element.outerWidth();
+      var elementHeight   = element.outerHeight();
       var elementPosition = element.position();
   
       return {
         top: elementPosition.top + (elementHeight / 2) - (pointerHeight / 2),
-        left: elementPosition.left - pointerWidth
+        left: elementPosition.left - pointerWidth + pointerOverlay
       };
     },
     jumpTo: function(element) {
-      if (element.size() == 0) { return this.fadeOut(); }
+      if (element.size() == 0) { return this.fadeOut(stepDuration); }
       this.css(this.positionFor(element));
       this.find("div").text(element.attr("data-step"));
-      return this.fadeIn();
+      return this.fadeIn(stepDuration);
     },
     animateTo: function(element) {
-      if (element.size() == 0) { return this.fadeOut(); }
+      if (element.size() == 0) { return this.fadeOut(stepDuration); }
       this.show();
       var stepText = this.find("div");
+      stepText.fadeOut(stepDuration / 2, function() {
         stepText.text(element.attr("data-step"));
-      // stepText.fadeOut(function() {
-      //   stepText.text(element.attr("data-step"));
-      //   stepText.fadeIn();
-      // });
-      return this.animate(this.positionFor(element));
+        stepText.fadeIn(stepDuration / 2);
+      });
+      return this.animate(this.positionFor(element), stepDuration);
     },
     moveTo: function(element) {
       if (this.is(":visible")) {

@@ -33,9 +33,9 @@
       .detail Please select the column that you want to use for mapping location.
       .input
         Show
-        = f.select :location_column_name, options_for_select([]), {}, :class => "column-names"
+        = f.select :location_column_name, options_for_select([]), {}, :class => "column-names required"
         as
-        = f.select :location_column_type, location_type_options
+        = f.select :location_column_type, location_type_options, {}, :class => "required"
       .hint sample, sample, sample
 
     %fieldset.data.required{ "data-step" => "Next Step" }
@@ -43,17 +43,17 @@
       .detail Please select the numeric data field that you want to display.
       .input
         Show
-        = f.select :data_column_name, options_for_select([]), {}, :class => "column-names"
+        = f.select :data_column_name, options_for_select([]), {}, :class => "column-names required"
         as
-        = f.select :data_column_type, data_type_options
+        = f.select :data_column_type, data_type_options, {}, :class => "required"
       .hint sample, sample, sample
 
     %fieldset.title.required{ "data-step" => "Customize" }
       = f.label :title, "Map Title"
-      = f.text_field :title, :class => (@map.new_record? ? "suggested" : nil)
+      = f.text_field :title, :class => [(@map.new_record? ? "suggested" : nil), "required"].join(" ")
 
   .actions
     = f.submit "Create Map"
 
-#pointer
+#pointer{ "data-overlay" => "4" }
   .content Step 1
