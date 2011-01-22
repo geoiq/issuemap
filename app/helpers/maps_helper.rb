@@ -1,4 +1,9 @@
 module MapsHelper
+  def compact_embed_code(map, locals = {})
+    embed_code = render :partial => "maps/embed", :locals => locals.merge(:map => map)
+    embed_code = embed_code.lines.map(&:strip).join
+  end
+
   def location_type_options
     options_for_select([["Please select a location type...", nil]] + AppConfig[:boundaries])
   end

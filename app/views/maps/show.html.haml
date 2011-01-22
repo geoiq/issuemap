@@ -12,14 +12,12 @@
     %h2= link_to @map.title, map_url(@map)
   .map-wrapper
     .controls
-    = render :partial => "embed", :locals => { :map => @map, :style_class => "loading", :loading_message => "Loading..." }
+    = compact_embed_code(@map, :style_class => "loading", :loading_message => "Loading...")
 
-  - embed_code = render :partial => "embed", :locals => { :map => @map }
-  - embed_code = embed_code.lines.map(&:strip).join
   %textarea#embed-code.copyable{ :rel => "#embed-code-copy" }
-    = embed_code
+    = compact_embed_code(@map)
 
-  %button#embed-code-copy Copy to clipboard
+  %button#embed-code-copy{ :style => "display:none;" } Copy to clipboard
   or
   = link_to "Permalink", map_path(@map)
   or
