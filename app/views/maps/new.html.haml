@@ -10,11 +10,11 @@
     Get started by uploading or pasting your data, selecting the entries you
     want to map, providing a title, and shazam you have an instant map.
 
-%fieldset.import
+%fieldset.import{ "data-step" => "Start Here" }
   .upload
     - form_tag preprocess_new_map_path, :class => "preprocess-form" do
       = label_tag "preprocess-upload", "&nbsp;"
-      - link_to "#", :class => "file" do
+      - link_to "javascript:return false;", :class => "file" do
         Upload File
         = file_field_tag :data, :id => "preprocess-upload"
     .hint Excel Spreadsheet or CSV
@@ -28,7 +28,7 @@
 - form_for @map do |f|
   = f.hidden_field :original_csv_data
   %section.post-process{ :style => (@map.original_csv_data.blank? ? "display: none;" : nil) }
-    %fieldset.location.required
+    %fieldset.location.required{ "data-step" => "Next Step" }
       = f.label :location_column_name, "Select Location"
       .detail Please select the column that you want to use for mapping location.
       .input
@@ -38,7 +38,7 @@
         = f.select :location_column_type, location_type_options
       .hint sample, sample, sample
 
-    %fieldset.data.required
+    %fieldset.data.required{ "data-step" => "Next Step" }
       = f.label :data_column_name, "Select Data"
       .detail Please select the numeric data field that you want to display.
       .input
@@ -48,10 +48,12 @@
         = f.select :data_column_type, data_type_options
       .hint sample, sample, sample
 
-    %fieldset.title.required
+    %fieldset.title.required{ "data-step" => "Customize" }
       = f.label :title, "Map Title"
       = f.text_field :title, :class => (@map.new_record? ? "suggested" : nil)
 
   .actions
     = f.submit "Create Map"
 
+#pointer
+  .content Step 1

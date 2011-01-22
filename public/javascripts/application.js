@@ -3,6 +3,7 @@ $(document).ready(function() {
   $("fieldset.required").sniffForCompletion();
   $("fieldset.required").sniffForSubmittable(".actions button[type=submit]");
   $("textarea.copyable").copyable();
+  $("#pointer").stepAlongFieldsets();
 });
 
 $(window).unload(function() {
@@ -23,8 +24,8 @@ var MapFormUpload = {
 
     var importSection = $(".import");
     var postSection = $(".post-process");
-    importSection.markCompleted(true);
-    postSection.slideDown();
+    
+    postSection.slideDown(function() { importSection.markCompleted(true); });
     $("select.column-names").setColumnOptions(data.column_names, data.column_details);
     $("#map_original_csv_data").val(data.csv).change();
     $("#map_location_column_name").val(data.guessed_location_column).change();
@@ -64,6 +65,10 @@ var MapFormUpload = {
       $(this).parents("fieldset").find(".hint").text(samples);
     });
   }
+};
+
+$.fn.stepAlongFieldsets = function() {
+  return this.stepAlong("fieldset[data-step]", ":not(.completed):first", "completed");
 };
 
 // Automatically and immediately upload either a selected file or the
@@ -130,8 +135,10 @@ $.fn.sniffForSubmittable = function(submit) {
 };
 
 $.fn.markCompleted = function(on) {
+  var hadClass = this.hasClass("completed");
   if (on) this.addClass("completed"); 
   else    this.removeClass("completed"); 
+  if (hadClass ? !on : on) { this.trigger("completed"); } // XOR
 };
 
 $.fn.suggestable = function() {
@@ -219,6 +226,66 @@ $.copyable.available = function() {
     $.copyable.loaded = true;
   }
   return FlashDetect.installed;
+};
+
+$.fn.stepAlong = function(selector, qualifier, eventType) {
+  var pointerMethods = {
+    positionFor: function(element) {
+      var pointerWidth  = this.outerWidth();
+      var pointerHeight = this.outerHeight();
+      var elementWidth  = element.outerWidth();
+      var elementHeight = element.outerHeight();
+      var elementPosition = element.position();
+  
+      return {
+        top: elementPosition.top + (elementHeight / 2) - (pointerHeight / 2),
+        left: elementPosition.left - pointerWidth
+      };
+    },
+    jumpTo: function(element) {
+      if (element.size() == 0) { return this.fadeOut(); }
+      this.css(this.positionFor(element));
+      this.find("div").text(element.attr("data-step"));
+      return this.fadeIn();
+    },
+    animateTo: function(element) {
+      if (element.size() == 0) { return this.fadeOut(); }
+      this.show();
+      var stepText = this.find("div");
+        stepText.text(element.attr("data-step"));
+      // stepText.fadeOut(function() {
+      //   stepText.text(element.attr("data-step"));
+      //   stepText.fadeIn();
+      // });
+      return this.animate(this.positionFor(element));
+    },
+    moveTo: function(element) {
+      if (this.is(":visible")) {
+        return this.animateTo(element);
+      } else {
+        if (element.size() == 0) { return this; }
+        return this.jumpTo(element);
+      }
+    }
+  };
+  return this.each(function() {
+    var pointer = $.extend($(this), pointerMethods);
+    var move = function () { pointer.moveTo($(selector + qualifier)); };
+    $(selector).bind("completed", move);
+    $(window).delayedResize(move);
+    move();
+  });
+};
+
+$.fn.delayedResize = function(callback) {
+  var didResize = false;
+  setInterval(function() {
+    if (didResize) {
+      didResize = false;
+      if (callback) { callback(); }
+    }
+  }, 500);
+  return this.resize(function() { didResize = true; });
 };
 
 // Monitors a field for value changes every interval and fires the callback
