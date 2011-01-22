@@ -214,12 +214,11 @@ $.fn.copyable = function() {
 };
 $.copyable = {};
 $.copyable.available = function() {
-  var flashAvailable = navigator.mimeTypes["application/x-shockwave-flash"];
-  if (flashAvailable && !$.copyable.loaded) {
+  if (FlashDetect.installed && !$.copyable.loaded) {
     $("<script>").attr("src", "/javascripts/ZeroClipboard.js").appendTo("head");
     $.copyable.loaded = true;
   }
-  return flashAvailable;
+  return FlashDetect.installed;
 };
 
 // Monitors a field for value changes every interval and fires the callback
