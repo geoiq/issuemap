@@ -1,0 +1,28 @@
+$pointer-image: "pointer.png"
+$pointer-padding: 10px
+#pointer
+  display: none
+  position: absolute
+  line-height: image-height($pointer-image)
+  text-align: center
+  color: white
+  font-size: 16px
+  padding-right: $pointer-padding
+  background: image-url($pointer-image) no-repeat 50% 50%
+  width: image-width($pointer-image) - $pointer-padding
+  height: image-height($pointer-image)
+
+@-webkit-keyframes bounce-pointer
+  0%
+    -webkit-transform: translate(0, 0)
+  100%
+    -webkit-transform: translate(8px, 0)
+
+#pointer
+  -webkit-animation-name: bounce-pointer
+  -webkit-animation-duration: 0.5s
+  -webkit-animation-iteration-count: 2
+  -webkit-animation-timing-function: ease-in
+  -webkit-animation-direction: alternate
+
+
