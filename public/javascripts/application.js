@@ -272,20 +272,17 @@ $.fn.stepAlong = function(selector, qualifier, eventType) {
     var pointer = $.extend($(this), pointerMethods);
     var move = function () { pointer.moveTo($(selector + qualifier)); };
     $(selector).bind("completed", move);
-    $(window).delayedResize(move);
+    $(window).delayedResize(function() { pointer.stop(); move(); });
     move();
   });
 };
 
 $.fn.delayedResize = function(callback) {
-  var didResize = false;
-  setInterval(function() {
-    if (didResize) {
-      didResize = false;
-      if (callback) { callback(); }
-    }
-  }, 500);
-  return this.resize(function() { didResize = true; });
+  var t;
+  return this.resize(function() { 
+    if (t) { clearTimeout(t); }
+    t = setTimeout(callback, 300);
+  });
 };
 
 // Monitors a field for value changes every interval and fires the callback
