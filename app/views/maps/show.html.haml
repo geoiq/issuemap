@@ -1,4 +1,6 @@
-- title @map.title
+- title    @map.title
+- og_url   map_url(@map.token)
+- og_image map_url(@map.token, :format => "png")
 
 - div_for @map do
   .header

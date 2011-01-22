@@ -12,6 +12,11 @@
     = description_tag "IssueMap lets you map the issues."
     = keywords_tag "map, geo, issues, data, geocommons"
     = copyright_tag "Copyright #{year_range(2010)}, FortiusOne, Inc"
+    = og_title_tag(@content_for_title)
+    = og_site_name_tag("IssueMap")
+    = og_url_tag
+    = og_image_tag
+
     = yield :head
 
     = stylesheet_link_tag "screen", :media => "screen, projection"
