@@ -14,7 +14,7 @@
   .upload
     - form_tag preprocess_new_map_path, :class => "preprocess-form" do
       = label_tag "preprocess-upload", "&nbsp;"
-      - link_to "javascript:return false;", :class => "file" do
+      - link_to "javascript:;", :class => "file" do
         Upload Data
         = file_field_tag :data, :id => "preprocess-upload"
     .hint Excel Spreadsheet or CSV
