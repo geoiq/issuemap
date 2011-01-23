@@ -41,7 +41,7 @@ var MapFormUpload = {
     var postSection = $(".post-process");
     importSection.markCompleted(false);
     postSection.slideUp();
-    $("select.column-names").setOptions([]);
+    $("select.column-names").setColumnOptions([]);
     $("#map_original_csv_data").val(null);
     $("#map_location_column_name").val(null);
     $("#map_data_column_name").val(null);
