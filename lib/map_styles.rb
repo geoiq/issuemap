@@ -7,7 +7,7 @@ module MapStyles
 JSON
 
   def self.included(base)
-    @@map_styles ||= JSON.parse(STYLE_JSON)
+    @@map_styles ||= ActiveSupport::JSON.decode(STYLE_JSON)
     base.class_eval do
       cattr_accessor :map_styles
     end

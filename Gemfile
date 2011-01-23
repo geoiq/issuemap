@@ -2,28 +2,27 @@ source "http://rubygems.org"
 
 gem "rails", "2.3.10"
 
-gem "nokogiri"
-gem "rubyzip"
-gem "pg"
-gem "google-spreadsheet-ruby", :require => "google_spreadsheet"
-gem "rest-client", :require => "rest_client"
-gem "multipart-post"
-gem "httparty"
-gem "crack"
+# The roo gem is a bit of a mess.  It doesn't handle its own dependencies
+# correctly, but it parses XLS, XLSX, and Open Office spreadsheets.  In other
+# words, we're stuck with it for now.
+def load_roo_dependencies
+  gem "rubyzip"
+  gem "nokogiri"
+  gem "spreadsheet"
+  gem "google-spreadsheet-ruby", :require => "google_spreadsheet"
+end
+
+gem "roo"; load_roo_dependencies
 gem "fastercsv"
-gem "ruby-ole"
-gem "roo"
-gem "spreadsheet"
-gem "sqlite3-ruby"
-gem "json_pure", "~> 1.4.3"
+gem "pg"
+gem "httparty"
 gem "haml"
 gem "maruku"
 gem "compass"
 gem "fancy-buttons"
 
-
 group :development do
-  gem "ruby-debug", "~> 0.10.3", :require => nil
+  gem "sqlite3-ruby"
 end
 
 group :test do
@@ -39,3 +38,4 @@ group :test do
   gem "autotest-fsevent"
   gem "autotest-growl"
 end
+
