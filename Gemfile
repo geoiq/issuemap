@@ -19,7 +19,7 @@ gem "json_pure", "~> 1.4.3"
 gem "haml"
 gem "maruku"
 gem "compass"
-gem "fancy-buttons", :git => 'https://github.com/imathis/fancy-buttons.git' # Until v1.0.5 is released
+gem "fancy-buttons"
 
 
 group :development do
