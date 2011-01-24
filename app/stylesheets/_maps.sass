@@ -113,6 +113,7 @@ $map-header-color: rgb(64, 136, 180)
         color: #fff
         +unstyled-link(white)
 
+  $map-control-border-radius: 6px
   $map-height: 500px
   .map-wrapper
     position: relative
@@ -132,29 +133,49 @@ $map-header-color: rgb(64, 136, 180)
         padding: 10px
         background-color: rgb(222, 253, 220)
         border: 1px solid rgb(47, 153, 102)
-        +border-bottom-radius(6px)
+        +border-bottom-radius($map-control-border-radius)
       #embed-control
         width: 16em
         right: 3px
+        +border-top-left-radius($map-control-border-radius)
         textarea
           display: block
           font-size: 8px
           +dimensions(100%, 60px)
       #export-control
-        min-width: 6em
         left: 0
+        +border-top-right-radius($map-control-border-radius)
         li
-          line-height: 2
+          margin-top: 3px
+          font-size: 12px
+          font-weight: bold
+          line-height: image-height("png_icon.png")
+          a
+            display: block
+            padding-left: image-width("png_icon.png") + 12px
+            background:
+              repeat: no-repeat
+              position: 0 50%
+          a.png-export
+            background-image: image-url("png_icon.png")
+          a.csv-export
+            background-image: image-url("csv_icon.png")
+          a.kml-export
+            background-image: image-url("kml_icon.png")
+        li.first
+          margin-top: 0
       .buttons
         margin: 3px 3px 0 0
       .button-wrapper
         float: right
         padding: 4px
-        +border-top-radius(3px)
+        +border-top-radius($map-control-border-radius)
         &.active
           background-color: rgb(47, 153, 102)
+          button
+            +fancy-button-colors(rgb(47, 153, 102))
       button
-        +fancy-button(#ccc, 12px, 2px)
+        +fancy-button(#ccc, 12px, $map-control-border-radius / 2)
         font-weight: normal
         width: 7em
 
