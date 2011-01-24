@@ -2,8 +2,10 @@ $(document).ready(function() {
   $(".preprocess-form").preprocessData(MapFormUpload.init());
   $("fieldset.required").sniffForCompletion();
   $("fieldset.required").sniffForSubmittable(".actions button[type=submit]");
-  $("textarea.copyable").copyable();
   $("#pointer").stepAlongFieldsets();
+
+  $("#maps.show .controls button").manageControls("#maps.show .controls");
+  $("#embed-control").findCopyableWhenControlDisplayed();
 });
 
 $(window).unload(function() {
@@ -190,33 +192,67 @@ $.fn.pleaseWaitOnSubmit = function() {
   });
 };
 
+$.fn.manageControls = function(controlsSelector) {
+  return this.each(function() {
+    var button = $(this);
+    button.click(function() {
+      var wasOn = button.parent().hasClass("active");
+      $(controlsSelector).find(".control").hide();
+      $(controlsSelector).find(".button-wrapper").removeClass("active");
+      if (!wasOn) {
+        button.parent().addClass("active");
+        $(button.attr("rel")).show().trigger("control-displayed");
+      }
+    });
+  });
+};
+
+$.fn.findCopyableWhenControlDisplayed = function() {
+  return this.bind("control-displayed", function() {
+    var alreadyDisplayed = $(this).hasClass("already-displayed");
+    if (!alreadyDisplayed) {
+      $(this).addClass("already-displayed");
+      $(this).find("textarea.copyable").copyable();
+    }
+  });
+};
+
 $.fn.copyable = function() {
   this.attr("readonly", "readonly");
   this.click(function() { this.select(); });
   this.focus(function() { this.select(); });
 
+  console.log("1");
   if (this.size() == 0) return this;
+  console.log("2");
   if (!$.copyable.available()) return this;
+  console.log("3");
   return this.each(function() {
+  console.log("4");
     var text = $(this);
-    var buttonSelector = $(this).attr("rel");
-    var button = $(buttonSelector);
-    button.show();
+    var clickSelector = $(this).attr("rel");
+    var clicker = $(clickSelector);
+    clicker.show();
+  console.log("5");
     
     var clip = new ZeroClipboard.Client();
 
     clip.setHandCursor(true);
+  console.log("6");
     clip.addEventListener('mouseOver', function() { clip.setText(text.val()); });
 
+  console.log("7");
     clip.addEventListener('complete', function (client, text) {
-      if (!button.attr("data-original-text")) {
-        button.attr("data-original-text", button.text());
+      if (!clicker.attr("data-original-text")) {
+        clicker.attr("data-original-text", clicker.text());
       }
-      button.text("Copied!");
-      setTimeout(function() { button.text(button.attr("data-original-text")); }, 2000);
+      clicker.text("Copied!");
+      setTimeout(function() { clicker.text(clicker.attr("data-original-text")); }, 2000);
     });
 
-    clip.glue(button.attr("id"));
+  console.log("8");
+    clip.glue(clicker.attr("id"));
+  console.log("9");
   });
 };
 $.copyable = {};

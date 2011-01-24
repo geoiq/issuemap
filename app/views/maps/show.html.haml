@@ -11,18 +11,24 @@
         = @map.created_at.strftime("%b %d, %Y")
     %h2= link_to @map.title, map_url(@map)
   .map-wrapper
-    .controls
     = compact_embed_code(@map, :style_class => "loading", :loading_message => "Loading...")
+    .controls
+      #export-control.control
+        %ul
+          %li= link_to "Image", map_path(@map.token, :format => "png")
+          %li= link_to "CSV", map_path(@map.token, :format => "csv")
+          %li= link_to "KML", map_path(@map.token, :format => "kml")
+      #embed-control.control
+        %textarea.copyable{ :rel => "#copy-it", :spellcheck => "false" }
+          = compact_embed_code(@map)
+        = link_to "Copy to clipboard", "javascript:;", :id => "copy-it", :style => "display: none;"
+      .buttons
+        .button-wrapper
+          %button{ :rel => "#embed-control" } Embed
+        .button-wrapper
+          %button{ :rel => "#export-control" } Export
 
-  %textarea#embed-code.copyable{ :rel => "#embed-code-copy" }
-    = compact_embed_code(@map)
 
-  %button#embed-code-copy{ :style => "display:none;" } Copy to clipboard
-  or
-  = link_to "Permalink", map_path(@map)
-  or
-  = link_to "Image", map_path(@map.token, :format => "png")
-  or
-  = link_to "CSV", map_path(@map.token, :format => "csv")
-  or
-  = link_to "KML", map_path(@map.token, :format => "kml")
+
+
+

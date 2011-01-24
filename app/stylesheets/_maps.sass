@@ -70,7 +70,7 @@ input#map_title
   width: 740px - ($maps-section-padding * 2) - ($input-padding * 2) - ($input-border-size * 2)
 
 // Simulating a file upload button
-// Specifying this to site over the entire section instead of just the button.
+// Specifying this to sit over the entire section instead of just the button.
 // To narrow this to just the button, add a.file to the selector.
 #maps.form fieldset.import .upload
   overflow: hidden
@@ -117,17 +117,51 @@ $map-header-color: rgb(64, 136, 180)
   .map-wrapper
     position: relative
     height: $map-height
-    .controls
-      position: absolute
-      top: 0
-      right: 0
     .loading
       font-size: 24px
       line-height: $map-height
       text-align: center
+    .controls
+      position: absolute
+      top: 0
+      right: 0
+      .control
+        display: none
+        position: absolute
+        top: 33px
+        padding: 10px
+        background-color: rgb(222, 253, 220)
+        border: 1px solid rgb(47, 153, 102)
+        +border-bottom-radius(6px)
+      #embed-control
+        width: 16em
+        right: 3px
+        textarea
+          display: block
+          font-size: 8px
+          +dimensions(100%, 60px)
+        a#copy-it
+          display: block
+          text-align: right
+          font-weight: bold
+          font-size: 12px
+          line-height: 1
+          margin-top: 6px
+      #export-control
+        min-width: 6em
+        left: 0
+        li
+          line-height: 2
+      .buttons
+        margin: 3px 3px 0 0
+      .button-wrapper
+        float: right
+        padding: 4px
+        +border-top-radius(3px)
+        &.active
+          background-color: rgb(47, 153, 102)
+      button
+        +fancy-button(#ccc, 12px, 2px)
+        font-weight: normal
+        width: 7em
 
-  textarea#embed-code
-    +dimensions(100%, 60px)
-  #embed-code-copy
-    +fancy-button($base-color)
-    width: 220px
