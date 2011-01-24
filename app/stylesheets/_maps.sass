@@ -13,11 +13,26 @@ $maps-section-or-size: 34px
     font-size: 12px
     line-height: 21px
     margin-top: 0
+  select.column-names
+    max-width: 300px
   fieldset
     background-color: $pending-form-color
     margin-bottom: 10px
     padding: $maps-section-padding
     +border-radius(8px)
+    .error-message
+      display: none
+  fieldset.errored
+    background-color: #999
+    color: white
+    .error-message
+      display: block
+      padding: $maps-section-padding / 2
+      border-bottom: $maps-section-split-border solid white
+      background-color: mix(#900, $action-color)
+      color: white
+      text-align: center
+      +border-top-radius(8px)
   fieldset.completed
     background-color: $completed-form-color
   fieldset.location, fieldset.data
@@ -33,7 +48,7 @@ $maps-section-or-size: 34px
       padding: $maps-section-padding ($maps-section-padding * 2)
     .upload
       float: left
-      width: ($maps-section-upload-width) - ($maps-section-padding * 4)
+      width: ($maps-section-upload-width) - ($maps-section-padding * 4) - ($maps-section-split-border / 2)
       a.file
         +dimensions(auto, 29px)
         +fancy-button($base-color)
@@ -43,7 +58,7 @@ $maps-section-or-size: 34px
       .hint
         text-align: center
     .paste
-      margin-left: $maps-section-upload-width
+      margin-left: $maps-section-upload-width - ($maps-section-split-border / 2)
       border-left: $maps-section-split-border solid white
       textarea#preprocess-paste
         display: block
@@ -60,9 +75,29 @@ $maps-section-or-size: 34px
       position: absolute
       top: 50%
       margin-top: -$maps-section-or-size / 2
-      left: ($maps-section-upload-width) + ($maps-section-split-border / 2) - ($maps-section-or-size / 2)
+      left: ($maps-section-upload-width) - ($maps-section-or-size / 2)
       +dimensions($maps-section-or-size, $maps-section-or-size)
       +border-radius($maps-section-or-size / 2)
+      a.undo
+        display: none
+        +replace-text-with-dimensions("undo.png")
+  fieldset.import
+    &.errored
+      .or
+        margin-top: 21px - ($maps-section-or-size / 2)
+    &.errored, &.completed
+      .or .text
+        display: none
+      .or a.undo
+        +border-radius($maps-section-or-size / 2)
+        padding: ($maps-section-or-size - image-width("undo.png")) / 2 - $maps-section-split-border
+        margin: $maps-section-split-border
+        display: block
+        +border-radius($maps-section-or-size / 2 - $maps-section-split-border)
+        &:hover
+          background-color: $pending-form-color
+        &:active
+          background-color: $completed-form-color
 
 // Map form specifics
 input#map_title

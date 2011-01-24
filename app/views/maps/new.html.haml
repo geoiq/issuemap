@@ -11,6 +11,7 @@
     want to map, providing a title, and shazam you have an instant map.
 
 %fieldset.import{ "data-step" => "Start Here" }
+  .error-message (placeholder)
   .upload
     - form_tag preprocess_new_map_path, :class => "preprocess-form" do
       = label_tag "preprocess-upload", "&nbsp;"
@@ -23,7 +24,9 @@
       = label_tag "preprocess-paste", "Copy &amp; Paste Data"
       = text_area_tag :data, "", :id => "preprocess-paste"
     .hint Columns names must be in the first row.
-  .or OR
+  .or
+    .text OR
+    = link_to "Undo", "#", :class => "undo", :title => "Undo Data Import"
 
 - form_for @map do |f|
   = f.hidden_field :original_csv_data

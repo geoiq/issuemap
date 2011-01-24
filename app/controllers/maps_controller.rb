@@ -8,7 +8,7 @@ class MapsController < ApplicationController
     render :text => import.to_json
   rescue StandardError => e
     logger.error(error_message_and_backtrace(e))
-    render :text => { :error => error_message(e) }.to_json, :status => :internal_server_error
+    render :text => { :error => e.message }.to_json, :status => :internal_server_error
   end
 
   def create

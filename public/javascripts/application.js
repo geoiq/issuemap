@@ -17,7 +17,8 @@ var MapFormUpload = {
   init: function() {
     this.automateTitleGuessing();
     this.displayColumnSamples();
-    $("form#new_map").pleaseWaitOnSubmit();
+    this.pleaseWaitOnSubmit();
+    this.wireUndoImport();
     return this;
   },
   success: function(data) {
@@ -26,7 +27,10 @@ var MapFormUpload = {
     var importSection = $(".import");
     var postSection = $(".post-process");
     
-    postSection.slideDown(function() { importSection.markCompleted(true); });
+    importSection.removeClass("errored");
+    importSection.find(".error-message").text(null);
+    importSection.markCompleted(true, false, false);
+    postSection.slideDown(function() { importSection.trigger("form-state-changed"); });
     $("select.column-names").setColumnOptions(data.column_names, data.column_details);
     $("#map_original_csv_data").val(data.csv).change();
     $("#map_location_column_name").val(data.guessed_location_column).change();
@@ -40,14 +44,22 @@ var MapFormUpload = {
 
     var importSection = $(".import");
     var postSection = $(".post-process");
-    importSection.markCompleted(false);
+    importSection.find(".error-message").text(data.error);
+    this.reset(true, false);
+  },
+  reset: function(errored, clearIt) {
+    var importSection = $(".import");
+    var postSection = $(".post-process");
+    importSection.toggleClass("errored", errored);
     postSection.slideUp();
+    importSection.markCompleted(false, true, true);
     $("select.column-names").setColumnOptions([]);
     $("#map_original_csv_data").val(null);
     $("#map_location_column_name").val(null);
     $("#map_data_column_name").val(null);
     $("#map_location_column_type").val(null);
     $("#map_data_column_type").val(null);
+    if (clearIt) $("form.preprocess-form").each(function() { this.reset(); });
   },
   automateTitleGuessing: function() {
     var dataColumn = $("#map_data_column_name");
@@ -64,6 +76,16 @@ var MapFormUpload = {
     $("select.column-names").change(function () {
       var samples = $(this).find(":selected").attr("data-samples") + ", ...";
       $(this).parents("fieldset").find(".hint").text(samples);
+    });
+  },
+  pleaseWaitOnSubmit: function() {
+    $("form#new_map").pleaseWaitOnSubmit();
+  },
+  wireUndoImport: function() {
+    var self = this;
+    $("fieldset.import a.undo").click(function(event) {
+      event.preventDefault();
+      self.reset(false, true);
     });
   }
 };
@@ -105,8 +127,8 @@ $.fn.preprocessData = function(options) {
       submitForm(function() { form[0].reset(); });
     });
 
-    pasteArea.valueChangeObserver(500, function() {
-      submitForm();
+    pasteArea.valueChangeObserver(500, function(input) {
+      if (input.val().length > 0) submitForm();
     });
   });
 };
@@ -117,7 +139,7 @@ $.fn.sniffForCompletion = function() {
     var inputs = fieldset.find(":input.required");
     inputs.change(function() { 
       var allFilled = _.all(inputs, function(input) { return $(input).val() && !$(input).hasClass("suggested"); });
-      fieldset.markCompleted(allFilled);
+      fieldset.markCompleted(allFilled, true, false);
     }).change();
   });
 };
@@ -129,17 +151,20 @@ $.fn.sniffForSubmittable = function(submit) {
     if (allFilled) {
       $(submit).removeAttr("disabled"); 
     } else {
-      $(submit).attr("disabled", "disabled"); 
+      $(submit).attr("disabled", true); 
     }
   }).change();
   return this;
 };
 
-$.fn.markCompleted = function(on) {
+$.fn.markCompleted = function(on, triggerFormStateChange, forceFormStateChange) {
   var hadClass = this.hasClass("completed");
-  if (on) this.addClass("completed"); 
-  else    this.removeClass("completed"); 
-  if (hadClass ? !on : on) { this.trigger("completed"); } // XOR
+  this.toggleClass("completed", !!on); // forcing a boolean
+  var xor = hadClass ? !on : on;       // logical XOR
+  if (forceFormStateChange || (xor && triggerFormStateChange)) { 
+    this.trigger("form-state-changed"); 
+  }
+  return this;
 };
 
 $.fn.suggestable = function() {
@@ -166,7 +191,7 @@ $.fn.setColumnOptions = function(names, details) {
       var samples = details[name].samples.join(", ");
       select.append(
         $("<option />")
-          .val(name).text(name)
+          .val(name).html(name)
           .attr("data-samples", samples)
           .attr("data-guessed_type", details[name].guessed_type));
     });
@@ -207,7 +232,7 @@ $.fn.manageControls = function(controlsSelector) {
 };
 
 $.fn.copyable = function() {
-  return this.attr("readonly", "readonly")
+  return this.attr("readonly", true)
     .click(function() { this.select(); })
     .focus(function() { this.select(); });
 };
@@ -245,6 +270,7 @@ $.fn.pointer = function(selector, qualifier, eventType) {
       return this.animate(this.positionFor(element), stepDuration);
     },
     moveTo: function(element) {
+      console.log("moveTo"); console.log(element);
       if (this.is(":visible")) {
         return this.animateTo(element);
       } else {
@@ -256,7 +282,7 @@ $.fn.pointer = function(selector, qualifier, eventType) {
   return this.each(function() {
     var pointer = $.extend($(this), pointerMethods);
     var move = function () { pointer.moveTo($(selector + qualifier)); };
-    $(selector).bind("completed", move);
+    $(selector).bind("form-state-changed", move);
     $(window).delayedResize(function() { pointer.stop(); move(); });
     move();
   });

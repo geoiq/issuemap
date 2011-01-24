@@ -63,11 +63,11 @@ class DatasetPreprocessor
   # This isn't the best way to handle validations, but this is a quick win until
   # we upgrade to Rails 3 and ActiveModel::Validations
   def check_validity!
+    if @table.size == 0
+      raise ArgumentError, "Data must include at least one header and one data row"
+    end
     if column_names.length < 2
       raise ArgumentError, "Data must include at least two columns"
-    end
-    if @table.size < 2
-      raise ArgumentError, "Data must include at least one header and one data row"
     end
   end
 
