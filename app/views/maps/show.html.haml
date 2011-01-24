@@ -2,6 +2,7 @@
 - og_url   map_url(@map.token)
 - og_image map_url(@map.token, :format => "png")
 
+- embed_code = compact_embed_code(@map)
 - div_for @map do
   .header
     .aux
@@ -19,9 +20,9 @@
           %li= link_to "CSV", map_path(@map.token, :format => "csv")
           %li= link_to "KML", map_path(@map.token, :format => "kml")
       #embed-control.control
-        %textarea.copyable{ :rel => "#copy-it", :spellcheck => "false" }
-          = compact_embed_code(@map)
-        = link_to "Copy to clipboard", "javascript:;", :id => "copy-it", :style => "display: none;"
+        - embed_code = compact_embed_code(@map)
+        %textarea.copyable{ :spellcheck => "false" }= embed_code
+        = clippy(embed_code, "#DDFDDC")
       .buttons
         .button-wrapper
           %button{ :rel => "#embed-control" } Embed
