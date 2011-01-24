@@ -1,3 +1,5 @@
+require 'csv'
+
 class DatasetPreprocessor
   extend ActiveSupport::Memoizable
 
@@ -50,7 +52,7 @@ class DatasetPreprocessor
   # Return CSV that only includes the specified columns, with column names that
   # conform to the naming conventions required by GeoIQ.
   def to_geoiq_csv(*column_names)
-    FasterCSV.generate do |csv|
+    CSV.generate do |csv|
       csv << column_names.map { |n| self.class.safe_column_name(n) }
       values_at(*column_names).each do |values|
         csv << values
@@ -100,16 +102,17 @@ class DatasetPreprocessor
   def digest_spreadsheet(spreadsheet_class, uploaded_file)
     tempfile = Tempfile.new("spreadsheet")
     spreadsheet_class.new(uploaded_file.path, false, :ignore).to_csv(tempfile.path)
-    digest_delimited(tempfile, ",")
+    contents = tempfile.read.encode("UTF-8")
+    digest_delimited(contents, ",")
   end
 
   def digest_delimited(data_or_file, delimiter = ",")
-    csv = FasterCSV.new(data_or_file, :col_sep => delimiter, :skip_blanks => true,
-                        :headers => true, :header_converters => [one_line_headers])
+    csv = CSV.new(data_or_file, :col_sep => delimiter, :skip_blanks => true,
+                  :headers => true, :header_converters => [one_line_headers])
     @table = csv.read
   end
 
-  # FasterCSV::Table does't seem to behave when a header has carriage returns in
+  # CSV::Table does't seem to behave when a header has carriage returns in
   # it. This cleans header values to avoid what could be considered a bug in
   # FasterCSV.
   def one_line_headers

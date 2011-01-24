@@ -43,7 +43,7 @@ class MapObserver < ActiveRecord::Observer
   end
 
   def create_geoiq_layer(map, geoiq_map)
-    styles = @@map_styles.choice
+    styles = @@map_styles.sample
     styles["fill"]["selectedAttribute"] = safe(map.data_column_name)
     layer_details = {
       :title    => map.title,

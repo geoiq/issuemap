@@ -13,7 +13,6 @@ def load_roo_dependencies
 end
 
 gem "roo"; load_roo_dependencies
-gem "fastercsv"
 gem "pg"
 gem "httparty"
 gem "haml"
@@ -32,7 +31,7 @@ group :test do
   gem "fakeweb"
   gem "mocha"
   gem "no_peeping_toms"
-  gem "redgreen"
+  gem "mynyml-redgreen", :require => "redgreen"
   gem "autotest"
   gem "autotest-rails"
   gem "autotest-fsevent"

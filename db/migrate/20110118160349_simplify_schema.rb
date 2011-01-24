@@ -1,3 +1,4 @@
+require 'csv'
 class Dataset < ActiveRecord::Base
   belongs_to :map
   serialize :data_columns, Hash
@@ -50,6 +51,6 @@ class SimplifySchema < ActiveRecord::Migration
   def self.convert_data_to_csv(data, delimiter)
     return data if delimiter == "," || delimiter.blank?
     options = { :col_sep => delimiter, :headers => true, :skip_blanks => true }
-    FasterCSV.new(data, options).read.to_csv
+    CSV.new(data, options).read.to_csv
   end
 end
