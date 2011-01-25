@@ -11,6 +11,31 @@ class MapsControllerTest < ActionController::TestCase
     should_not set_the_flash
     should render_template :new
     should respond_with :success
+
+    should "have all the necessary file import form fields" do
+      assert_form(preprocess_new_map_path, :post, 2) do
+        assert_select "input[type=file][name=?]", "data"
+      end
+    end
+
+    should "have all the necessary paste import form fields" do
+      assert_form(preprocess_new_map_path, :post, 2) do
+        assert_select "textarea[name=?]", "data"
+      end
+    end
+
+    should "have all the necessary submission form fields" do
+      assert_form(maps_path, :post) do
+        assert_hidden_field :map, :original_csv_data
+        assert_label        :map, :location_column_name
+        assert_drop_down    :map, :location_column_name, :location_column_type
+        assert_label        :map, :data_column_name
+        assert_drop_down    :map, :data_column_name, :data_column_type
+        assert_label        :map, :title
+        assert_text_field   :map, :title
+        assert_submit
+      end
+    end
   end
 
   # Testing uploaded data

@@ -77,12 +77,33 @@ class Test::Unit::TestCase
   end
   alias assert_check_boxes assert_check_box
 
-  # TODO: add hidden_field
-  # TODO: add file_field
+  def assert_drop_down(model, *attributes)
+    attributes.each do |attribute|
+      assert_select "select[name=?]",
+                    "#{model.to_s}[#{attribute.to_s}]"
+    end
+  end
+  alias assert_drop_downs assert_drop_down
+
+  def assert_hidden_field(model, *attributes)
+    attributes.each do |attribute|
+      assert_select "input[type=hidden][name=?]",
+                    "#{model.to_s}[#{attribute.to_s}]"
+    end
+  end
+  alias assert_hidden_fields assert_hidden_field
+
+  def assert_file_field(model, *attributes)
+    attributes.each do |attribute|
+      assert_select "input[type=file][name=?]",
+                    "#{model.to_s}[#{attribute.to_s}]"
+    end
+  end
+  alias assert_file_fields assert_file_field
 
   def assert_label(model, *attributes)
     attributes.each do |attribute|
-      label = "#{model.to_s.underscore}_#{model.to_s.underscore}"
+      label = "#{model.to_s.underscore}_#{attribute.to_s}"
       assert_select "label[for=?]", label
     end
   end
