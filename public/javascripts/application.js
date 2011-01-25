@@ -53,6 +53,7 @@ var MapFormUpload = {
     importSection.toggleClass("errored", errored);
     postSection.slideUp();
     importSection.markCompleted(false, true, true);
+    if (!errored) { $("#maps.form fieldset").removeClass("errored"); }
     $("select.column-names").setColumnOptions([]);
     $("#map_original_csv_data").val(null);
     $("#map_location_column_name").val(null);
@@ -159,7 +160,9 @@ $.fn.sniffForSubmittable = function(submit) {
 
 $.fn.markCompleted = function(on, triggerFormStateChange, forceFormStateChange) {
   var hadClass = this.hasClass("completed");
-  this.toggleClass("completed", !!on); // forcing a boolean
+  on = !!on;                           // forcing a boolean
+  if (on) { this.removeClass("errored"); }
+  this.toggleClass("completed", on); 
   var xor = hadClass ? !on : on;       // logical XOR
   if (forceFormStateChange || (xor && triggerFormStateChange)) { 
     this.trigger("form-state-changed"); 

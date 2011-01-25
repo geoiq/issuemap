@@ -18,10 +18,11 @@ $maps-section-or-size: 34px
   fieldset
     background-color: $pending-form-color
     margin-bottom: 10px
-    padding: $maps-section-padding
     +border-radius(8px)
     .error-message
       display: none
+    .inner
+      padding: $maps-section-padding
   fieldset.errored
     background-color: #999
     color: white
@@ -31,7 +32,6 @@ $maps-section-or-size: 34px
       border-bottom: $maps-section-split-border solid white
       background-color: mix(#900, $action-color)
       color: white
-      text-align: center
       +border-top-radius(8px)
   fieldset.completed
     background-color: $completed-form-color

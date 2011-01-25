@@ -1,4 +1,21 @@
 module MapsHelper
+  def fieldset_error_messages(object, *methods)
+    messages = methods.map do |method|
+      error_message  = object.errors.on(method)
+      error_sentence = [object.class.human_attribute_name(method), error_message].join(" ")
+      content_tag(:div, error_sentence) if error_message.present?
+    end.join
+    content_tag(:div, messages, :class => "error-message")
+  end
+
+  def fieldset_errored?(object, *methods)
+    methods.any? { |method| object.errors.on(method).present? }
+  end
+
+  def fieldset_style_classes(object, *methods)
+    "errored" if fieldset_errored?(object, *methods)
+  end
+
   def compact_embed_code(map, locals = {})
     embed_code = render :partial => "maps/embed", :locals => locals.merge(:map => map)
     embed_code = embed_code.lines.map(&:strip).join
