@@ -10,8 +10,7 @@
     Get started by uploading or pasting your data, selecting the entries you
     want to map, providing a title, and shazam you have an instant map.
 
-%fieldset.import{ "data-step" => "Start Here", :class => [fieldset_style_classes(@map, :original_csv_data), @map.original_csv_data.present? ? "completed" : nil].join(" ") }
-  = fieldset_error_messages(@map, :original_csv_data)
+- completable_fieldset(@map, :original_csv_data, :class => "import", "data-step" => "Start Here") do
   .upload
     - form_tag preprocess_new_map_path, :class => "preprocess-form" do
       = label_tag "preprocess-upload", "&nbsp;"
@@ -31,32 +30,29 @@
 - form_for @map do |f|
   = f.hidden_field :original_csv_data
   %section.post-process{ :style => (@map.original_csv_data.blank? ? "display: none;" : nil) }
-    %fieldset.location.required{ "data-step" => "Next Step", :class => fieldset_style_classes(@map, :location_column_name, :location_column_type) }
-      = fieldset_error_messages(@map, :location_column_name, :location_column_type)
+    - completable_fieldset(@map, :location_column_name, :location_column_type, :class => "location required", "data-step" => "Next Step") do
       .inner
         = f.label :location_column_name, "Select Location"
         .detail Please select the column that you want to use for mapping location.
         .input
           Show
-          = f.select :location_column_name, options_for_select([]), {}, :class => "column-names required"
+          = f.select :location_column_name, [], {}, :class => "column-names required"
           as
           = f.select :location_column_type, location_type_options, {}, :class => "required"
         .hint sample, sample, sample
 
-    %fieldset.data.required{ "data-step" => "Next Step", :class => fieldset_style_classes(@map, :data_column_name, :data_column_type) }
-      = fieldset_error_messages(@map, :data_column_name, :data_column_type)
+    - completable_fieldset(@map, :data_column_name, :data_column_type, :class => "data required", "data-step" => "Next Step") do
       .inner
         = f.label :data_column_name, "Select Data"
         .detail Please select the numeric data field that you want to display.
         .input
           Show
-          = f.select :data_column_name, options_for_select([]), {}, :class => "column-names required"
+          = f.select :data_column_name, [], {}, :class => "column-names required"
           as
           = f.select :data_column_type, data_type_options, {}, :class => "required"
         .hint sample, sample, sample
 
-    %fieldset.title.required{ "data-step" => "Customize", :class => fieldset_style_classes(@map, :title) }
-      = fieldset_error_messages(@map, :title)
+    - completable_fieldset(@map, :title, :class => "title required", "data-step" => "Customize") do
       .inner
         = f.label :title, "Map Title"
         = f.text_field :title, :class => [(@map.new_record? ? "suggested" : nil), "required"].join(" ")

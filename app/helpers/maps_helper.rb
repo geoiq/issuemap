@@ -12,8 +12,28 @@ module MapsHelper
     methods.any? { |method| object.errors.on(method).present? }
   end
 
+  def fieldset_completed?(object, *methods)
+    methods.all? { |method| object.errors.on(method).blank? && object.send(method).present? }
+  end
+
   def fieldset_style_classes(object, *methods)
-    "errored" if fieldset_errored?(object, *methods)
+    errored   = "errored"   if fieldset_errored?(object, *methods)
+    completed = "completed" if fieldset_completed?(object, *methods)
+    [errored, completed].compact.join(" ")
+  end
+
+  def completable_fieldset(object, *methods, &block)
+    options = methods.extract_options!
+    style_class = options.delete(:class)
+    additional_classes = fieldset_style_classes(object, *methods)
+    content = fieldset_error_messages(object, *methods)
+    content << capture(&block)
+    content_tag = content_tag(:fieldset, content, options.merge(:class => "#{style_class} #{additional_classes}"))
+    if block_called_from_erb?(block)
+      concat(content_tag)
+    else
+      content_tag
+    end
   end
 
   def compact_embed_code(map, locals = {})
@@ -22,11 +42,11 @@ module MapsHelper
   end
 
   def location_type_options
-    options_for_select([["Please select a location type...", nil]] + AppConfig[:boundaries])
+    [["Please select a location type...", nil]] + AppConfig[:boundaries]
   end
 
   def data_type_options
-    options_for_select([["Please select a data type...", nil]] + DATA_TYPES)
+    [["Please select a data type...", nil]] + DATA_TYPES
   end
 
   DATA_TYPES = [['Plain text', 'string'],
