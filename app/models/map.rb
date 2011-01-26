@@ -18,8 +18,8 @@ class Map < ActiveRecord::Base
     ["map", (token || "new")].join("_")
   end
 
-  def to_png(text_overlay = token)
-    query = { :size => "l", :format => "png", :text => text_overlay }
+  def to_png(text_overlay = token, size = nil)
+    query = { :size => (size || "l"), :format => "png", :text => text_overlay }
     GeoIQ.get("/maps/#{self.geoiq_map_xid}", :query => query).body
   end
 

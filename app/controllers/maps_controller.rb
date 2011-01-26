@@ -33,7 +33,7 @@ class MapsController < ApplicationController
       format.html {}
       format.csv { send_map_data(@map.to_csv, :csv, "csv") }
       format.kml { send_map_data(@map.to_kml, :kml, "kml") }
-      format.png { send_map_data(@map.to_png(:text => map_url(@map.token)), :png, "png") }
+      format.png { send_map_data(@map.to_png(map_url(@map.token), params[:size]), :png, "png") }
     end
   end
 

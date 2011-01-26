@@ -1,0 +1,32 @@
+#gallery
+  margin-top: 21px
+  background-color: darken($base_color, 4%)
+  +border-radius(8px)
+  +dimensions(auto, 270px)
+  li
+    background-color: darken($base_color, 4%)
+    margin-bottom: 20px
+    +box-shadow(rgba(0,0,0,0.75), 0, 2px, 3px)
+    img, a
+      display: block
+  .ui-jcoverflip--title
+    position: absolute
+    width: 260px
+    bottom: 30px
+    left: 50%
+    margin-left: -150px
+    padding: 18px 20px
+    font-size: 18px
+    text-align: center
+    background-color: $action_color
+    color: white
+    z-index: 200
+    +opacity(0.7)
+
+.ui-jcoverflip
+  position: relative
+
+.ui-jcoverflip--item
+  position: absolute
+  display: block
+

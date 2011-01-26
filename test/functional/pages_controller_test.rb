@@ -19,4 +19,8 @@ class PagesControllerTest < ActionController::TestCase
   should_get_page :tos
   should_get_page :faq
   should_get_page :usage
+
+  on_get :home do
+    should assign_to :maps
+  end
 end

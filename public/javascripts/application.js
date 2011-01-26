@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  $("#gallery").gallery();
   $(".preprocess-form").preprocessData(MapFormUpload.init());
   $("fieldset.required").sniffForCompletion();
   $("fieldset.required").sniffForSubmittable(".actions button[type=submit]");
@@ -289,6 +290,65 @@ $.fn.pointer = function(selector, qualifier, eventType) {
     $(window).delayedResize(function() { pointer.stop(); move(); });
     move();
   });
+};
+
+$.fn.gallery = function() {
+  if (this.size() == 0) { return this; }
+  var sizeScale = 0.6;
+  var offsetScale = 0.7;
+  var activeWidth = 300;
+  var padding = 10;
+  function px(n) { return n + "px"; }
+  var options = {
+    beforeCss: function(el, container, offset) {
+      var width = 0;
+      var leftOffset = 0;
+      var bottom = 0;
+      for (var i = 1; i <= offset + 1; i++) {
+        width = activeWidth * Math.pow(sizeScale, i);
+        leftOffset += (width * offsetScale);
+        bottom += 40 * Math.pow(sizeScale, i);
+      }
+      var zIndex = 99 - offset;
+      var left = (container.width() / 2) - (activeWidth / 2) - leftOffset;
+      return [
+        $.jcoverflip.animationElement(el, { left: px(left), bottom: px(bottom) }, { 0: { "z-index": zIndex } }),
+        $.jcoverflip.animationElement(el.find("img"), { opacity: 0.5, width: px(width) }, {})
+      ];
+    },
+    afterCss: function(el, container, offset) {
+      var width = activeWidth;
+      var leftOffset = 0;
+      var bottom = 0;
+      for (var i = 1; i <= offset + 1; i++) {
+        var oldWidth = width;
+        width = activeWidth * Math.pow(sizeScale, i);
+        leftOffset += oldWidth - width + (width * offsetScale);
+        bottom += 40 * Math.pow(sizeScale, i);
+      }
+      var zIndex = 99 - offset;
+      var left = (container.width() / 2) - (activeWidth / 2) + leftOffset;
+      return [
+        $.jcoverflip.animationElement(el, { left: px(left), bottom: px(bottom) }, { 0: { "z-index": zIndex } }),
+        $.jcoverflip.animationElement(el.find("img"), { opacity: 0.5, width: px(width) }, {})
+      ];
+    },
+    currentCss: function(el, container) {
+      return [
+        $.jcoverflip.animationElement(el, { left: px(container.width() / 2 - activeWidth / 2), bottom: 0 }, { 0: { "z-index": 100 } }),
+        $.jcoverflip.animationElement(el.find('img'), { opacity: 1, width: px(activeWidth) }, {})
+      ];
+    },
+  	titleAnimateIn: function(titleElement, time, fromRight) {
+      setTimeout(function() { titleElement.fadeIn(time); }, time);
+  	},
+  	titleAnimateOut: function(titleElement, time, fromRight) {
+  		titleElement.stop().fadeOut(time/2);
+  	},
+    current: 2
+  };
+
+  this.jcoverflip(options);
 };
 
 $.fn.delayedResize = function(callback) {

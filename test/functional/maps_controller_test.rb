@@ -71,9 +71,9 @@ class MapsControllerTest < ActionController::TestCase
       should redirect_to("correct map path") { @map }
     end
 
-    context "" do
+    context "fetching a png" do
       setup do
-        Map.any_instance.expects(:to_png).with(:text => map_url(@map.token)).returns("png-bytes")
+        Map.any_instance.expects(:to_png).with(map_url(@map.token), nil).returns("png-bytes")
       end
 
       on_get :show, lambda {{ :id => @map.to_param, :format => "png" }} do
@@ -85,7 +85,21 @@ class MapsControllerTest < ActionController::TestCase
       end
     end
 
-    context "" do
+    context "fetching a small png" do
+      setup do
+        Map.any_instance.expects(:to_png).with(map_url(@map.token), "s").returns("png-bytes")
+      end
+
+      on_get :show, lambda {{ :id => @map.to_param, :format => "png", :size => "s" }} do
+        should respond_with :success
+        should respond_with_content_type "image/png"
+        should "respond with a png" do
+          assert_equal "png-bytes", @response.body
+        end
+      end
+    end
+
+    context "fetching a csv" do
       setup do
         Map.any_instance.expects(:to_csv).returns("csv-data")
       end
@@ -99,7 +113,7 @@ class MapsControllerTest < ActionController::TestCase
       end
     end
 
-    context "" do
+    context "fetching a kml" do
       setup do
         Map.any_instance.expects(:to_kml).returns("kml-data")
       end

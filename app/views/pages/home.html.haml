@@ -1,3 +1,7 @@
+- content_for :javascripts do
+  = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"
+  = javascript_include_tag "jquery.jcoverflip.js"
+
 - title "Home"
 .description
   %ol.steps
@@ -11,5 +15,8 @@
 
     = render :partial => "shared/new_map_call_to_action"
 
-.gallery
-  = image_tag "gallery_placeholder.png"
+%ul#gallery
+  - @maps.each do |map|
+    %li
+      - link_to map_path(map) do
+        = image_tag map_path(map, :format => "png", :size => "m"), :width => 400, :alt => map.title
