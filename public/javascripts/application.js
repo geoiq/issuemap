@@ -336,15 +336,15 @@ $.fn.gallery = function() {
     },
     currentCss: function(el, container) {
       return [
-        $.jcoverflip.animationElement(el, { left: px(container.width() / 2 - activeWidth / 2), bottom: 0 }, { 0: { "z-index": 100 } }),
-        $.jcoverflip.animationElement(el.find('img'), { opacity: 1, width: px(activeWidth) }, {})
+        $.jcoverflip.animationElement(el, { left: px(container.width() / 2 - activeWidth / 2), bottom: px(0) }, { 0: { "z-index": 100 } }),
+        $.jcoverflip.animationElement(el.find("img"), { opacity: 1.0, width: px(activeWidth) }, {})
       ];
     },
   	titleAnimateIn: function(titleElement, time, fromRight) {
-      setTimeout(function() { titleElement.fadeIn(time); }, time);
+      titleElement.stop(false, true).animate({ left: "50%" }, time).fadeIn(time);
   	},
   	titleAnimateOut: function(titleElement, time, fromRight) {
-  		titleElement.stop().fadeOut(time/2);
+  		titleElement.stop(false, true).fadeOut(time/2, function() { titleElement.hide(); });
   	},
     current: 2
   };
