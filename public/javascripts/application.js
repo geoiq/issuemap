@@ -61,6 +61,7 @@ var MapFormUpload = {
     $("#map_data_column_name").val(null);
     $("#map_location_column_type").val(null);
     $("#map_data_column_type").val(null);
+    $("#map_title").val(null).change();
     if (clearIt) $("form.preprocess-form").each(function() { this.reset(); });
   },
   automateTitleGuessing: function() {
