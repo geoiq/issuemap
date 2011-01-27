@@ -8,3 +8,4 @@ test:
   geoiq_endpoint: http://geoiq.issuemapperqa.geoiq.com
   geoiq_user: admin
   geoiq_password: xxxxxxxxx
+  featured_map_tokens: []
