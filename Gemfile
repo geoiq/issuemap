@@ -22,6 +22,7 @@ gem "fancy-buttons"
 
 group :development do
   gem "sqlite3-ruby"
+  gem "capistrano"
 end
 
 group :test do
