@@ -1,6 +1,4 @@
 class MapObserver < ActiveRecord::Observer
-  include MapStyles
-
   # TODO: This should really instead trigger a background job where the
   # Maps#show page spins and polls until everything is ready.
   def before_create(map)
@@ -43,8 +41,8 @@ class MapObserver < ActiveRecord::Observer
   end
 
   def create_geoiq_layer(map, geoiq_map)
-    styles = @@map_styles.sample
-    styles["fill"]["selectedAttribute"] = safe(map.data_column_name)
+    styles = MapStyles.random_style
+    styles[:fill][:selectedAttribute] = safe(map.data_column_name)
     layer_details = {
       :title    => map.title,
       :subtitle => "",

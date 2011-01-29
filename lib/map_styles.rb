@@ -1,15 +1,27 @@
 module MapStyles
-  STYLE_JSON = <<-JSON
-    [{"type": "CHOROPLETH", "stroke": {"alpha": 1, "weight": 2, "color": 14343142}, "fill": {"opacity":0.75, "classificationType": "Equal Interval", "categories": 5, "colors": [14343142, 11580379, 7505585, 4481915, 2966850], "classificationNumClasses": 5}},
-    {"type": "CHOROPLETH", "stroke": {"alpha": 1, "weight": 2, "color": 16777164}, "fill": {"opacity": 0.75, "classificationType": "Equal Interval", "categories": 5, "colors": [16777164, 12773017, 7915129, 3253076, 26679], "classificationNumClasses": 5}},
-    {"type": "CHOROPLETH", "stroke": {"alpha": 1, "weight": 2, "color": 15456706}, "fill": {"opacity": 0.75, "classificationType": "Equal Interval", "categories": 5, "colors": [15456706, 13744031, 10782317, 8151635, 4863020], "classificationNumClasses": 5}},
-    {"type": "CHOROPLETH", "stroke": {"alpha": 1, "weight": 2, "color": 16250871}, "fill": {"opacity": 0.75, "classificationType": "Equal Interval", "categories": 5, "colors":  [16250871, 13421772, 9868950, 6513507, 2434341], "classificationNumClasses": 5}}]
-JSON
+  COLOR_PALETTES = {
+    :white_orange     => [0xFEF7A5, 0xFECE6D, 0xEC8414, 0xAE4C02, 0x662506],
+    :white_dark_green => [0xDADBE6, 0xB0B3DB, 0x7286B1, 0x44637B, 0x2D4542],
+    :white_brown      => [0xEBD9C2, 0xd1b79f, 0xA4866D, 0x7C6253, 0x4A342C],
+    :white_gray       => [0xF7F7F7, 0xCCCCCC, 0x969696, 0x636363, 0x252525],
+    :white_red        => [0xFEE5D9, 0xFCAE91, 0xFB6A4A, 0xDE2D26, 0xA50F15],
+    :white_green      => [0xFFFFCC, 0xC2E699, 0x78C679, 0x31A354, 0x006837],
+    :white_blue       => [0xEFF3FF, 0xBDD7E7, 0x6BAED6, 0x3182BD, 0x08519C],
+    :white_purple     => [0xFCE3D7, 0xE3BBC2, 0xC090BD, 0x835BA4, 0x511483],
+    # :green_purple     => [0x78C679, 0xD9F0A3, 0xF7F7F7, 0xE6C7CA, 0xC090BD],
+    # :blue_red         => [0x4292C6, 0xC6DBEF, 0xF7F7F7, 0xFCC5BB, 0xFF776D],
+    # :diverging        => [0x909FC2, 0xD0D1E6, 0xF7F7F7, 0xFEE281, 0xFE9929],
+  }
 
-  def self.included(base)
-    @@map_styles ||= ActiveSupport::JSON.decode(STYLE_JSON)
-    base.class_eval do
-      cattr_accessor :map_styles
-    end
+  def self.random_style
+    {
+      :type => "CHOROPLETH",
+      :fill => {
+        :opacity            => 0.75,
+        :classificationType => "Equal Interval",
+        :categories         => 5,
+        :colors             => COLOR_PALETTES.values.sample,
+      }
+    }
   end
 end
