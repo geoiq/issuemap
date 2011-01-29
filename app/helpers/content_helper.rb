@@ -58,8 +58,7 @@ module ContentHelper
     options = args.extract_options!
     options[:class] ||= content_value(:body_class, default_body_class)
     options[:id] ||= content_value(:body_id, default_body_id)
-    contents = capture(&block)
-    content_tag(:body, contents, options)
+    content_tag(:body, options, &block)
   end
 
 
