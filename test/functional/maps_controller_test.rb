@@ -70,7 +70,7 @@ class MapsControllerTest < ActionController::TestCase
         assert_select "meta[name=og:site_name][content=?]", "IssueMap"
         assert_select "meta[name=og:title][content=?]",     "Title"
         assert_select "meta[name=og:url][content=?]",       map_url(@map.token)
-        assert_select "meta[name=og:image][content=?]",     map_url(@map.token, :format => "png")
+        assert_select "meta[name=og:image][content=?]",     map_url(@map.token, :format => "png", :size => "m")
       end
     end
 
