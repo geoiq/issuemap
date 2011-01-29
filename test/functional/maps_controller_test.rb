@@ -65,6 +65,13 @@ class MapsControllerTest < ActionController::TestCase
 
     on_get :show, lambda {{ :id => @map.to_param }} do
       should respond_with :success
+
+      should "respond with Open Graph meta tags" do
+        assert_select "meta[name=og:site_name][content=?]", "IssueMap"
+        assert_select "meta[name=og:title][content=?]",     "Title"
+        assert_select "meta[name=og:url][content=?]",       map_url(@map.token)
+        assert_select "meta[name=og:image][content=?]",     map_url(@map.token, :format => "png")
+      end
     end
 
     on_get :show, lambda {{ :id => "#{@map.token}-some-outdated-or-wrong-slug" }} do
