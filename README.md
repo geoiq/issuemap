@@ -15,6 +15,15 @@ Initialize dependencies with bundler
     $ bundle install --path vendor
     $ bundle package
 
+# Deploying
+
+Make sure your public ssh key is both in the GitHub repository and under the
+deployment server's user account.
+
+Afterwards, run `bundle exec cap <environment> <task>`.  For example:
+
+    $ bundle exec cap staging deploy:long
+
 # Miscellaneous
 
 The static error pages under public (404.html, 422.html, and 500.html) should
