@@ -3,6 +3,7 @@ require 'ostruct'
 
 require 'geo_iq/layer'
 require 'geo_iq/map'
+require 'geo_iq/dataset'
 
 module GeoIQ
   include HTTParty
