@@ -3,7 +3,7 @@
 - og_image map_url(@map.token, :format => "png")
 
 - embed_code = compact_embed_code(@map)
-- div_for @map do
+= div_for @map do
   .header
     .aux
       = render :partial => "add_this"

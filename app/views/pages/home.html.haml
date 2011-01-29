@@ -18,5 +18,5 @@
 %ul#gallery
   - @maps.each do |map|
     %li
-      - link_to map_path(map) do
+      = link_to map_path(map) do
         = image_tag map_path(map, :format => "png", :size => "m"), :width => 400, :alt => map.title
