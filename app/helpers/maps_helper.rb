@@ -1,7 +1,7 @@
 module MapsHelper
   def fieldset_error_messages(object, *methods)
     messages = methods.map do |method|
-      error_message  = object.errors.on(method)
+      error_message  = object.errors[method]
       error_sentence = [object.class.human_attribute_name(method), error_message].join(" ")
       content_tag(:div, error_sentence) if error_message.present?
     end.join
@@ -9,11 +9,11 @@ module MapsHelper
   end
 
   def fieldset_errored?(object, *methods)
-    methods.any? { |method| object.errors.on(method).present? }
+    methods.any? { |method| object.errors[method].present? }
   end
 
   def fieldset_completed?(object, *methods)
-    methods.all? { |method| object.errors.on(method).blank? && object.send(method).present? }
+    methods.all? { |method| object.errors[method].blank? && object.send(method).present? }
   end
 
   def fieldset_style_classes(object, *methods)
@@ -28,17 +28,12 @@ module MapsHelper
     additional_classes = fieldset_style_classes(object, *methods)
     content = fieldset_error_messages(object, *methods)
     content << capture(&block)
-    content_tag = content_tag(:fieldset, content, options.merge(:class => "#{style_class} #{additional_classes}"))
-    if block_called_from_erb?(block)
-      concat(content_tag)
-    else
-      content_tag
-    end
+    content_tag(:fieldset, content, options.merge(:class => "#{style_class} #{additional_classes}"))
   end
 
   def compact_embed_code(map, locals = {})
     embed_code = render :partial => "maps/embed", :locals => locals.merge(:map => map)
-    embed_code = embed_code.lines.map(&:strip).join
+    CGI::unescape_html(embed_code.lines.map(&:strip).join)
   end
 
   def location_type_options
@@ -55,7 +50,7 @@ module MapsHelper
                 ['Time or Date', 'datetime']]
 
   def clippy(text, bgcolor='#FFFFFF')
-    html = <<-EOF
+    html = <<-EOF.html_safe
       <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
               width="110"
               height="14"

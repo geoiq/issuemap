@@ -2,7 +2,6 @@
 - og_url   map_url(@map.token)
 - og_image map_url(@map.token, :format => "png")
 
-- embed_code = compact_embed_code(@map)
 = div_for @map do
   .header
     .aux
@@ -12,7 +11,7 @@
         = @map.created_at.strftime("%b %d, %Y")
     %h2= link_to @map.title, map_url(@map)
   .map-wrapper
-    = compact_embed_code(@map, :style_class => "loading", :loading_message => "Loading...")
+    = compact_embed_code(@map, :style_class => "loading", :loading_message => "Loading...").html_safe
     .controls
       #export-control.control
         %ul
@@ -21,7 +20,7 @@
           %li= link_to "KML", map_path(@map.token, :format => "kml"), :class => "kml-export"
       #embed-control.control
         - embed_code = compact_embed_code(@map)
-        %textarea.copyable{ :spellcheck => "false" }= embed_code
+        %textarea.copyable{ :spellcheck => "false" }= embed_code.html_safe
         = clippy(embed_code, "#DDFDDC")
       .buttons
         .button-wrapper

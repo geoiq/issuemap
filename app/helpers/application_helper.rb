@@ -2,7 +2,7 @@ module ApplicationHelper
   def render_flash_messages(*keys)
     messages = keys.map do |key|
       content_tag(:p, flash_message_with_item(key), :class => "flash #{key}") if flash[key]
-    end.join
+    end.join.html_safe
     content_tag(:div, messages, :id => "flash_messages") unless messages.blank?
   end
 
