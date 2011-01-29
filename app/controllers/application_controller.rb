@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
   end
 
   def error_message_and_backtrace(e)
-    "\n#{error_message(e)}:\n  " + clean_backtrace(e).join("\n  ") + "\n\n"
+    error_backtrace = Rails.backtrace_cleaner.clean(e.backtrace)
+    "\n#{error_message(e)}:\n  " + error_backtrace.join("\n  ") + "\n\n"
   end
 end
