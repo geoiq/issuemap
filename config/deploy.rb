@@ -43,7 +43,7 @@ namespace :deploy do
   end
 
   task :update_stylesheets, :roles => :app do
-    run "#{current_path}/script/runner -e #{rails_env} \"Sass::Plugin.options = { :always_update => true }; Sass::Plugin.update_stylesheets;\""
+    run "#{current_path}/script/rails runner -e #{rails_env} \"Sass::Plugin.options = { :always_update => true }; Sass::Plugin.update_stylesheets;\""
   end
 
   desc "Tail the Rails log for this environment"
