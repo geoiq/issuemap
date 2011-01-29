@@ -1,8 +1,11 @@
-ActionController::Routing::Routes.draw do |map|
-  map.resources :maps, :new => { :preprocess => :post }, :collection => { :review => :any }
+IssueMap::Application.routes.draw do
+  resources :maps do
+    new do
+      post :preprocess
+    end
+  end
 
-  map.geoiq_proxy "/proxy/*path.:format", :controller => "proxy", :action => "proxy", :format => :format
-
-  map.page "/pages/:action", :controller => "pages"
-  map.root :controller => "pages", :action => "home"
+  match "/proxy/(*path)", :to => "proxy#proxy", :as => :geoiq_proxy
+  match "/pages/:action", :to => "pages", :as => :page
+  root :to => "pages#home"
 end
