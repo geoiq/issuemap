@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class DatasetPreprocessorTest < ActiveSupport::TestCase
+  include ActionDispatch::TestProcess # for fixture_file_upload
+
   context "#column_names" do
     EXPECTED_COLUMN_NAMES = ["State Name", "State Abbreviation", "Count"]
 
@@ -147,19 +149,19 @@ class DatasetPreprocessorTest < ActiveSupport::TestCase
   end
 
   def comma_file_import
-    DatasetPreprocessor.new(fixture_file("commas.csv", "text/csv"))
+    DatasetPreprocessor.new(fixture_file_upload("/files/commas.csv", "text/csv"))
   end
 
   def excel_file_import
-    DatasetPreprocessor.new(fixture_file("excel.xls", "application/octet-stream"))
+    DatasetPreprocessor.new(fixture_file_upload("/files/excel.xls", "application/octet-stream"))
   end
 
   def excelx_file_import
-    DatasetPreprocessor.new(fixture_file("excelx.xlsx", "application/octet-stream"))
+    DatasetPreprocessor.new(fixture_file_upload("/files/excelx.xlsx", "application/octet-stream"))
   end
 
   def openoffice_file_import
-    DatasetPreprocessor.new(fixture_file("openoffice.ods", "application/octet-stream"))
+    DatasetPreprocessor.new(fixture_file_upload("/files/openoffice.ods", "application/octet-stream"))
   end
 
   def tab_import

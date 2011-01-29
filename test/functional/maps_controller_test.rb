@@ -39,7 +39,7 @@ class MapsControllerTest < ActionController::TestCase
   end
 
   # Testing uploaded data
-  on_post :preprocess, lambda {{ :data => fixture_file("commas.csv", "text/csv") }}  do
+  on_post :preprocess, lambda {{ :data => fixture_file_upload("/files/commas.csv", "text/csv") }}  do
     should_not set_the_flash
     should respond_with :success
     # Even though the response content is json, we need to specify text/html,
@@ -49,7 +49,7 @@ class MapsControllerTest < ActionController::TestCase
   end
 
   # Testing pasted data
-  on_post :preprocess, lambda {{ :data => fixture_file("commas.csv", "text/csv").read }}  do
+  on_post :preprocess, lambda {{ :data => fixture_file_upload("/files/commas.csv", "text/csv").read }}  do
     should_not set_the_flash
     should respond_with :success
     should respond_with_content_type("text/html")
