@@ -93,15 +93,14 @@ class DatasetPreprocessor
     when '.ods'
       digest_spreadsheet(Openoffice, uploaded_file)
     else # .csv, .txt, etc
-      delimiter = guess_delimiter(uploaded_file)
-      uploaded_file.rewind
-      digest_delimited(uploaded_file, delimiter)
+      data = uploaded_file.read
+      digest_delimited(data, guess_delimiter(data))
     end
   end
 
   def digest_spreadsheet(spreadsheet_class, uploaded_file)
     tempfile = Tempfile.new("spreadsheet")
-    spreadsheet_class.new(uploaded_file.path, false, :ignore).to_csv(tempfile.path)
+    spreadsheet_class.new(uploaded_file.tempfile.path, false, :ignore).to_csv(tempfile.path)
     contents = tempfile.read.encode("UTF-8")
     digest_delimited(contents, ",")
   end
