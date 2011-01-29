@@ -5,7 +5,7 @@
 <%= javascript_include_tag "#{GeoIQ.base_uri}/javascripts/f1.api.js" %>
 <script type="text/javascript" charset="utf-8">
 ;(function() {
-  F1.host = <%= "#{geoiq_proxy_url}/".inspect %>;
+  F1.host = <%= geoiq_proxy_url.inspect %>;
   var map = new F1.Maker.Map({
     dom_id: <%= map.dom_token.inspect %>,
     map_id: <%= map.geoiq_map_xid.inspect %>,
