@@ -17,4 +17,4 @@
   - @maps.each do |map|
     %li
       = link_to map_path(map) do
-        = image_tag map_path(map, :format => "png", :size => "m"), :width => 400, :alt => map.title
+        = image_tag map_cache_path(map.token, :format => "png"), :width => 400, :alt => map.title

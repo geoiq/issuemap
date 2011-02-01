@@ -5,6 +5,8 @@ class MapsControllerTest < ActionController::TestCase
   should route(:post, "/maps").to(:action => :create)
   should route(:put,  "/maps/1").to(:action => :update, :id => 1)
   should route(:post, "/maps/new/preprocess").to(:action => :preprocess)
+  should route(:get,  "/maps/1").to(:action => :show, :id => 1)
+  should route(:get,  "/map_cache/1.png").to(:controller => :maps, :action => :cache, :id => 1, :format => :png)
 
   on_get :new do
     should assign_to :map
@@ -70,7 +72,7 @@ class MapsControllerTest < ActionController::TestCase
         assert_select "meta[name=og:site_name][content=?]", "IssueMap"
         assert_select "meta[name=og:title][content=?]",     "Title"
         assert_select "meta[name=og:url][content=?]",       map_url(@map.token)
-        assert_select "meta[name=og:image][content=?]",     map_url(@map.token, :format => "png", :size => "m")
+        assert_select "meta[name=og:image][content=?]",     map_cache_url(@map.token, :format => "png")
       end
     end
 
@@ -98,6 +100,20 @@ class MapsControllerTest < ActionController::TestCase
       end
 
       on_get :show, lambda {{ :id => @map.to_param, :format => "png", :size => "s" }} do
+        should respond_with :success
+        should respond_with_content_type "image/png"
+        should "respond with a png" do
+          assert_equal "png-bytes", @response.body
+        end
+      end
+    end
+
+    context "fetching a cached png" do
+      setup do
+        Map.any_instance.expects(:to_png).with(map_url(@map.token), "m").returns("png-bytes")
+      end
+
+      on_get :cache, lambda {{ :id => @map.to_param, :format => "png" }} do
         should respond_with :success
         should respond_with_content_type "image/png"
         should "respond with a png" do

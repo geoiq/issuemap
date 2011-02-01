@@ -1,6 +1,6 @@
 - title    @map.title
 - og_url   map_url(@map.token)
-- og_image map_url(@map.token, :format => "png", :size => "m")
+- og_image map_cache_url(@map.token, :format => "png")
 
 = div_for @map do
   .header
@@ -27,8 +27,3 @@
           %button{ :rel => "#embed-control" } Embed
         .button-wrapper
           %button{ :rel => "#export-control" } Export
-
-
-
-
-

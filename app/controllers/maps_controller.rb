@@ -1,6 +1,11 @@
 class MapsController < ApplicationController
-  before_filter :find_map, :only => [:show, :update]
+  before_filter :find_map, :only => [:show, :update, :cache, :update]
   before_filter :ensure_correct_slug, :only   => :show
+  caches_page :cache
+
+  def new
+    @map = Map.new(params[:map])
+  end
 
   def preprocess
     import = DatasetPreprocessor.new(params[:data])
@@ -24,8 +29,9 @@ class MapsController < ApplicationController
     render :new
   end
 
-  def new
-    @map = Map.new(params[:map])
+  def update
+    # don't forget to expire any caches
+    # expire_page :action => :cache, :id => @map.token, :format => "png"
   end
 
   def show
@@ -35,6 +41,12 @@ class MapsController < ApplicationController
       format.kml { send_map_data(@map.to_kml, :kml, "kml") }
       format.png { send_map_data(@map.to_png(map_url(@map.token), params[:size]), :png, "png") }
     end
+  end
+
+  def cache
+    # we can only cache one png size without making custom routes
+    params[:size] = "m"
+    show
   end
 
   protected
