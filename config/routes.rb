@@ -9,4 +9,6 @@ IssueMap::Application.routes.draw do
   match "/proxy/(*path)", :to => "proxy#proxy", :as => :geoiq_proxy
   match "/pages/:action", :to => "pages", :as => :page
   root :to => "pages#home"
+
+  match "/fitter_happier(/:action)", :to => "fitter_happier", :action => :index
 end
