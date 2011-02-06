@@ -62,6 +62,11 @@ class MapsControllerTest < ActionController::TestCase
     should respond_with_content_type("text/html")
   end
 
+  on_post :create, :map => Factory.attributes_for(:map) do
+    should assign_to :map
+    should redirect_to("new map page") { map_path(assigns(:map).to_param) }
+  end
+
   context "Given a map" do
     setup { @map = Factory(:map) }
 
