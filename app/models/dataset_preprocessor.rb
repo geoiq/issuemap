@@ -60,8 +60,8 @@ class DatasetPreprocessor
     end
   end
 
-  # This isn't the best way to handle validations, but this is a quick win until
-  # we upgrade to Rails 3 and ActiveModel::Validations
+  # FIXME: This isn't the best way to handle validations, but this is a quick
+  # win until we upgrade to Rails 3 and ActiveModel::Validations
   def check_validity!
     if @table.size == 0
       raise ArgumentError, "Data must include at least one header and one data row"
