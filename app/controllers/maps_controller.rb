@@ -1,6 +1,7 @@
 class MapsController < ApplicationController
   before_filter :find_map, :only => [:show, :update, :cache, :update]
-  before_filter :ensure_correct_slug, :only   => :show
+  before_filter :check_admin_token, :only => :show
+  before_filter :ensure_correct_slug, :only => :show
   caches_page :cache
 
   def new
@@ -19,6 +20,7 @@ class MapsController < ApplicationController
   def create
     @map = Map.new(params[:map])
     if @map.save
+      add_map_to_owned_map_list(@map)
       redirect_to @map
     else
       render :new
@@ -44,12 +46,19 @@ class MapsController < ApplicationController
   end
 
   def cache
-    # we can only cache one png size without making custom routes
+    # we can only cache one png size unless we make custom routes
     params[:size] = "m"
     show
   end
 
   protected
+
+  def add_map_to_owned_map_list(map)
+    map_ids = session[:owned_maps] || []
+    map_ids.push(map.id)
+    map_ids.shift([0, map_ids.length - 10].max)
+    session[:owned_maps] = map_ids
+  end
 
   def send_map_data(bytes, type, format)
     send_data(bytes, :type => type, :filename => "#{@map.to_param}.#{format}", :disposition => "inline")
@@ -61,9 +70,19 @@ class MapsController < ApplicationController
     raise ActiveRecord::RecordNotFound, "No Maps matches that token" unless @map
   end
 
+  def check_admin_token
+    admin_token = params.delete(:admin_token)
+    return unless admin_token && format_html?
+    add_map_to_owned_map_list(@map) if admin_token == @map.admin_token
+    redirect_to params
+  end
+
   def ensure_correct_slug
-    if params[:format].blank? || params[:format].to_s == "html"
-      redirect_to(@map, :status => :moved_permanently) unless params[:id] == @map.to_param
-    end
+    return unless format_html?
+    redirect_to(@map, :status => :moved_permanently) unless params[:id] == @map.to_param
+  end
+
+  def format_html?
+    params[:format].blank? || params[:format].to_s == "html"
   end
 end

@@ -64,7 +64,22 @@ class MapsControllerTest < ActionController::TestCase
 
   on_post :create, :map => Factory.attributes_for(:map) do
     should assign_to :map
+    should set_session(:owned_maps).to { [assigns(:map).id] }
     should redirect_to("new map page") { map_path(assigns(:map).to_param) }
+  end
+
+  context "Given a session with a list of already owned maps" do
+    setup { session[:owned_maps] = (1001..1012).to_a }
+
+    on_post :create, :map => Factory.attributes_for(:map) do
+      should "result in an owned_maps session variable of length 10" do
+        assert_equal 10, session[:owned_maps].length
+      end
+
+      should "result in an owned_maps session variable containing the new map id" do
+        assert session[:owned_maps].include?(assigns(:map).id)
+      end
+    end
   end
 
   context "Given a map" do
@@ -72,6 +87,7 @@ class MapsControllerTest < ActionController::TestCase
 
     on_get :show, lambda {{ :id => @map.to_param }} do
       should respond_with :success
+      should_not set_session(:owned_maps).to { [@map.id] }
 
       should "respond with Open Graph meta tags" do
         assert_select "meta[name=og:site_name][content=?]", "IssueMap"
@@ -79,6 +95,16 @@ class MapsControllerTest < ActionController::TestCase
         assert_select "meta[name=og:url][content=?]",       map_url(@map.token)
         assert_select "meta[name=og:image][content=?]",     map_cache_url(@map.token, :format => "png")
       end
+    end
+
+    on_get :show, lambda {{ :id => @map.to_param, :admin_token => @map.admin_token }} do
+      should set_session(:owned_maps).to { [@map.id] }
+      should redirect_to("the public show page") { map_path(@map) }
+    end
+
+    on_get :show, lambda {{ :id => @map.to_param, :admin_token => "bogus token" }} do
+      should_not set_session(:owned_maps)
+      should redirect_to("the public show page") { map_path(@map) }
     end
 
     on_get :show, lambda {{ :id => "#{@map.token}-some-outdated-or-wrong-slug" }} do

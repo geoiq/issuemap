@@ -3,7 +3,7 @@ class Map < ActiveRecord::Base
   validates_presence_of :location_column_name, :location_column_type
   validates_presence_of :data_column_name, :data_column_type
 
-  before_create :set_token
+  before_create :set_token, :set_admin_token
 
   def provider
     "OpenStreetMap (Road)" # "Yahoo Road", "Google Hybrid", "Google Terrain"
@@ -46,5 +46,9 @@ class Map < ActiveRecord::Base
 
   def set_token
     self.token = generate_token(6)
+  end
+
+  def set_admin_token
+    self.admin_token = generate_token(12)
   end
 end

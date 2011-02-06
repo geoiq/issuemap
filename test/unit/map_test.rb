@@ -3,6 +3,7 @@ require 'test_helper'
 class MapTest < ActiveSupport::TestCase
   should have_db_column :id
   should have_db_column :token
+  should have_db_column :admin_token
   should have_db_column :title
   should have_db_column :original_csv_data
   should have_db_column :location_column_name
@@ -40,6 +41,22 @@ class MapTest < ActiveSupport::TestCase
     assert token
     map.update_attribute(:title, "New Title")
     assert_equal token, map.reload.token
+  end
+
+  should "assign a 12 character token whle creating a new record" do
+    map = Factory.build(:map)
+    assert_nil map.admin_token
+    map.save
+    assert map.admin_token
+    assert_equal 12, map.admin_token.length
+  end
+
+  should "not reassign the token after update" do
+    map = Factory.create(:map)
+    token = map.admin_token
+    assert token
+    map.update_attribute(:title, "New Title")
+    assert_equal token, map.reload.admin_token
   end
 
   context "#to_param" do
