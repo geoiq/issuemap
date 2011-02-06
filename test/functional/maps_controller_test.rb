@@ -113,7 +113,7 @@ class MapsControllerTest < ActionController::TestCase
 
     context "fetching a png" do
       setup do
-        Map.any_instance.expects(:to_png).with(map_url(@map.token), nil).returns("png-bytes")
+        Map.any_instance.expects(:to_png).with(:text => map_url(@map.token), :size => nil).returns("png-bytes")
       end
 
       on_get :show, lambda {{ :id => @map.to_param, :format => "png" }} do
@@ -127,7 +127,7 @@ class MapsControllerTest < ActionController::TestCase
 
     context "fetching a small png" do
       setup do
-        Map.any_instance.expects(:to_png).with(map_url(@map.token), "s").returns("png-bytes")
+        Map.any_instance.expects(:to_png).with(:text => map_url(@map.token), :size => "s").returns("png-bytes")
       end
 
       on_get :show, lambda {{ :id => @map.to_param, :format => "png", :size => "s" }} do
@@ -141,7 +141,7 @@ class MapsControllerTest < ActionController::TestCase
 
     context "fetching a cached png" do
       setup do
-        Map.any_instance.expects(:to_png).with(map_url(@map.token), "m").returns("png-bytes")
+        Map.any_instance.expects(:to_png).with(:text => map_url(@map.token), :size => "m").returns("png-bytes")
       end
 
       on_get :cache, lambda {{ :id => @map.to_param, :format => "png" }} do

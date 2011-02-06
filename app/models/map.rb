@@ -18,9 +18,13 @@ class Map < ActiveRecord::Base
     ["map", (token || "new")].join("_")
   end
 
-  def to_png(text_overlay = token, size = nil)
-    query = { :size => (size || "l"), :format => "png", :text => text_overlay }
-    GeoIQ.get("/maps/#{self.geoiq_map_xid}", :query => query).body
+  # options - The Hash of options used to refine the PNG
+  #           :text - overlayed text on the map (default: token)
+  #           :size - s, m, or l (default: l)
+  def to_png(options = {})
+    text = options.delete(:text) || token
+    size = options.delete(:size) || "l"
+    to_map_format("png", :text => text, :size => size)
   end
 
   def to_csv
@@ -32,6 +36,11 @@ class Map < ActiveRecord::Base
   end
 
   protected
+
+  def to_map_format(format, options = {})
+    query = options.merge(:format => format)
+    GeoIQ.get("/maps/#{self.geoiq_map_xid}", :query => query).body
+  end
 
   def to_dataset_format(format)
     GeoIQ.get("/datasets/#{self.geoiq_dataset_xid}.#{format}").body
@@ -45,10 +54,10 @@ class Map < ActiveRecord::Base
   end
 
   def set_token
-    self.token = generate_token(6)
+    self.token = generate_token(6) if token.blank?
   end
 
   def set_admin_token
-    self.admin_token = generate_token(12)
+    self.admin_token = generate_token(12) if admin_token.blank?
   end
 end
