@@ -5,6 +5,7 @@ $(document).ready(function() {
   $("fieldset.required").sniffForSubmittable(".actions button[type=submit]");
   $("#pointer").stepAlongFieldsets();
   $("#maps.show .controls button").manageControls();
+  $("#maps.show .palette").changeMapStyleOnClick(MAP);
   $("textarea.copyable").copyable();
 });
 
@@ -229,6 +230,17 @@ $.fn.manageControls = function() {
       button.parent().siblings().andSelf().removeClass("active");
       button.parent().toggleClass("active", !wasOn);
     });
+  });
+};
+
+$.fn.changeMapStyleOnClick = function(map) {
+  return this.click(function() {
+    var palette = $(this);
+    var colors = $.parseJSON(palette.attr("data-palette-colors"));
+    var style = map.getLayer(0).styles;
+    style.fill.colors = colors;
+    map.setLayerStyle(0, style);
+    palette.addClass("active").siblings().removeClass("active");
   });
 };
 
