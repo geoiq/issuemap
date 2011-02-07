@@ -13,17 +13,16 @@
   .map-wrapper
     = compact_embed_code(@map, :style_class => "loading", :loading_message => "Loading...").html_safe
     .controls
-      #export-control.control
-        %ul
-          %li.first= link_to "Image", map_path(@map.token, :format => "png"), :class => "png-export"
-          %li= link_to "CSV", map_path(@map.token, :format => "csv"), :class => "csv-export"
-          %li= link_to "KML", map_path(@map.token, :format => "kml"), :class => "kml-export"
       #embed-control.control
-        - embed_code = compact_embed_code(@map)
-        %textarea.copyable{ :spellcheck => "false" }= embed_code.html_safe
-        = clippy(embed_code, "#DDFDDC")
-      .buttons
-        .button-wrapper
-          %button{ :rel => "#embed-control" } Embed
-        .button-wrapper
-          %button{ :rel => "#export-control" } Export
+        %button Embed
+        .dialog
+          - embed_code = compact_embed_code(@map)
+          %textarea.copyable{ :spellcheck => "false" }= embed_code.html_safe
+          = clippy(embed_code, "#DDFDDC")
+      #export-control.control
+        %button Export
+        .dialog
+          %ul
+            %li.first= link_to "Image", map_path(@map.token, :format => "png"), :class => "png-export"
+            %li= link_to "CSV", map_path(@map.token, :format => "csv"), :class => "csv-export"
+            %li= link_to "KML", map_path(@map.token, :format => "kml"), :class => "kml-export"

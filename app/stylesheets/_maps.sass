@@ -123,6 +123,7 @@ input#map_title
     +opacity(0)
 
 $map-header-color: rgb(64, 136, 180)
+$map-height: 500px
 #maps.show .map
   .header
     background-color: $map-header-color
@@ -147,39 +148,58 @@ $map-header-color: rgb(64, 136, 180)
       a
         color: #fff
         +unstyled-link(white)
-
-  $map-control-border-radius: 6px
-  $map-height: 500px
   .map-wrapper
-    position: relative
     height: $map-height
     .loading
       font-size: 24px
       line-height: $map-height
       text-align: center
+
+$map-control-border-radius: 6px
+$map-control-active-color: rgb(47, 153, 102)
+#maps.show .map
+  .map-wrapper
+    position: relative
     .controls
       position: absolute
-      top: 0
-      right: 0
+      top: 3px
+      right: 3px
+      .control.active
+        background-color: $map-control-active-color
+        button
+          +fancy-button-colors($map-control-active-color)
+        .dialog
+          display: block
       .control
-        display: none
-        position: absolute
-        top: 33px
-        padding: 10px
-        background-color: rgb(222, 253, 220)
-        border: 1px solid rgb(47, 153, 102)
-        +border-bottom-radius($map-control-border-radius)
+        float: right
+        padding: 4px
+        +border-top-radius($map-control-border-radius)
+        button
+          +fancy-button(#ccc, 12px, $map-control-border-radius / 2)
+          font-weight: normal
+          width: 7em
+        .dialog
+          display: none
+          position: absolute
+          left: 0
+          border: 1px solid $map-control-active-color
+          background-color: rgb(222, 253, 220)
+          padding: 10px
+          margin-top: 3px
+          +border-top-right-radius($map-control-border-radius)
+          +border-bottom-radius($map-control-border-radius)
       #embed-control
-        width: 16em
-        right: 3px
-        +border-top-left-radius($map-control-border-radius)
+        .dialog
+          left: auto
+          right: 0
+          +border-top-left-radius($map-control-border-radius)
+          +border-top-right-radius(0)
         textarea
           display: block
           font-size: 8px
-          +dimensions(100%, 60px)
+          overflow: hidden
+          +dimensions(28em, 60px)
       #export-control
-        left: 0
-        +border-top-right-radius($map-control-border-radius)
         li
           margin-top: 3px
           font-size: 12px
@@ -199,18 +219,3 @@ $map-header-color: rgb(64, 136, 180)
             background-image: image-url("kml_icon.png")
         li.first
           margin-top: 0
-      .buttons
-        margin: 3px 3px 0 0
-      .button-wrapper
-        float: right
-        padding: 4px
-        +border-top-radius($map-control-border-radius)
-        &.active
-          background-color: rgb(47, 153, 102)
-          button
-            +fancy-button-colors(rgb(47, 153, 102))
-      button
-        +fancy-button(#ccc, 12px, $map-control-border-radius / 2)
-        font-weight: normal
-        width: 7em
-

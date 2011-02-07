@@ -4,7 +4,7 @@ $(document).ready(function() {
   $("fieldset.required").sniffForCompletion();
   $("fieldset.required").sniffForSubmittable(".actions button[type=submit]");
   $("#pointer").stepAlongFieldsets();
-  $("#maps.show .controls button").manageControls("#maps.show .controls");
+  $("#maps.show .controls button").manageControls();
   $("textarea.copyable").copyable();
 });
 
@@ -221,25 +221,20 @@ $.fn.pleaseWaitOnSubmit = function() {
   });
 };
 
-$.fn.manageControls = function(controlsSelector) {
+$.fn.manageControls = function() {
   return this.each(function() {
     var button = $(this);
     button.click(function() {
       var wasOn = button.parent().hasClass("active");
-      $(controlsSelector).find(".control").hide();
-      $(controlsSelector).find(".button-wrapper").removeClass("active");
-      if (!wasOn) {
-        button.parent().addClass("active");
-        $(button.attr("rel")).show().trigger("control-displayed");
-      }
+      button.parent().siblings().andSelf().removeClass("active");
+      button.parent().toggleClass("active", !wasOn);
     });
   });
 };
 
 $.fn.copyable = function() {
   return this.attr("readonly", true)
-    .click(function() { this.select(); })
-    .focus(function() { this.select(); });
+    .click(function() { this.focus(); this.select();});
 };
 
 $.fn.pointer = function(selector, qualifier, eventType) {
