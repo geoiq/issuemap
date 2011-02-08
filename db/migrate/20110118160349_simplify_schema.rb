@@ -44,7 +44,7 @@ class SimplifySchema < ActiveRecord::Migration
       map.data_column_name     = ds.data_columns.keys.first
       map.data_column_type     = ds.data_columns.values.first
       map.original_csv_data    = convert_data_to_csv(ds.data, ds.separator)
-      map.save!
+      map.save!(:validate => false)
     end
   end
 
