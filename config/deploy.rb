@@ -13,7 +13,14 @@ set :ssh_options,  { :forward_agent => true }
 task :qa do
   set :rails_env,   "qa"
   set :branch,      "master"
-  set :deploy_to,   "/fortiusone/live/apps/#{application}"
+  set :deploy_to,   "/fortiusone/live/apps/#{application}-#{rails_env}"
+  server "captest@issue-test.geoiq.com", :web, :app, :db, :primary => true
+end
+
+task :production do
+  set :rails_env,   "production"
+  set :branch,      "master"
+  set :deploy_to,   "/fortiusone/live/apps/#{application}-#{rails_env}"
   server "captest@issue-test.geoiq.com", :web, :app, :db, :primary => true
 end
 
