@@ -6,7 +6,7 @@ class Map < ActiveRecord::Base
   before_create :set_token, :set_admin_token
 
   def provider
-    "OpenStreetMap (Road)" # "Yahoo Road", "Google Hybrid", "Google Terrain"
+    "Acetate" # "OpenStreetMap (Road)"  "Yahoo Road", "Google Hybrid", "Google Terrain"
   end
 
   def to_param
