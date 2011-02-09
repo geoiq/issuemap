@@ -26,9 +26,12 @@
             %li.first= link_to "Image", map_path(@map.token, :format => "png"), :class => "png-export"
             %li= link_to "CSV", map_path(@map.token, :format => "csv"), :class => "csv-export"
             %li= link_to "KML", map_path(@map.token, :format => "kml"), :class => "kml-export"
-      -# #style-control.control
-      -#   %button Map Style
-      -#   .dialog= render :partial => "color_palettes"
+      -# = map_admin_section(@map) do
+      -#   #style-control.control
+      -#     %button Map Style
+      -#     .dialog= render :partial => "color_palettes"
+      -#   #save-control.control
+      -#     %button Save Map
 
 = javascript_tag do
   = "var MAP = #{@map.dom_token};"

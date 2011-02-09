@@ -172,6 +172,7 @@ $map-control-active-color: rgb(47, 153, 102)
           display: block
       .control
         float: right
+        position: relative
         padding: 4px
         +border-top-radius($map-control-border-radius)
         button
@@ -220,7 +221,6 @@ $map-control-active-color: rgb(47, 153, 102)
         li.first
           margin-top: 0
       #style-control
-        +clearfix
         .dialog
           width: 120px
           padding: 14px 0 0 14px
@@ -236,3 +236,5 @@ $map-control-active-color: rgb(47, 153, 102)
             border: 1px solid #aaa
             width: 100%
             height: 15px
+      #save-control
+        +border-bottom-radius($map-control-border-radius)

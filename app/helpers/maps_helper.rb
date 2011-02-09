@@ -75,4 +75,12 @@ module MapsHelper
       </object>
     EOF
   end
+
+  def map_admin?(map)
+    session[:owned_maps].include?(map.id) if session[:owned_maps]
+  end
+
+  def map_admin_section(map, &block)
+    capture(&block) if map_admin?(map)
+  end
 end
