@@ -1,4 +1,7 @@
 class Map < ActiveRecord::Base
+  attr_accessor :extent
+  attr_accessor :color_palette
+
   validates_presence_of :title, :original_csv_data
   validates_presence_of :location_column_name, :location_column_type
   validates_presence_of :data_column_name, :data_column_type

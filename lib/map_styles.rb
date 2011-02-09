@@ -16,10 +16,14 @@ module MapStyles
     :diverging        => [0x909FC2, 0xD0D1E6, 0xF7F7F7, 0xFEE281, 0xFE9929],
   }
 
-  COLOR_PALETTES = WHITE_PALETTES.merge(EXTRA_PALETTES)
+  COLOR_PALETTES = ActiveSupport::HashWithIndifferentAccess.new(WHITE_PALETTES.merge(EXTRA_PALETTES))
+
+  def self.random_color_palette
+    WHITE_PALETTES.keys.sample
+  end
 
   def self.random_choropleth
-    choropleth(WHITE_PALETTES.keys.sample)
+    choropleth(random_color_palette)
   end
 
   def self.choropleth(color_palette)
