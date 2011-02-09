@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CompositionObserverTest < ActiveSupport::TestCase
+class MapObserverTest < ActiveSupport::TestCase
   def setup
     ActiveRecord::Observer.enable_observers
   end
