@@ -1,6 +1,13 @@
 "default":
 - - 'No Boundaries Available'
   - '0/none'
+"http://demo.geoiq.com":
+- - 'State - Full Name'
+  - '2092/state'
+- - 'State - Abbreviation'
+  - '2092/st'
+- - 'State - FIPS'
+  - '2092/fips'
 "http://api-sandbox.geoiq.com":
 - - 'State - Full Name'
   - '522/state'
