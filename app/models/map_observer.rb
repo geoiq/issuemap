@@ -70,6 +70,7 @@ class MapObserver < ActiveRecord::Observer
   def layer_details(map)
     return if map.color_palette.blank?
     styles = MapStyles.choropleth(map.color_palette)
+    return if styles.nil?
     styles[:fill][:selectedAttribute] = safe(map.data_column_name)
     {
       :title    => map.title,

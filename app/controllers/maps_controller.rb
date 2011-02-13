@@ -1,6 +1,9 @@
 class MapsController < ApplicationController
+  helper_method :map_admin?
+
   before_filter :find_map, :only => [:show, :update, :cache, :update]
   before_filter :check_admin_token, :only => :show
+  before_filter :ensure_admin_token, :only => :update
   before_filter :ensure_correct_slug, :only => :show
   caches_page :cache
 
@@ -32,8 +35,10 @@ class MapsController < ApplicationController
   end
 
   def update
-    # don't forget to expire any caches
-    # expire_page :action => :cache, :id => @map.token, :format => "png"
+    if @map.update_attributes(params[:map])
+      expire_page :action => :cache, :id => @map.token, :format => "png"
+    end
+    redirect_to @map
   end
 
   def show
@@ -77,6 +82,12 @@ class MapsController < ApplicationController
     redirect_to params
   end
 
+  def ensure_admin_token
+    unless map_admin?(@map)
+      render :text => "Unauthorized.", :status => :unauthorized
+    end
+  end
+
   def ensure_correct_slug
     return unless format_html?
     redirect_to(@map, :status => :moved_permanently) unless params[:id] == @map.to_param
@@ -84,5 +95,9 @@ class MapsController < ApplicationController
 
   def format_html?
     params[:format].blank? || params[:format].to_s == "html"
+  end
+
+  def map_admin?(map)
+    session[:owned_maps].include?(map.id) if session[:owned_maps]
   end
 end

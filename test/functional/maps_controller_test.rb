@@ -72,11 +72,11 @@ class MapsControllerTest < ActionController::TestCase
     setup { session[:owned_maps] = (1001..1012).to_a }
 
     on_post :create, :map => Factory.attributes_for(:map) do
-      should "result in an owned_maps session variable of length 10" do
+      should "set an owned_maps session variable of length 10" do
         assert_equal 10, session[:owned_maps].length
       end
 
-      should "result in an owned_maps session variable containing the new map id" do
+      should "set an owned_maps session variable containing the new map id" do
         assert session[:owned_maps].include?(assigns(:map).id)
       end
     end
@@ -178,6 +178,23 @@ class MapsControllerTest < ActionController::TestCase
         should "respond with a kml" do
           assert_equal "kml-data", @response.body
         end
+      end
+    end
+
+    context "and given a session owning that map" do
+      setup { session[:owned_maps] = [@map.id] }
+
+      on_put :update, lambda {{ :id => @map.to_param, :map => { :extent => "1,2,3,4", :color_palette => "diverging" } }} do
+        should assign_to :map
+        should redirect_to("map path") { @map }
+      end
+    end
+
+    context "and given a session not owning that map" do
+      setup { session[:owned_maps] = nil }
+
+      on_put :update, lambda {{ :id => @map.to_param }} do
+        should respond_with :unauthorized
       end
     end
   end
