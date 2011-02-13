@@ -1,12 +1,14 @@
+(function($) {
+
 $(document).ready(function() {
   $("#gallery").gallery();
   $(".preprocess-form").preprocessData(MapFormUpload.init());
   $("fieldset.required").sniffForCompletion();
   $("fieldset.required").sniffForSubmittable(".actions button[type=submit]");
   $("#pointer").stepAlongFieldsets();
-  $("#maps.show .controls button").manageControls();
-  $("#maps.show .palette").changeMapStyleOnClick(MAP);
   $("textarea.copyable").copyable();
+  $("#maps.show .controls button").manageControls();
+  initializeMapWhenReady();
 });
 
 $(window).unload(function() {
@@ -14,6 +16,36 @@ $(window).unload(function() {
     $.unblockUI();
   }
 });
+
+function extendMap(map) {
+  map.getExtentString = function() {
+    var e = this.getExtent();
+    if (e) {
+      // The floors and ceilings ensure subsequent renders don't put the flash
+      // map at the wrong zoom level because of rounding errors.
+      return [Math.ceil(e.west), Math.ceil(e.south), Math.floor(e.east), Math.floor(e.north)].join(",");
+    } else {
+      return "";
+    }
+  };
+  return map;
+}
+
+var map = null;
+function initializeMapWhenReady() {
+  // Grab a handle to the map on the show page if it exists
+  map = (typeof MAP !== "undefined" && MAP !== null) ? extendMap(MAP) : null;
+  if (map) {
+    // onMapReady handler doesn't seem to work correctly, so set a timeout
+    // before sniffing for extents
+    // map.onMapReady(function() { 
+      $("#maps.show .palette").changeMapStyleOnClick(map);
+      $("#maps.show #save-control form").prepareMapUpdate(map);
+      $(map).handleMapChanges();
+      setTimeout(function() { $(map).sniffExtentChanges(); }, 3000);
+    // });
+  }                    
+}
 
 var MapFormUpload = {
   init: function() {
@@ -132,7 +164,7 @@ $.fn.preprocessData = function(options) {
     });
 
     pasteArea.valueChangeObserver(500, function(input) {
-      if (input.val().length > 0) submitForm();
+      if ($(input).val().length > 0) { submitForm(); }
     });
   });
 };
@@ -241,8 +273,31 @@ $.fn.changeMapStyleOnClick = function(map) {
     style.fill.colors = colors;
     map.setLayerStyle(0, style);
     palette.addClass("active").siblings().removeClass("active");
+
+    var name = palette.attr("data-palette-name");
+    $("#map_color_palette").val(name);
+    $(map).trigger("map-changed");
   });
 };
+
+$.fn.sniffExtentChanges = function() {
+  return this.valueChangeObserver(1000, 
+    function(map) { return map.getExtentString(); },
+    function(map) { $(map).trigger("map-changed"); }
+  );
+};
+
+$.fn.handleMapChanges = function() {
+  return this.bind("map-changed", function() {
+    $("#save-control").fadeIn();
+  });
+}; 
+
+$.fn.prepareMapUpdate = function(map) {
+  return this.submit(function() {
+    $("#map_extent").val(map.getExtentString());
+  });
+}; 
 
 $.fn.copyable = function() {
   return this.attr("readonly", true)
@@ -282,7 +337,6 @@ $.fn.pointer = function(selector, qualifier, eventType) {
       return this.animate(this.positionFor(element), stepDuration);
     },
     moveTo: function(element) {
-      console.log("moveTo"); console.log(element);
       if (this.is(":visible")) {
         return this.animateTo(element);
       } else {
@@ -371,12 +425,16 @@ $.fn.delayedResize = function(callback) {
 // function only when a change is recognized.  This is good for monitoring an
 // input or textarea field for copy-n-pasted changes that could come from
 // keypresses, mouse context menus, or application menus.
-$.fn.valueChangeObserver = function(interval, callback) {
+$.fn.valueChangeObserver = function(interval, valueFn, callback) {
+  if (callback == null) { 
+    callback = valueFn;
+    valueFn = function(elem) { return $(elem).val(); };
+  }
   return this.each(function() {
-    var self = $(this);
-    var lastValue = self.val();
+    var self = this;
+    var lastValue = valueFn(self);
     var check = function() {
-      var value = self.val();
+      var value = valueFn(self);
       if (value != lastValue) {
         callback(self);
         lastValue = value;
@@ -385,6 +443,8 @@ $.fn.valueChangeObserver = function(interval, callback) {
     setInterval(check, interval);
   });
 };
+
+}(jQuery));
 
 // protection against accidental left-over console.log statements
 if (typeof console === "undefined" || console === null) {
