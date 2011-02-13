@@ -9,6 +9,6 @@ var <%= map.dom_token %> = new F1.Maker.Map({
   dom_id: <%= map.dom_token.inspect %>,
   map_id: <%= map.geoiq_map_xid.inspect %>,
   uiLayers: false,
-  onload: function() { map.showControl("legend", true, "open"); }
+  onload: function() { this.showControl("legend", true, "open"); }
 });
 </script>
