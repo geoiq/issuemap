@@ -222,8 +222,12 @@ $map-control-active-color: rgb(47, 153, 102)
           margin-top: 0
       #style-control
         .dialog
-          width: 120px
+          width: 180px
           padding: 14px 0 0 14px
+          .white
+            width: 120px
+          .extra
+            +clearfix
         .palette
           width: 16px
           float: left
@@ -236,6 +240,8 @@ $map-control-active-color: rgb(47, 153, 102)
             border: 1px solid #aaa
             width: 100%
             height: 15px
+        .palette.diverging
+          margin-left: 14px
       #save-control
         display: none
         +border-bottom-radius($map-control-border-radius)

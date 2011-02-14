@@ -1,6 +1,7 @@
-- MapStyles::COLOR_PALETTES.each do |name, colors|
-  %table.palette{ "data-palette-name" => name, "data-palette-colors" => colors.to_json }
-    - colors.each do |color|
-      - hex_color = "#%06x" % color
-      %tr
-        %td.color{ :style => "background-color: #{hex_color}" }
+.white
+  - MapStyles::WHITE_PALETTES.each do |name, colors|
+    = render :partial => "color_palette", :locals => { :name => name, :colors => colors }
+.extra
+  - MapStyles::EXTRA_PALETTES.each do |name, colors|
+    = render :partial => "color_palette", :locals => { :name => name, :colors => colors }
+

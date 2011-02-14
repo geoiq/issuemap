@@ -1,0 +1,5 @@
+%table.palette{ "data-palette-name" => name, "data-palette-colors" => colors.to_json, :class => name }
+  - colors.each do |color|
+    - hex_color = "#%06x" % color
+    %tr
+      %td.color{ :style => "background-color: #{hex_color}" }

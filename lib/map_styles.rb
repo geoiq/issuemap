@@ -11,9 +11,9 @@ module MapStyles
   }
 
   EXTRA_PALETTES = {
+    :diverging        => [0x909FC2, 0xD0D1E6, 0xF7F7F7, 0xFEE281, 0xFE9929],
     :green_purple     => [0x78C679, 0xD9F0A3, 0xF7F7F7, 0xE6C7CA, 0xC090BD],
     :blue_red         => [0x4292C6, 0xC6DBEF, 0xF7F7F7, 0xFCC5BB, 0xFF776D],
-    :diverging        => [0x909FC2, 0xD0D1E6, 0xF7F7F7, 0xFEE281, 0xFE9929],
   }
 
   COLOR_PALETTES = ActiveSupport::HashWithIndifferentAccess.new(WHITE_PALETTES.merge(EXTRA_PALETTES))
