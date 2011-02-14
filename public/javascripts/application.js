@@ -42,7 +42,7 @@ function initializeMapWhenReady() {
       $("#maps.show .palette").changeMapStyleOnClick(map);
       $("#maps.show #save-control form").prepareMapUpdate(map);
       $(map).handleMapChanges();
-      setTimeout(function() { $(map).sniffExtentChanges(); }, 3000);
+      setTimeout(function() { $(map).sniffExtentChanges(); }, 5000);
     // });
   }                    
 }
