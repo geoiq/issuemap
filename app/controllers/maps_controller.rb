@@ -1,6 +1,4 @@
 class MapsController < ApplicationController
-  helper_method :map_admin?
-
   before_filter :find_map, :only => [:show, :update, :cache, :update]
   before_filter :check_admin_token, :only => :show
   before_filter :ensure_admin_token, :only => :update
