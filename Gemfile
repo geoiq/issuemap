@@ -31,7 +31,7 @@ group :test do
   gem "timecop"
   gem "fakeweb"
   gem "mocha"
-  gem "no_peeping_toms"
+  gem "no_peeping_toms", :git => "git://github.com/patmaddox/no-peeping-toms.git"
   gem "mynyml-redgreen", :require => "redgreen"
   gem "autotest"
   gem "autotest-rails"
