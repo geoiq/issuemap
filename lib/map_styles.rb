@@ -26,7 +26,7 @@ module MapStyles
     choropleth(random_color_palette)
   end
 
-  def self.choropleth(color_palette)
+  def self.choropleth(color_palette, flip_colors = false)
     colors = COLOR_PALETTES[color_palette]
     {
       :type => "CHOROPLETH",
@@ -34,7 +34,7 @@ module MapStyles
         :opacity            => 0.75,
         :classificationType => "Equal Interval",
         :categories         => colors.length,
-        :colors             => colors,
+        :colors             => flip_colors ? colors.reverse : colors,
       }
     }
   end

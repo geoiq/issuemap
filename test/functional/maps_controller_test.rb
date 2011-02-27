@@ -184,7 +184,7 @@ class MapsControllerTest < ActionController::TestCase
     context "and given a session owning that map" do
       setup { session[:owned_maps] = [@map.id] }
 
-      on_put :update, lambda {{ :id => @map.to_param, :map => { :extent => "1,2,3,4", :color_palette => "diverging" } }} do
+      on_put :update, lambda {{ :id => @map.to_param, :map => { :extent => "1,2,3,4", :color_palette => "diverging", :flip_colors => "1" } }} do
         should assign_to :map
         should redirect_to("map path") { @map }
       end

@@ -1,3 +1,6 @@
+%h3
+  = link_to "Flip", "#", :class => "flip-colors"
+  Colors
 .white
   - MapStyles::WHITE_PALETTES.each do |name, colors|
     = render :partial => "color_palette", :locals => { :name => name, :colors => colors }

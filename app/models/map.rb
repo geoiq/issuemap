@@ -1,6 +1,7 @@
 class Map < ActiveRecord::Base
   attr_accessor :extent
   attr_accessor :color_palette
+  attr_accessor :flip_colors
 
   validates_presence_of :title, :original_csv_data
   validates_presence_of :location_column_name, :location_column_type
@@ -10,6 +11,10 @@ class Map < ActiveRecord::Base
 
   def provider
     "Acetate" # "OpenStreetMap (Road)"  "Yahoo Road", "Google Hybrid", "Google Terrain"
+  end
+
+  def flip_colors?
+    flip_colors.present?
   end
 
   def to_param

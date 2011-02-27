@@ -40,8 +40,12 @@ function initializeMapWhenReady() {
     // before sniffing for extents
     // map.onMapReady(function() { 
       $("#maps.show .palette").changeMapStyleOnClick(map);
+      $("#maps.show .flip-colors").flipColors(map);
       $("#maps.show #save-control form").prepareMapUpdate(map);
       $(map).handleMapChanges();
+      $("#maps.show #style-control button").click(function() {
+        $("#maps.show .palette").guessMapStyle(map);
+      });
       setTimeout(function() { $(map).sniffExtentChanges(); }, 5000);
     // });
   }                    
@@ -265,18 +269,61 @@ $.fn.manageControls = function() {
   });
 };
 
+function updateMapColors(map) {
+  var palette = $("#maps.show .palette.active");
+  var colors = $.parseJSON(palette.attr("data-palette-colors"));
+  var style = map.getLayer(0).styles;
+  style.fill.colors = isFlipColors() ? colors.reverse() : colors;
+  map.setLayerStyle(0, style);
+  $(map).trigger("map-changed");
+}
+
+function setMapFormStyleValues(map, palette, flipColors) {
+  $(palette).addClass("active").siblings().removeClass("active");
+  var name = $(palette).attr("data-palette-name");
+  $("#map_color_palette").val(name);
+  $("#map_flip_colors").val(flipColors ? "1" : "");
+}
+
+function isFlipColors() {
+  return !!parseInt($("#map_flip_colors").val());
+}
+
+
+$.fn.guessMapStyle = function(map) {
+  if (!map.getLayer(0)) { return this; }
+  return this.each(function() {
+    var style = map.getLayer(0).styles;
+    var palette = $(this);
+    var colors = $.parseJSON(palette.attr("data-palette-colors"));
+    var firstColor = style.fill.color;
+    var firstMatch = firstColor == colors[0];
+    var lastMatch  = firstColor == colors[colors.length-1];
+    if (firstMatch || lastMatch) {
+      setMapFormStyleValues(map, palette, false);
+      if (lastMatch) { $("#maps.show .flip-colors").click(); }; 
+    }
+  });
+};
+
 $.fn.changeMapStyleOnClick = function(map) {
   return this.click(function() {
     var palette = $(this);
-    var colors = $.parseJSON(palette.attr("data-palette-colors"));
-    var style = map.getLayer(0).styles;
-    style.fill.colors = colors;
-    map.setLayerStyle(0, style);
-    palette.addClass("active").siblings().removeClass("active");
+    setMapFormStyleValues(map, palette, isFlipColors());
+    updateMapColors(map);
+  });
+};
 
-    var name = palette.attr("data-palette-name");
-    $("#map_color_palette").val(name);
-    $(map).trigger("map-changed");
+$.fn.flipColors = function(map) {
+  return this.click(function(event) { 
+    event.preventDefault();
+    $("#maps.show .palette").each(function() {
+      var colors = $(this).find("tr");
+      var parent = colors.parent();
+      parent.html(colors.reverse());
+    });
+    $("#map_flip_colors").val(isFlipColors() ? "" : "1");
+    updateMapColors(map);
   });
 };
 
@@ -443,6 +490,9 @@ $.fn.valueChangeObserver = function(interval, valueFn, callback) {
     setInterval(check, interval);
   });
 };
+
+// Reverse a jQuery wrapped set
+$.fn.reverse = [].reverse;
 
 }(jQuery));
 

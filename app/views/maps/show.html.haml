@@ -34,6 +34,7 @@
           = form_for @map do |f|
             = f.hidden_field :extent
             = f.hidden_field :color_palette
+            = f.hidden_field :flip_colors
             %button{ :type => "submit" } Save Changes
 
 = javascript_tag do
