@@ -46,6 +46,7 @@ function initializeMapWhenReady() {
       $("#maps.show #style-control button").click(function() {
         $("#maps.show .palette").guessMapStyle(map);
       });
+      $("#maps.show form.edit_map").ajaxMapEditForm();
       setTimeout(function() { $(map).sniffExtentChanges(); }, 5000);
     // });
   }                    
@@ -241,7 +242,7 @@ $.fn.setColumnOptions = function(names, details) {
 };
 
 $.fn.pleaseWaitOnSubmit = function() {
-  this.submit(function () { 
+  return this.submit(function () { 
     $.blockUI({ 
       css: { 
         border: "none", 
@@ -345,6 +346,16 @@ $.fn.prepareMapUpdate = function(map) {
     $("#map_extent").val(map.getExtentString());
   });
 }; 
+
+$.fn.ajaxMapEditForm = function() {
+  var self = this;
+  return this.pleaseWaitOnSubmit().ajaxForm({
+    complete: function() { 
+      $("#save-control").fadeOut();
+      $.unblockUI(); 
+    }
+  });    
+};
 
 $.fn.copyable = function() {
   return this.attr("readonly", true)
