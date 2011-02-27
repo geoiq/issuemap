@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 
-gem "rails", "3.0.3"
+gem "rails", "3.0.5"
 
 # The roo gem is a bit of a mess.  It doesn't handle its own dependencies
 # correctly, but it parses XLS, XLSX, and Open Office spreadsheets.  In other
