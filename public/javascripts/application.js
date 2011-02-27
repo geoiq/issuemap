@@ -280,7 +280,8 @@ function updateMapColors(map) {
 }
 
 function setMapFormStyleValues(map, palette, flipColors) {
-  $(palette).addClass("active").siblings().removeClass("active");
+  $("#maps.show .palette.active").removeClass("active");
+  $(palette).addClass("active");
   var name = $(palette).attr("data-palette-name");
   $("#map_color_palette").val(name);
   $("#map_flip_colors").val(flipColors ? "1" : "");
