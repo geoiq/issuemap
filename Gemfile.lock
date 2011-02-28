@@ -1,12 +1,3 @@
-GIT
-  remote: git://github.com/rmm5t/no-peeping-toms.git
-  revision: 3b1857f071e2bcb93494a95c32846e9f76adf4f6
-  branch: fix_gemspec
-  specs:
-    no_peeping_toms (2.1.0)
-      activerecord (>= 3.0.0)
-      activesupport (>= 3.0.0)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -89,6 +80,9 @@ GEM
     net-ssh (2.1.0)
     net-ssh-gateway (1.0.1)
       net-ssh (>= 1.99.1)
+    no_peeping_toms (2.1.1)
+      activerecord (>= 3.0.0)
+      activesupport (>= 3.0.0)
     nokogiri (1.4.4)
     oauth (0.4.4)
     pg (0.10.1)
@@ -149,7 +143,7 @@ DEPENDENCIES
   maruku
   mocha
   mynyml-redgreen
-  no_peeping_toms!
+  no_peeping_toms
   nokogiri
   pg
   rails (= 3.0.5)

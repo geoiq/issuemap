@@ -31,8 +31,7 @@ group :test do
   gem "timecop"
   gem "fakeweb"
   gem "mocha"
-  # gem "no_peeping_toms", :git => "git://github.com/patmaddox/no-peeping-toms.git" # has a broken gemspec
-  gem "no_peeping_toms", :git => "git://github.com/rmm5t/no-peeping-toms.git", :branch => "fix_gemspec"
+  gem "no_peeping_toms"
   gem "mynyml-redgreen", :require => "redgreen"
   gem "autotest"
   gem "autotest-rails"
