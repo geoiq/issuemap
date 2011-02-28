@@ -1,6 +1,7 @@
 GIT
-  remote: git://github.com/patmaddox/no-peeping-toms.git
-  revision: 83dbd4cb993ae8e78a38a0f5cad784ca58bb0dcd
+  remote: git://github.com/rmm5t/no-peeping-toms.git
+  revision: 3b1857f071e2bcb93494a95c32846e9f76adf4f6
+  branch: fix_gemspec
   specs:
     no_peeping_toms (2.1.0)
       activerecord (>= 3.0.0)
