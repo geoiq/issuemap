@@ -14,7 +14,10 @@
       = link_to "javascript:;", :class => "file" do
         Upload Data
         = file_field_tag :data, :id => "preprocess-upload"
-    .hint Excel Spreadsheet or CSV
+    .hint
+      Excel or CSV
+      = surround("(", ")") do
+        = link_to "see examples", page_path("usage", :anchor => "spreadsheets"), :target => "usage"
   .paste
     = form_tag preprocess_new_map_path, :class => "preprocess-form" do
       = label_tag "preprocess-paste", "Copy & Paste Data"

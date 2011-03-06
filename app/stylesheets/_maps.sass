@@ -107,8 +107,8 @@ input#map_title
 // Simulating a file upload button
 // Specifying this to sit over the entire section instead of just the button.
 // To narrow this to just the button, add a.file to the selector.
-#maps.form fieldset.import .upload
-  overflow: hidden
+#maps.form fieldset.import a.file
+  overflow: hidden !important
   position: relative
   direction: ltr
   input#preprocess-upload
